@@ -9,6 +9,7 @@ import {
   Link,
   Button,
 } from "native-base";
+import { Formik } from "formik";
 
 const Login = () => {
   return (
@@ -20,7 +21,7 @@ const Login = () => {
         <VStack mt={5} space={3}>
           <FormControl>
             <FormControl.Label>Email</FormControl.Label>
-            <Input />
+            <Input/>
           </FormControl>
           <FormControl>
             <FormControl.Label>Password</FormControl.Label>
