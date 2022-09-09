@@ -2,11 +2,14 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { NativeBaseProvider } from "native-base";
 import Login from "./Screen/Login";
+import Auth from "./Context/store/Auth";
 
 export default function App() {
   return (
     <NativeBaseProvider>
-      <Login />
+      <Auth>
+        <Login />
+      </Auth>
     </NativeBaseProvider>
   );
 }

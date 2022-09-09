@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Center,
   Box,
@@ -11,17 +11,20 @@ import {
 } from "native-base";
 import { Formik } from "formik";
 import * as Yup from "yup";
-
-const onSubmit = (data) => {
-  console.log(data);
-};
-
-const validationSchema = Yup.object().shape({
-  Email: Yup.string().email().required("Email is Required"),
-  Password: Yup.string().required("Password is Required"),
-});
+import Auth_Global from "../Context/store/Auth_Global";
+import { loginUser } from "../Context/action/Auth_action";
 
 const Login = () => {
+  const context = useContext(Auth_Global);
+
+  const onSubmit = (user) => {
+    loginUser(user, context.dispatch);
+  };
+
+  const validationSchema = Yup.object().shape({
+    Email: Yup.string().email().required("Email is Required"),
+    Password: Yup.string().required("Password is Required"),
+  });
   return (
     <Center w="100%">
       <Box safeArea py="8" w="90%">
@@ -43,6 +46,7 @@ const Login = () => {
                 <Input
                   onChangeText={handleChange("Email")}
                   placeholder="Email"
+                  value={values.Email}
                 />
                 <FormControl.ErrorMessage>
                   {errors.Email}
@@ -53,6 +57,7 @@ const Login = () => {
                 <Input
                   type="password"
                   onChangeText={handleChange("Password")}
+                  value={values.Password}
                 />
                 <FormControl.ErrorMessage>
                   {errors.Password}
