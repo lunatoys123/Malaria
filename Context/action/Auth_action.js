@@ -5,14 +5,18 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const loginUser = async (user, dispatch) => {
-  axios
-    .post("https://33e6-116-49-45-129.ap.ngrok.io/Malaria/User/login", {
+  var token_response = {};
+  await axios
+    .post("https://b2b3-116-49-45-129.ap.ngrok.io/Malaria/User/login", {
       email: user.Email,
       Password: user.Password,
     })
     .then((response) => {
+      //console.log(response);
       const data = response.data;
       if (data.status === status_code.Success) {
+        token_response.status = data.status;
+        token_response.Message = data.Message;
         const token = data.token;
         AsyncStorage.setItem("jwt", token);
         const decoded = jwt_decode(token);
@@ -20,8 +24,11 @@ export const loginUser = async (user, dispatch) => {
       }
     })
     .catch((err) => {
-      console.log(err);
+      //console.log("Error....... ", err);
+      token_response.status = err.response.data.status;
+      token_response.Message = err.response.data.Message;
     });
+  return token_response;
 };
 
 export const logoutUser = (dispatch) => {

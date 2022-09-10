@@ -1,16 +1,36 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, LogBox } from "react-native";
 import { NativeBaseProvider } from "native-base";
 import Login from "./Screen/Login";
+import Main from "./Screen/Main";
 import Auth from "./Context/store/Auth";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+LogBox.ignoreAllLogs();
+LogBox.ignoreLogs(["Warning:"]);
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <NativeBaseProvider>
-      <Auth>
-        <Login />
-      </Auth>
-    </NativeBaseProvider>
+    <NavigationContainer>
+      <NativeBaseProvider>
+        <Auth>
+          <Stack.Navigator initialRouteName="Login">
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="main"
+              component={Main}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        </Auth>
+      </NativeBaseProvider>
+    </NavigationContainer>
   );
 }
 

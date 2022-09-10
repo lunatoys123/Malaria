@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   Center,
   Box,
@@ -8,17 +8,50 @@ import {
   Input,
   Link,
   Button,
+  useToast,
 } from "native-base";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Auth_Global from "../Context/store/Auth_Global";
 import { loginUser } from "../Context/action/Auth_action";
 
-const Login = () => {
-  const context = useContext(Auth_Global);
+import { status_code } from "../Common/status_code";
 
-  const onSubmit = (user) => {
-    loginUser(user, context.dispatch);
+const Login = (props) => {
+  const context = useContext(Auth_Global);
+  const toast = useToast();
+  // useEffect(() => {
+  //   if(context.user.Authenticated){
+  //     Toast.show({
+  //       topOffset: 60,
+  //       type: "info",
+  //       text1: "This is an info message",
+  //     });
+  //     // props.navigation.navigate("main");
+  //   }
+  // }, [context.user.Authenticated]);
+
+  const onSubmit = async (user) => {
+    var token_response = await loginUser(user, context.dispatch);
+    if (
+      token_response.status === status_code.Success &&
+      context.user.Authenticated
+    ) {
+      toast.show({
+        title: token_response.status,
+        description: token_response.Message,
+        placement: "top",
+        duration: 500,
+      });
+      props.navigation.navigate("main");
+    } else {
+      toast.show({
+        title: token_response.status,
+        description: token_response.Message,
+        placement: "top",
+        duration: 500,
+      });
+    }
   };
 
   const validationSchema = Yup.object().shape({
@@ -56,6 +89,7 @@ const Login = () => {
                 <FormControl.Label>Password</FormControl.Label>
                 <Input
                   type="password"
+                  placeholder="Password"
                   onChangeText={handleChange("Password")}
                   value={values.Password}
                 />
