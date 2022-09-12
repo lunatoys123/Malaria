@@ -33,10 +33,8 @@ const Login = (props) => {
 
   const onSubmit = async (user) => {
     var token_response = await loginUser(user, context.dispatch);
-    if (
-      token_response.status === status_code.Success &&
-      context.user.Authenticated
-    ) {
+
+    if (token_response.status === status_code.Success) {
       toast.show({
         title: token_response.status,
         description: token_response.Message,

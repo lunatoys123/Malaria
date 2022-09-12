@@ -7,7 +7,7 @@ export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const loginUser = async (user, dispatch) => {
   var token_response = {};
   await axios
-    .post("https://b2b3-116-49-45-129.ap.ngrok.io/Malaria/User/login", {
+    .post("https://0fad-116-49-45-129.ap.ngrok.io/Malaria/User/login", {
       email: user.Email,
       Password: user.Password,
     })
