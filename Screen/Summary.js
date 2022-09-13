@@ -1,12 +1,23 @@
-import React from "react";
-import { View, Text, Box } from "native-base";
+import React, { useEffect } from "react";
+import { View, Text, Box, Heading, Center } from "native-base";
+import { useSelector, useDispatch } from "react-redux";
+import { Summary } from "../Redux/Summary/Selector";
+import { SummaryAction } from "../Redux/Summary/reducer";
 
-const Summary = (props) => {
+const Summary_container = (props) => {
+  const dispatch = useDispatch();
+  const SummaryState = useSelector(Summary());
+
+  useEffect(() => {
+    dispatch(SummaryAction.Preview());
+  }, []);
   return (
     <Box safeArea>
-      <Text>Summary</Text>
+      <Center>
+        <Heading>Summary</Heading>
+      </Center>
     </Box>
   );
 };
 
-export default Summary;
+export default Summary_container;

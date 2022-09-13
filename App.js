@@ -6,6 +6,8 @@ import Main from "./Navigation/Main";
 import Auth from "./Context/store/Auth";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import store from "./store";
+import { Provider } from "react-redux";
 
 LogBox.ignoreAllLogs();
 LogBox.ignoreLogs(["Warning:"]);
@@ -14,22 +16,24 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <NativeBaseProvider>
-        <Auth>
-          <Stack.Navigator initialRouteName="Login">
-            <Stack.Screen
-              name="Login"
-              component={Login}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="main"
-              component={Main}
-              options={{ headerShown: false }}
-            />
-          </Stack.Navigator>
-        </Auth>
-      </NativeBaseProvider>
+      <Provider store={store}>
+        <NativeBaseProvider>
+          <Auth>
+            <Stack.Navigator initialRouteName="Login">
+              <Stack.Screen
+                name="Login"
+                component={Login}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="main"
+                component={Main}
+                options={{ headerShown: false }}
+              />
+            </Stack.Navigator>
+          </Auth>
+        </NativeBaseProvider>
+      </Provider>
     </NavigationContainer>
   );
 }

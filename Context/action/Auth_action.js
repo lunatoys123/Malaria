@@ -2,12 +2,14 @@ import axios from "axios";
 import { status_code } from "../../Common/status_code";
 import jwt_decode from "jwt-decode";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { URL } from "@env";
 
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const loginUser = async (user, dispatch) => {
   var token_response = {};
+  //console.log(`${URL}/Malaria/User/login`)
   await axios
-    .post("https://0fad-116-49-45-129.ap.ngrok.io/Malaria/User/login", {
+    .post(`${URL}/Malaria/User/login`, {
       email: user.Email,
       Password: user.Password,
     })
