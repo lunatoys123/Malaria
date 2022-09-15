@@ -7,7 +7,7 @@ import { URL } from "@env";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const loginUser = async (user, dispatch) => {
   var token_response = {};
-  //console.log(`${URL}/Malaria/User/login`)
+  console.log(`${URL}/Malaria/User/login`)
   await axios
     .post(`${URL}/Malaria/User/login`, {
       email: user.Email,
