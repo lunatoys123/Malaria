@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Preview } from "./action";
+import { Preview, WHO_Data } from "./action";
 import { LOADING_STATUS } from "../../Common/status_code";
 
 const initialState = {
@@ -37,11 +37,15 @@ const SummarySlice = createSlice({
     [Preview.pending]: PendingReducer,
     [Preview.rejected]: rejectReducer,
     [Preview.fulfilled]: fulfillReducer,
+    [WHO_Data.pending]: PendingReducer,
+    [WHO_Data.rejected]: rejectReducer,
+    [WHO_Data.fulfilled]: fulfillReducer,
   },
 });
 
 export const SummaryReducer = SummarySlice.reducer;
 export const SummaryAction = {
   Preview,
+  WHO_Data,
   ...SummarySlice.actions,
 };

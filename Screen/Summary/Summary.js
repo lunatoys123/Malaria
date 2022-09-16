@@ -37,7 +37,8 @@ const Summary_container = (props) => {
   }, [SummaryState]);
 
   const DisplayOption = (option) => {
-    console.log(`press ${option}`);
+    //console.log(`press ${option}`);
+    props.navigation.navigate("data", { option });
   };
 
   return (
