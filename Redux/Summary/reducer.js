@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Preview, WHO_Data } from "./action";
+import { Preview, WHO_Data, GetCountries } from "./action";
 import { LOADING_STATUS } from "../../Common/status_code";
 
 const initialState = {
-  data: {},
+  option: {},
   loading: LOADING_STATUS.IDLE,
+  countries: [],
+  WHO_Data: []
 };
 
 const PendingReducer = (state, action) => {
@@ -21,25 +23,45 @@ const rejectReducer = (state, action) => {
   };
 };
 
-const fulfillReducer = (state, action) => {
+const OptionfulfillReducer = (state, action) => {
   return {
     ...state,
-    data: action.payload.data,
+    option: action.payload.option,
     status: action.payload.status,
     loading: LOADING_STATUS.FULFILLED,
   };
 };
 
+const PreviewDataFullfillReducer = (state, action) => {
+  return {
+    ...state,
+    loading: LOADING_STATUS.FULFILLED,
+    status: action.payload.status,
+    WHO_Data: action.payload.data,
+  };
+};
+
+const CountriesFullfillReducer = (state, action) =>{
+  return{
+    ...state,
+    loading: LOADING_STATUS.FULFILLED,
+    status: action.payload.status,
+    countries: action.payload.countries
+  }
+}
 const SummarySlice = createSlice({
   name: "Summary",
   initialState,
   extraReducers: {
     [Preview.pending]: PendingReducer,
     [Preview.rejected]: rejectReducer,
-    [Preview.fulfilled]: fulfillReducer,
+    [Preview.fulfilled]: OptionfulfillReducer,
     [WHO_Data.pending]: PendingReducer,
     [WHO_Data.rejected]: rejectReducer,
-    [WHO_Data.fulfilled]: fulfillReducer,
+    [WHO_Data.fulfilled]: PreviewDataFullfillReducer,
+    [GetCountries.pending]: PendingReducer,
+    [GetCountries.rejected]: rejectReducer,
+    [GetCountries.fulfilled]: CountriesFullfillReducer
   },
 });
 
@@ -47,5 +69,6 @@ export const SummaryReducer = SummarySlice.reducer;
 export const SummaryAction = {
   Preview,
   WHO_Data,
+  GetCountries,
   ...SummarySlice.actions,
 };

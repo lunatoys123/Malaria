@@ -29,9 +29,9 @@ const Summary_container = (props) => {
   }, []);
 
   useEffect(() => {
-    const { data, loading } = SummaryState;
+    const { option, loading } = SummaryState;
     if (loading === LOADING_STATUS.FULFILLED) {
-      setPreviewOption(data);
+      setPreviewOption(option);
       setLoading(false);
     }
   }, [SummaryState]);

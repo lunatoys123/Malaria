@@ -16,12 +16,12 @@ export const Preview = createAsyncThunk("summary/preview", async () => {
 });
 
 export const WHO_Data = createAsyncThunk("summary/WHO_data", async (data) => {
-  const { option } = data;
+  const { option, selectcountry } = data;
   const jwt = await AsyncStorage.getItem("jwt");
   // console.log(jwt);
   const response = await axios
     .get(`${URL}/Malaria/WHO/Data`, {
-      params: { option: option },
+      params: { option, selectcountry },
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
@@ -29,5 +29,18 @@ export const WHO_Data = createAsyncThunk("summary/WHO_data", async (data) => {
     .catch((err) => {
       console.log(err);
     });
-  console.log(response);
+  return response.data;
+});
+
+export const GetCountries = createAsyncThunk("summary/countries", async () => {
+  const jwt = await AsyncStorage.getItem("jwt");
+  console.log(jwt);
+  console.log(`${URL}/Malaria/WHO/countries`);
+
+  const response = await axios.get(`${URL}/Malaria/WHO/countries`, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+  return response.data;
 });
