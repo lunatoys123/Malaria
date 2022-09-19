@@ -63,7 +63,7 @@ const Summary_container = (props) => {
                           m="2"
                           shadow="1"
                           borderRadius="md"
-                          bg={isPressed ? "coolGray.200" : "coolGray.100"}
+                          bg="muted.300"
                           style={{
                             transform: [
                               {
