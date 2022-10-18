@@ -6,7 +6,8 @@ const FormRadioGroup = (props) => {
     var  {
         Label="",
         formik,
-        id=""
+        id="",
+        options = []
     } = props
     return (
         <HStack space={2}>
@@ -16,8 +17,15 @@ const FormRadioGroup = (props) => {
                     nextValue => formik.setFieldValue(id, nextValue)
             }>
                 <HStack space={2}>
-                    <Radio value="Male">Male</Radio>
-                    <Radio value="Female">Female</Radio>
+                    {
+                        options.map((d)=>{
+                            return(
+                                <Radio value={d.value}>{d.Label}</Radio>
+                            )
+                        })
+                    }
+                    {/* <Radio value="Male">Male</Radio>
+                    <Radio value="Female">Female</Radio> */}
                 </HStack>
             </Radio.Group>
         </HStack>

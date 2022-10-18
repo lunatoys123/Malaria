@@ -72,11 +72,11 @@ export const report_status = [
 
 export const Gender_option=[
     {
-        id:'Male',
-        item:'Male'
+        Label:'Male',
+        Value:'Male'
     },
     {
-        id:'Female',
-        item:'Female'
+        Label:'Female',
+        Value:'Female'
     }
 ]

@@ -54,7 +54,7 @@ const PersonalInformation = () => {
                                 formik={formik}
                                 keyboardType="numeric"/>
                             <FormInputField Label={"Email"} id="Email" formik={formik}/>
-                            <FormRadioGroup Label="Gender" formik={formik} id="Gender"/>
+                            <FormRadioGroup Label="Gender" formik={formik} id="Gender" options={Gender_option}/>
                         </VStack>
                     </FormControl>
                 </Card_Component>
