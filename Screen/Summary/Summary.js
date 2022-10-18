@@ -55,7 +55,7 @@ const Summary_container = (props) => {
             <Box alignItems="center">
               {PreviewOptions && PreviewOptions.map((option) => {
                 return (
-                  <Pressable w="80%" onPress={() => DisplayOption(option)}>
+                  <Pressable w="80%" onPress={() => DisplayOption(option)} key={option}>
                     {({ isHovered, isFocused, isPressed }) => {
                       return (
                         <Box

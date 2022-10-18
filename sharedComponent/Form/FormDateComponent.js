@@ -8,7 +8,7 @@ const FormDateComponent = (props) => {
     rightElement = null,
     show = false,
     date = new Date(),
-    mode = "date",
+    // mode = "date",
     onChangeTime = () => {}
   } = props
   return (
@@ -26,7 +26,7 @@ const FormDateComponent = (props) => {
             <DateTimePicker 
                 testID="dateTimePicker"
                 value={date}
-                mode={mode}
+                mode={"date"}
                 is24Hour={true}
                 onChange={onChangeTime}
             />

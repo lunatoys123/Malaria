@@ -12,7 +12,7 @@ const Card_Component = (props) => {
             <VStack space="4"
                 divider={<Divider/>}>
                 <Box px="4" pt="4">
-                    <Heading>{heading}</Heading>
+                    <Heading size="md">{heading}</Heading>
                 </Box>
                 <Box px="4">
                     {children} 
