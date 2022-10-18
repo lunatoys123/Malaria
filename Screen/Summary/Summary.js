@@ -53,7 +53,7 @@ const Summary_container = (props) => {
           <Spacer />
           <ScrollView contentContainerStyle={{ paddingBottom: 60 }} my="3">
             <Box alignItems="center">
-              {PreviewOptions.map((option) => {
+              {PreviewOptions && PreviewOptions.map((option) => {
                 return (
                   <Pressable w="80%" onPress={() => DisplayOption(option)}>
                     {({ isHovered, isFocused, isPressed }) => {

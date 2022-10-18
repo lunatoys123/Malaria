@@ -4,7 +4,7 @@ import { View, Text, Box, Input, HStack, Button } from "native-base";
 const Report = (props) => {
 
   const createReport = () => {
-
+    props.navigation.navigate("PersonalInformation")
   }
 
   return (

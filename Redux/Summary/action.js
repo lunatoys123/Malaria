@@ -11,7 +11,7 @@ export const Preview = createAsyncThunk("summary/preview", async () => {
       Authorization: `Bearer ${jwt}`,
     },
   });
-  //console.log(response)
+  console.log(response)
   return response.data;
 });
 

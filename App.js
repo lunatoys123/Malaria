@@ -10,7 +10,7 @@ import store from "./store";
 import { Provider } from "react-redux";
 
 LogBox.ignoreAllLogs();
-LogBox.ignoreLogs(["Warning:"]);
+//LogBox.ignoreLogs(["Warning:","No element found","VirtualizedLists should never be nested"]);
 const Stack = createNativeStackNavigator();
 
 export default function App() {
