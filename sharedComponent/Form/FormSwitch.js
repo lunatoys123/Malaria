@@ -1,22 +1,33 @@
 import React from 'react'
-import { HStack, FormControl, Switch } from 'native-base';
+import {HStack, FormControl, Switch, VStack} from 'native-base';
 import _ from 'lodash'
 
 const FormSwitch = (props) => {
     var {
-        Label="",
+        Label = "",
         formik,
-        id=""
+        id = ""
     } = props
     return (
-        <HStack space={2} alignItems="center">
-            <FormControl.Label w="30%">{Label}</FormControl.Label>
-            <Switch 
-                size="sm" 
-                onValueChange={(value) => { formik.setFieldValue(id, value)}} 
-                defaultIsChecked={_.get(formik.values,id)}
-            />
-        </HStack>
+        <FormControl>
+            <VStack>
+                <HStack space={2}
+                    alignItems="center">
+                    <FormControl.Label w="30%">
+                        {Label}</FormControl.Label>
+                    <Switch size="sm"
+                        onValueChange={
+                            (value) => {
+                                formik.setFieldValue(id, value)
+                            }
+                        }
+                        defaultIsChecked={
+                            _.get(formik.values, id)
+                        }/>
+                </HStack>
+        </VStack>
+    </FormControl>
+
     )
 }
 

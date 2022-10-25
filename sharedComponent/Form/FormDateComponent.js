@@ -1,37 +1,38 @@
 import React from 'react'
-import { HStack, FormControl, Input } from 'native-base'
+import { VStack, FormControl, Input } from 'native-base'
 import DateTimePicker from '@react-native-community/datetimepicker'
+import _ from 'lodash'
 
 const FormDateComponent = (props) => {
   var {
     Label="",
     rightElement = null,
     show = false,
-    date = new Date(),
+    id="",
     // mode = "date",
-    onChangeTime = () => {}
+    onChangeTime = () => {},
+    formik
   } = props
   return (
-    <HStack space={2} alignItems="center">
-        <FormControl.Label w="30%">{Label}</FormControl.Label>
+    <VStack space={2}>
+        <FormControl.Label>{Label}</FormControl.Label>
         <Input 
             placeholder={Label}
-            w="70%"
             isDisabled={true}
             _disabled={{opacity: 1}}
             InputRightElement={rightElement}
-            value={date.toISOString().split('T')[0]}
+            value={_.get(formik.values, id)?_.get(formik.values, id).toISOString().split('T')[0]:new Date().toISOString().split('T')[0]}
         />
         {show && 
             <DateTimePicker 
                 testID="dateTimePicker"
-                value={date}
+                value={_.get(formik.values, id)?_.get(formik.values, id): new Date()}
                 mode={"date"}
                 is24Hour={true}
-                onChange={onChangeTime}
+                onChange={(event, selectedDate)=>onChangeTime(event,selectedDate,id)}
             />
         } 
-    </HStack>
+    </VStack>
   )
 }
 

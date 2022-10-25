@@ -46,27 +46,27 @@ export const Clinical_Complications = [
 
 export const Patient_Status = [
     {
-        id:'survived',
-        item:'survived'
+        Label:'survived',
+        Value:'survived'
     },
     {
-        id:'Died',
-        item:'Died'
+        Label:'Died',
+        Value:'Died'
     },
     {
-        id:'Unknown',
-        item:'Unknown'
+        Label:'Unknown',
+        Value:'Unknown'
     }
 ]
 
 export const report_status = [
     {
-        id:'Preliminary',
-        item:'Preliminary'
+        Label:'Preliminary',
+        Value:'Preliminary'
     },
     {
-        id:'Final',
-        item:'Final'
+        Label:'Final',
+        Value:'Final'
     }
 ]
 

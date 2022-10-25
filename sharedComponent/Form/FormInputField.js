@@ -12,13 +12,10 @@ const FormInputField = (props) => {
         isRequired = false
     } = props
     return (
-        <FormControl isRequired={isRequired} isInvalid={id in formik.errors}>
-            
-            <HStack space={2}
-                alignItems="center">
-                <FormControl.Label w="30%">
-                    {Label}</FormControl.Label>
-                <VStack w="70%">
+        <FormControl isRequired={isRequired} isInvalid={_.get(formik.errors, id)!==null}>
+            <VStack>
+                <FormControl.Label>{Label}</FormControl.Label>
+                
                 {
                     isTextArea ?
                         <TextArea
@@ -35,9 +32,9 @@ const FormInputField = (props) => {
                             keyboardType={keyboardType}
                         />
                 }
-                 <FormControl.ErrorMessage>{_.get(formik.errors, id)}</FormControl.ErrorMessage>
-                </VStack>
-            </HStack>
+                <FormControl.ErrorMessage>{_.get(formik.errors, id)}</FormControl.ErrorMessage>
+                
+            </VStack>
            
         </FormControl>
     )
