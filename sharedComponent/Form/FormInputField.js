@@ -21,6 +21,10 @@ const FormInputField = (props) => {
                         <TextArea
                             h={20}
                             placeholder={Label} 
+                            value={_.get(formik.values,id)!= null ? _.get(formik.values, id):""}
+                            onChangeText={(text)=>{
+                                formik.setFieldValue(id, text);
+                            }}
                             // w="70%"
                         /> :
                         <Input
@@ -29,6 +33,7 @@ const FormInputField = (props) => {
                             onChangeText={(text) => {
                                 formik.setFieldValue(id, text);
                             }}
+                            value={_.get(formik.values,id)!= null ? _.get(formik.values, id):""}
                             keyboardType={keyboardType}
                         />
                 }

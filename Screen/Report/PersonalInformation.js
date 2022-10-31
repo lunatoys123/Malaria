@@ -29,7 +29,7 @@ import { FancyAlert } from "react-native-expo-fancy-alerts";
 
 const PersonalInformation = (props) => {
   const [showPregnantDate, setShowPregnantDate] = useState(false);
-  const [PregnantDate, setPregnantDate] = useState(new Date());
+  //const [PregnantDate, setPregnantDate] = useState(new Date());
   const [visible, setVisible] = useState(false);
   const [errorField, setErrorField] = useState([]);
 
@@ -53,6 +53,8 @@ const PersonalInformation = (props) => {
         Contact_Person_Tel:""
       },
       Gender: "",
+      Pregnant: false,
+      PregnantDate: new Date(),
     },
     validationSchema: Yup.object().shape({
       Name: Yup.string().required("Name is Needed"),
@@ -74,7 +76,7 @@ const PersonalInformation = (props) => {
             },
             then: Yup.string().required("Contact Person must not be null")
         }),
-        Contact_Person_Tel: Yup.string().when("Home.Contact_Person",{
+        Contact_Person_Tel: Yup.string().when("Contact_Person",{
             is: () => {
                 return(_.get(formik.values,"Home.Contact_Person")!=="" && _.get(formik.values,"Home.Contact_Person_Tel")=="");
             },
@@ -101,9 +103,9 @@ const PersonalInformation = (props) => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (values) => {
-      console.log(values);
+      //console.log(values);
 
-      const report_data = values
+      var report_data = _.cloneDeep(values);
       if(report_data.Gender === "Male"){
         if("Pregnant" in report_data){
           delete report_data.Pregnant;
@@ -112,7 +114,10 @@ const PersonalInformation = (props) => {
           delete report_data.PregnantDate
         }
       }
-      props.navigation.navigate("ClinicalInformation",{report_data: values})
+
+      var report_data = {Patient_data:{...report_data}}
+      //console.log(report_data);
+      props.navigation.navigate("ClinicalInformation",{report_data: report_data})
     },
   });
 
@@ -131,9 +136,9 @@ const PersonalInformation = (props) => {
     };
   };
 
-  const onChangeTime = (event, selectedDate, id) => {;
+  const onChangeTime = (event, selectedDate, id, callback) => {;
     const currentDate = selectedDate;
-    setShowPregnantDate(false);
+    callback(false);
     // setPregnantDate(currentDate);
     formik.setFieldValue(id,currentDate);
   };
@@ -207,9 +212,9 @@ const PersonalInformation = (props) => {
                   </Pressable>
                 }
                 id="PregnantDate"
-                date={PregnantDate}
                 show={showPregnantDate}
                 onChangeTime={onChangeTime}
+                callback={setShowPregnantDate}
                 formik={formik}
               />
             ) : null}

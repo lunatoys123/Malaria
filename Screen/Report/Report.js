@@ -9,7 +9,7 @@ const Report = (props) => {
   }
 
   return (
-    <Box alignItems="center" my="10">
+    <Box alignItems="center" my="10" safeArea>
       <HStack space={2}>
         <Input placeholder="Search Report" w="70%" />
         <Button w="20%" onPress={createReport}>Create</Button>

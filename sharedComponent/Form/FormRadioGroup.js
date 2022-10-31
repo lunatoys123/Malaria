@@ -11,7 +11,7 @@ const FormRadioGroup = (props) => {
         children
     } = props
     return (
-        <FormControl isInvalid={id in formik.errors}>
+        <FormControl isInvalid={_.get(formik.errors, id)!=null}>
                 <VStack space={2}>
                     <FormControl.Label>{Label}</FormControl.Label>
                     <Box borderWidth="1" borderColor="muted.200" p={3} borderRadius="md">

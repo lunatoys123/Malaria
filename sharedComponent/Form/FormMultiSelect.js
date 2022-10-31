@@ -13,7 +13,7 @@ const FormMultiSelect = (props) => {
         formik
     } = props
     return (
-        <FormControl>
+        <FormControl isInvalid={_.get(formik.errors, id)!==null}>
             <VStack>
                 <FormControl.Label>{Label}</FormControl.Label>
                 <SelectBox
@@ -41,6 +41,7 @@ const FormMultiSelect = (props) => {
                         padding:3
                     }}
                     isMulti/>
+                <FormControl.ErrorMessage>{_.get(formik.errors, id)}</FormControl.ErrorMessage>
             </VStack>
         </FormControl>
     )

@@ -11,6 +11,7 @@ const FormDateComponent = (props) => {
     id="",
     // mode = "date",
     onChangeTime = () => {},
+    callback,
     formik
   } = props
   return (
@@ -29,7 +30,7 @@ const FormDateComponent = (props) => {
                 value={_.get(formik.values, id)?_.get(formik.values, id): new Date()}
                 mode={"date"}
                 is24Hour={true}
-                onChange={(event, selectedDate)=>onChangeTime(event,selectedDate,id)}
+                onChange={(event, selectedDate)=>onChangeTime(event,selectedDate,id,callback)}
             />
         } 
     </VStack>

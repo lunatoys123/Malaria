@@ -80,3 +80,45 @@ export const Gender_option=[
         Value:'Female'
     }
 ]
+
+export const status_Option = [
+    {
+        Label:'Yes',
+        Value:'Yes'
+    },
+    {
+        Label:'No',
+        Value:'No'
+    },
+    {
+        Label:'Unknown',
+        Value:'Unknown'
+    }
+]
+
+export const Diagnosis = [
+    {
+        id:'P. falciparum',
+        item:'P. falciparum'
+    },
+    {
+        id:'P. malariae',
+        item:'P. malariae'
+    },
+    {
+        id:'Not Determined',
+        item:'Not Determined'
+    },
+    {
+        id:'P. vivax',
+        item:'P. vivax'
+    },
+    {
+        id:'P. ovale',
+        item:'P. ovale'
+    },
+    {
+        id:'Unknown',
+        item:'Unknown'
+    }
+]
