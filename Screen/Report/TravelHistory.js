@@ -60,7 +60,16 @@ const TravelHistory = (props) => {
   const RemoveTravelHistory = (index) =>{
     var Travel_History = _.get(formik.values,'Travel_History');
     Travel_History.splice(index, 1);
-    console.log(Travel_History);
+
+    var start_Date = travelStartDate;
+    start_Date.splice(index, 1);
+    setTravelStartDate(start_Date);
+
+    var End_Date = travelEndDate;
+    End_Date.splice(index, 1);
+    setTravelEndDate(End_Date);
+
+    // console.log(Travel_History);
     formik.setFieldValue("Travel_History",Travel_History);
   }
 
@@ -92,7 +101,6 @@ const TravelHistory = (props) => {
 
   return (
     <>
-        <Button alignSelf="flex-end" mr={5} mt={5} onPress={()=>AddTravelHistory()}>Add Travel History</Button>
         <ScrollView
             contentContainerStyle={{ paddingBottom: 60}}
             width="100%"
@@ -102,9 +110,6 @@ const TravelHistory = (props) => {
 
                     <Card_Component heading="Travel History">
                         {_.get(formik.values,'Travel_History') != null ?(
-                            _.get(formik.values,'Travel_History').length == 0 ? (
-                                <Text>(The patient have no Travel History)</Text>
-                            ):(
                                 <VStack space={2}>
                                 {_.get(formik.values,'Travel_History').map((d, index)=>(
                                     <Box key={index} borderWidth="1" borderColor="muted.200" p={3} borderRadius="md">
@@ -145,10 +150,11 @@ const TravelHistory = (props) => {
                                 ))
                                 }
                                 </VStack>
-                            )
+                            
                             
                         ) : null
                         }
+                     <Button onPress={()=>AddTravelHistory()} my={2}>Add Travel History</Button>
                     </Card_Component>
                 </Center>
             </FormControl>

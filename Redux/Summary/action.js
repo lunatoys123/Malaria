@@ -34,8 +34,8 @@ export const WHO_Data = createAsyncThunk("summary/WHO_data", async (data) => {
 
 export const GetCountries = createAsyncThunk("summary/countries", async () => {
   const jwt = await AsyncStorage.getItem("jwt");
-  console.log(jwt);
-  console.log(`${URL}/Malaria/WHO/countries`);
+  // console.log(jwt);
+  // console.log(`${URL}/Malaria/WHO/countries`);
 
   const response = await axios.get(`${URL}/Malaria/WHO/countries`, {
     headers: {
