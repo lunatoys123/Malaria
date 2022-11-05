@@ -73,19 +73,18 @@ const ClinicalInformation = (props) => {
             Report_Status: Yup.string().required("Report status is required"),
         }),
         onSubmit: (values)=>{
-            // console.log(report_data);
             const Clinical_data = _.cloneDeep(values);
-            // console.log(Clinical_data);
-            if(Clinical_data.Clinical_Complications.Diagnosed_Malaria_previous !== 'Yes'){
-                if ("Previously_Diagnosis" in Clinical_data.Clinical_Complications){
-                    delete Clinical_data.Clinical_Complications.Previously_Diagnosis
+
+            if(Clinical_data.Previous_Diagnosis_Malaria.Diagnosed_Malaria_previous !== 'Yes'){
+                if ("Previously_Diagnosis" in Clinical_data.Previous_Diagnosis_Malaria){
+                    delete Clinical_data.Previous_Diagnosis_Malaria.Previously_Diagnosis
                 }
-                if ("Previous_illness_date" in Clinical_data.Clinical_Complications){
-                    delete Clinical_data.Clinical_Complications.Previous_illness_date
+                if ("Previous_illness_date" in Clinical_data.Previous_Diagnosis_Malaria){
+                    delete Clinical_data.Previous_Diagnosis_Malaria.Previous_illness_date
                 }
             }else{
-                if ("Previously_Diagnosis" in Clinical_data.Clinical_Complications){
-                    Clinical_data.Clinical_Complications.Previously_Diagnosis =  Clinical_data.Clinical_Complications.Previously_Diagnosis.item
+                if ("Previously_Diagnosis" in Clinical_data.Previous_Diagnosis_Malaria){
+                    Clinical_data.Previous_Diagnosis_Malaria.Previously_Diagnosis =  Clinical_data.Previous_Diagnosis_Malaria.Previously_Diagnosis.item
                 }
             }
 
@@ -230,7 +229,7 @@ const ClinicalInformation = (props) => {
                             id="Patient_Status"
                         >
                             {Patient_Status.map((d)=>(
-                                <Radio value={d.Value} size="sm">{d.Label}</Radio>
+                                <Radio value={d.Value} size="sm" key={d.Value}>{d.Label}</Radio>
                             ))}
                         </FormRadioGroup>
                         <FormDateComponent 

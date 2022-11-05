@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { VStack, Text, ScrollView, Center, Button, Box, HStack, Icon } from 'native-base'
 import Card_Component from '../../sharedComponent/Card_Component'
 import { useFormik } from 'formik'
@@ -12,6 +12,7 @@ import * as Yup from 'yup'
 import { useSelector, useDispatch } from 'react-redux'
 import { Report } from '../../Redux/Report/Selector'
 import { ReportAction } from '../../Redux/Report/reducer'
+import Auth_Global from '../../Context/store/Auth_Global'
 
 const Hospitalization = (props) => {
   var report_data = props.route.params.report_data;
@@ -19,6 +20,7 @@ const Hospitalization = (props) => {
   const [DischargeDate, setDischargeDate] = useState([]);
   const dispatch = useDispatch();
   const ReportState = useSelector(Report());
+  const context = useContext(Auth_Global);
 
   const formik = useFormik({
     initialValues:{
@@ -42,9 +44,10 @@ const Hospitalization = (props) => {
       const Hospitalization = _.cloneDeep(values)
       
       report_data.case = {...report_data.case, ...Hospitalization}
-      console.log(report_data);
+      //console.log(report_data);
+      console.log(context.user.userInfo)
 
-      dispatch(ReportAction.AddReport(report_data));
+      dispatch(ReportAction.AddReport({report_data: report_data, user: context.user.userInfo}));
     }
   });
 

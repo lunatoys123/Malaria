@@ -5,7 +5,7 @@ import Auth_reducer from "../reducer/Auth_reducer";
 const Auth = (props) => {
   const [user, dispatch] = useReducer(Auth_reducer, {
     Authenticated: null,
-    user: {},
+    userInfo: {},
   });
   return (
     <Auth_Global.Provider value={{ user, dispatch }}>
