@@ -16,6 +16,7 @@ export const AddReport = createAsyncThunk("report/createReport", async(values)=>
         Authorization: `Bearer ${jwt}`,
       }
     });
+    console.log(response.data);
 
-    return response;
+    return response.data;
 })

@@ -5,6 +5,7 @@ import ClinicalInformation from "../Screen/Report/ClinicalInformation";
 import PersonalInformation from "../Screen/Report/PersonalInformation";
 import TravelHistory from "../Screen/Report/TravelHistory";
 import Hospitalization from "../Screen/Report/Hospitalization";
+import PatientCaseNavigator from "./PatientCaseNavigator";
 
 const stack = createStackNavigator();
 const ReportNavigator = () =>{
@@ -12,7 +13,7 @@ const ReportNavigator = () =>{
         <stack.Navigator>
             <stack.Screen 
                 name="Main"
-                component={Report}
+                component={PatientCaseNavigator}
                 options={{headerShown: false}}
             />
             <stack.Screen 

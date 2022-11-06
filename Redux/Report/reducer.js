@@ -3,7 +3,9 @@ import { LOADING_STATUS } from "../../Common/status_code";
 import { AddReport } from "./action";
 
 const initialState = {
-    loading: LOADING_STATUS.IDLE
+    loading: LOADING_STATUS.IDLE,
+    Message: "",
+    status: "",
 }
 
 const pendingReducer = (state, action) => {
@@ -23,7 +25,9 @@ const rejectReducer = (state, action) =>{
 const fulFilledReducer = (state, action) => { 
     return{
         ...state,
-        loading: LOADING_STATUS.FULFILLED
+        loading: LOADING_STATUS.FULFILLED,
+        Message: action.payload.Message,
+        status: action.payload.status
     }
 }
 

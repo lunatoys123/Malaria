@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react'
-import { VStack, Text, ScrollView, Center, Button, Box, HStack, Icon } from 'native-base'
+import React, { useState, useContext, useEffect } from 'react'
+import { VStack, Text, ScrollView, Center, Button, Box, HStack, Icon, View } from 'native-base'
 import Card_Component from '../../sharedComponent/Card_Component'
 import { useFormik } from 'formik'
 import FormSwitch from '../../sharedComponent/Form/FormSwitch'
@@ -13,6 +13,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Report } from '../../Redux/Report/Selector'
 import { ReportAction } from '../../Redux/Report/reducer'
 import Auth_Global from '../../Context/store/Auth_Global'
+import { LOADING_STATUS } from '../../Common/status_code'
+import AntIcon from 'react-native-vector-icons/AntDesign'
+import { FancyAlert } from "react-native-expo-fancy-alerts";
 
 const Hospitalization = (props) => {
   var report_data = props.route.params.report_data;
@@ -21,6 +24,16 @@ const Hospitalization = (props) => {
   const dispatch = useDispatch();
   const ReportState = useSelector(Report());
   const context = useContext(Auth_Global);
+  const [visible, setVisible] = useState(false);
+  const [message, setMessage] = useState("");
+
+  useEffect(()=>{
+    const {loading, Message, status} = ReportState;
+    if(loading === LOADING_STATUS.FULFILLED){
+      setVisible(true);
+      setMessage(Message)
+    }
+  },[ReportState])
 
   const formik = useFormik({
     initialValues:{
@@ -106,6 +119,11 @@ const Hospitalization = (props) => {
       formik.handleSubmit();
     }
   }
+
+  const ReturnToReportPage= () => {
+    setVisible(false);
+    props.navigation.navigate("Main");
+  }
   return (
     <>
         
@@ -187,6 +205,30 @@ const Hospitalization = (props) => {
                   <Button onPress={()=>AddHospitalizationRecord()} my={2}>Add Hospitalization Record</Button>
                 </Card_Component>
                 <Button onPress={()=>submitwithAlert(formik.values)} my={2} w="90%" colorScheme='success'>Add Report</Button>
+                <FancyAlert
+                  visible={visible}
+                  icon={
+                    <View
+                      style={{
+                        flex: 1,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "red",
+                        borderRadius: 50,
+                        width: "100%",
+                      }}
+                    >
+                      <AntIcon name="checkcircle" size={30} color="white" />
+                    </View>
+                  }
+                  style={{ backgroundColor: "white" }}
+                >
+                  <VStack>
+                    <Text>{message}</Text>
+                    <Button onPress={() => ReturnToReportPage(false)} my={3}>OK</Button>
+                  </VStack>
+                </FancyAlert>
             </Center>
            
         </ScrollView>
