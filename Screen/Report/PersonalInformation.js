@@ -274,7 +274,7 @@ const PersonalInformation = (props) => {
             onPress={() => SubmitWithAlert(formik.values)}
             alignSelf="flex-end"
             colorScheme="success"
-            w="40%"
+            w="100%"
             size="md"
             rightIcon={
               <Icon as={<FontIcon name="chevron-right" />} size={5} ml={2} />

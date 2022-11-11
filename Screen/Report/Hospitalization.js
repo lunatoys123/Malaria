@@ -58,7 +58,7 @@ const Hospitalization = (props) => {
       
       report_data.case = {...report_data.case, ...Hospitalization}
       //console.log(report_data);
-      console.log(context.user.userInfo)
+      //console.log(context.user.userInfo)
 
       dispatch(ReportAction.AddReport({report_data: report_data, user: context.user.userInfo}));
     }
@@ -204,7 +204,17 @@ const Hospitalization = (props) => {
                   </VStack>
                   <Button onPress={()=>AddHospitalizationRecord()} my={2}>Add Hospitalization Record</Button>
                 </Card_Component>
-                <Button onPress={()=>submitwithAlert(formik.values)} my={2} w="90%" colorScheme='success'>Add Report</Button>
+                <Button 
+                  onPress={()=>submitwithAlert(formik.values)} 
+                  my={2} 
+                  w="90%" 
+                  colorScheme='success'
+                  rightIcon={
+                    <Icon as={<FontIcon name="chevron-right" />} size={5} ml={2} />
+                  }
+                >
+                  Add Report
+                </Button>
                 <FancyAlert
                   visible={visible}
                   icon={

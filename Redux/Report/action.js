@@ -19,4 +19,4 @@ export const AddReport = createAsyncThunk("report/createReport", async(values)=>
     console.log(response.data);
 
     return response.data;
-})
+});

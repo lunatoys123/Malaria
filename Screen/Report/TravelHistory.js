@@ -158,7 +158,19 @@ const TravelHistory = (props) => {
                     </Card_Component>
                 </Center>
             </FormControl>
-            <Button onPress={formik.handleSubmit} alignSelf="flex-end" mr={5} mt={5} colorScheme="success">Hospitalization</Button>
+            <Button 
+              onPress={formik.handleSubmit} 
+              alignSelf="flex-end" 
+              mr={5} 
+              mt={5} 
+              colorScheme="success"
+              w="90%"
+              rightIcon={
+                <Icon as={<FontIcon name="chevron-right" />} size={5} ml={2} />
+              }
+            >
+              Hospitalization
+            </Button>
         </ScrollView>
         <FancyAlert
           visible={visible}
