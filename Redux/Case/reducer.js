@@ -4,7 +4,7 @@ import { LOADING_STATUS } from "../../Common/status_code";
 
 const initialState = {
     loading: LOADING_STATUS.IDLE,
-    data: []
+    data: [],
 }
 
 const PendingReducer = (state, action) => {
@@ -21,7 +21,7 @@ const RejectedReducer = (state, action) => {
     }
 }
 
-const FulfillReducer = (state, action) => {
+const GetCaseByDoctorId = (state, action) => {
     return {
         ...state,
         loading: LOADING_STATUS.FULFILLED,
@@ -35,7 +35,7 @@ const CaseSlice = createSlice({
     extraReducers:{
         [getCaseByDoctorId.pending]: PendingReducer,
         [getCaseByDoctorId.rejected]: RejectedReducer,
-        [getCaseByDoctorId.fulfilled]: FulfillReducer
+        [getCaseByDoctorId.fulfilled]: GetCaseByDoctorId,
     }
 })
 

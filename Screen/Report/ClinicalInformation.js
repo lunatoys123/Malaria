@@ -21,34 +21,66 @@ import FormRadioGroup from '../../sharedComponent/Form/FormRadioGroup'
 import FontIcon from 'react-native-vector-icons/FontAwesome'
 import {Signs, Clinical_Complications, Patient_Status, report_status, status_Option, Diagnosis} from '../../Common/Options'
 import _,{xorBy} from 'lodash'
-import { useFormik, yupToFormErrors } from 'formik'
+import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
 const ClinicalInformation = (props) => {
     var report_data = props.route.params.report_data;
+    const mode = props.route.params.mode;
+    const initialState = props.route.params.initialState;
     const [show, setShow] = useState(false);
     const [onSetDateShow, setonSetDateShow] = useState(false);
     const [previousIllnewssDate, setpreviousIllnewssDate] = useState(false);
 
+    const initialValues = () => {
+        if (mode === "create"){
+            return {
+                Symptoms:{
+                    Sign:[],
+                    Symptomatic:"",
+                    Remark:"",
+                    Onset_date: new Date()
+                },
+                Clinical_Complications:{
+                    Complications:[],
+                    Description:"",
+                    //Previously_Diagnosis:{}
+                },
+                Previous_Diagnosis_Malaria:{
+                    Previous_illness_date: new Date()
+                },
+                Status_date: new Date()
+            }
+        }else if(mode == "edit"){
+            //console.log(initialState);
+            return {
+                Symptoms:{
+                    Sign: initialState.Symptoms.Sign.map((d)=>({id: d, item: d})),
+                    Onset_date: new Date(initialState.Symptoms.Onset_date),
+                    Remark: initialState.Symptoms.Remark,
+                    Symptomatic: initialState.Symptoms.Symptomatic
+                },
+                Clinical_Complications:{
+                    Complications:initialState.Clinical_Complications.Complications.map((d)=>({id: d,item: d})),
+                    Description:initialState.Clinical_Complications.Description,
+                    //Previously_Diagnosis:{}
+                },
+                Previous_Diagnosis_Malaria:{
+                    Diagnosed_Malaria_previous: initialState.Previous_Diagnosis_Malaria.Diagnosed_Malaria_previous,
+                    Previously_Diagnosis: {id: initialState.Previous_Diagnosis_Malaria.Previously_Diagnosis, item: initialState.Previous_Diagnosis_Malaria.Previously_Diagnosis},
+                    Previous_illness_date: new Date(initialState.Previous_Diagnosis_Malaria.Previous_illness_date)
+                },
+                Patient_Status: initialState.Patient_Status,
+                Status_date: new Date(initialState.Status_date),
+                Report_Status: initialState.Report_Status
+            }
+        }
+    }
+
+    
+
     const formik = useFormik({
-        initialValues:{
-            Symptoms:{
-                Sign:[],
-                Symptomatic:"",
-                Remark:"",
-                Onset_date: new Date()
-            },
-            Clinical_Complications:{
-                Complications:[],
-                Description:"",
-                
-                //Previously_Diagnosis:{}
-            },
-            Previous_Diagnosis_Malaria:{
-                Previous_illness_date: new Date()
-            },
-            Status_date: new Date()
-        },
+        initialValues:initialValues(),
         validationSchema: Yup.object().shape({
             Symptoms: Yup.object().shape({
                 Sign: Yup.array().required().min(1,"At least one Symptoms Sign")
@@ -90,9 +122,14 @@ const ClinicalInformation = (props) => {
 
             Clinical_data.Clinical_Complications.Complications = Clinical_data.Clinical_Complications.Complications.map((d)=> d.item);
             Clinical_data.Symptoms.Sign = Clinical_data.Symptoms.Sign.map((d)=>d.item);
-            report_data = {...report_data, case:{...Clinical_data}}
-            //console.log(report_data);
-            props.navigation.navigate("TravelHistory", {report_data: report_data});
+
+            if(mode === 'create'){
+                report_data = {...report_data, case:{...Clinical_data}}
+                //console.log(report_data);
+                props.navigation.navigate("TravelHistory", {report_data: report_data, mode: mode});
+            }else if(mode === 'edit'){
+                props.navigation.navigate("TravelHistory", {initialState: {...initialState, ...Clinical_data}, mode: mode});
+            }
         }
     });
 
@@ -168,8 +205,7 @@ const ClinicalInformation = (props) => {
 
                 <Card_Component heading={"Clinical Complications"}>
                         <VStack space={3}>
-                            <HStack space={2}
-                                alignItems="center">
+                            <HStack space={2} alignItems="center">
                                 <FormMultiSelect options={Clinical_Complications}
                                     Label="Complications"
                                     MultiChange={onMultiChange}

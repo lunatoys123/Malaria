@@ -32,30 +32,40 @@ const PersonalInformation = (props) => {
   //const [PregnantDate, setPregnantDate] = useState(new Date());
   const [visible, setVisible] = useState(false);
   const [errorField, setErrorField] = useState([]);
+  const mode = props.route.params.mode;
+
+  const initialValues =() =>{
+    if (mode ==="create"){
+      return {
+        Name: "",
+        Id: "",
+        Age: "",
+        Phone: "",
+        Home: {
+          Location:"",
+          Telphone:"",
+          Contact_Person:"",
+          Contact_Person_Tel:""
+        },
+        Work: {
+          Location:"",
+          Telphone:"",
+          Contact_Person:"",
+          Contact_Person_Tel:""
+        },
+        Gender: "",
+        Pregnant: false,
+        PregnantDate: new Date(),
+      }
+    }else if(mode == "edit"){
+
+    }
+  }
+
 
   const formik = useFormik({
     // enableReinitialize: true,
-    initialValues: {
-      Name: "",
-      Id: "",
-      Age: "",
-      Phone: "",
-      Home: {
-        Location:"",
-        Telphone:"",
-        Contact_Person:"",
-        Contact_Person_Tel:""
-      },
-      Work: {
-        Location:"",
-        Telphone:"",
-        Contact_Person:"",
-        Contact_Person_Tel:""
-      },
-      Gender: "",
-      Pregnant: false,
-      PregnantDate: new Date(),
-    },
+    initialValues: initialValues(),
     validationSchema: Yup.object().shape({
       Name: Yup.string().required("Name is Needed"),
       Id: Yup.string().required("Id is Needed"),
@@ -117,7 +127,7 @@ const PersonalInformation = (props) => {
 
       var report_data = {Patient_data:{...report_data}}
       //console.log(report_data);
-      props.navigation.navigate("ClinicalInformation",{report_data: report_data})
+      props.navigation.navigate("ClinicalInformation",{report_data: report_data, mode: mode})
     },
   });
 
@@ -196,7 +206,7 @@ const PersonalInformation = (props) => {
               options={Gender_option}
             >
              {Gender_option.map((d)=>(
-              <Radio value={d.Value} size="sm">{d.Label}</Radio>
+              <Radio value={d.Value} size="sm" key={d.Value}>{d.Label}</Radio>
              ))}
             </FormRadioGroup>
             {_.get(formik.values, "Gender") == "Female" ? (

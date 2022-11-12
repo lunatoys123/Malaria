@@ -19,7 +19,10 @@ const FormRadioGroup = (props) => {
                             w="70%"
                             onChange={
                                 nextValue => formik.setFieldValue(id, nextValue)
-                        }>
+                            }
+                            defaultValue={_.get(formik.values, id)!=null ? _.get(formik.values,id): ""}
+
+                        >
                             <HStack space={2}>{children}</HStack>
                         </Radio.Group>
                         <FormControl.ErrorMessage w="70%">{_.get(formik.errors, id)}</FormControl.ErrorMessage>

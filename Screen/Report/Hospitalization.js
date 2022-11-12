@@ -1,8 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useCallback } from 'react'
 import { VStack, Text, ScrollView, Center, Button, Box, HStack, Icon, View } from 'native-base'
 import Card_Component from '../../sharedComponent/Card_Component'
 import { useFormik } from 'formik'
-import FormSwitch from '../../sharedComponent/Form/FormSwitch'
 import _ from 'lodash'
 import FormInputField from '../../sharedComponent/Form/FormInputField'
 import FormDateComponent from '../../sharedComponent/Form/FormDateComponent'
@@ -16,9 +15,12 @@ import Auth_Global from '../../Context/store/Auth_Global'
 import { LOADING_STATUS } from '../../Common/status_code'
 import AntIcon from 'react-native-vector-icons/AntDesign'
 import { FancyAlert } from "react-native-expo-fancy-alerts";
+import { useFocusEffect } from '@react-navigation/native'
 
 const Hospitalization = (props) => {
   var report_data = props.route.params.report_data;
+  const mode = props.route.params.mode;
+  const initialState = props.route.params.initialState;
   const [Admit_Date, setAdmitDate] = useState([]);
   const [DischargeDate, setDischargeDate] = useState([]);
   const dispatch = useDispatch();
@@ -27,18 +29,47 @@ const Hospitalization = (props) => {
   const [visible, setVisible] = useState(false);
   const [message, setMessage] = useState("");
 
-  useEffect(()=>{
-    const {loading, Message, status} = ReportState;
-    if(loading === LOADING_STATUS.FULFILLED){
-      setVisible(true);
-      setMessage(Message)
+  useFocusEffect(
+    useCallback(()=>{
+        const {loading, Message, status} = ReportState;
+        if(loading === LOADING_STATUS.FULFILLED){
+          setVisible(true);
+          setMessage(Message)
+        }
+      },[ReportState])
+  )
+
+  // useEffect(()=>{
+  //   const {loading, Message, status} = ReportState;
+  //   if(loading === LOADING_STATUS.FULFILLED){
+  //     setVisible(true);
+  //     setMessage(Message)
+  //   }
+  // },[ReportState])
+  const initialValue = () => {
+    if(mode === 'create'){
+      return {
+        Hospitalization: []
+      }
+    }else if(mode === 'edit'){
+      var Hospitalization = initialState.Hospitalization;
+      Hospitalization = Hospitalization.map((d)=>{
+        return {
+          ...d,
+          Admit_Date: new Date(d.Admit_Date),
+          DisCharge_Date: new Date(d.DisCharge_Date)
+        }
+      });
+
+      console.log(Hospitalization);
+      return {
+        Hospitalization: Hospitalization
+      }
     }
-  },[ReportState])
+  }
 
   const formik = useFormik({
-    initialValues:{
-      Hospitalization:[]
-    },
+    initialValues:initialValue(),
     validationSchema:Yup.object().shape({
       Hospitalization: Yup.array().of(
         Yup.object().shape({
@@ -57,7 +88,7 @@ const Hospitalization = (props) => {
       const Hospitalization = _.cloneDeep(values)
       
       report_data.case = {...report_data.case, ...Hospitalization}
-      //console.log(report_data);
+      console.log(report_data);
       //console.log(context.user.userInfo)
 
       dispatch(ReportAction.AddReport({report_data: report_data, user: context.user.userInfo}));

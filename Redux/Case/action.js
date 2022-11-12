@@ -17,4 +17,5 @@ export const getCaseByDoctorId = createAsyncThunk("Case/getCasebyDoctorId", asyn
 
     return response.data
     ;
-})
+});
+

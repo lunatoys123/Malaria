@@ -12,16 +12,29 @@ import * as Yup from 'yup';
 
 const TravelHistory = (props) => {
   var report_data = props.route.params.report_data;
+  const mode = props.route.params.mode;
+  const initialState = props.route.params.initialState;
   const [travelStartDate, setTravelStartDate] = useState([]);
   const [travelEndDate, setTravelEndDate] = useState([]);
   const [visible, setVisible] = useState(false);
   const [Error, setError] = useState("");
+
+  const initialValue = () => {
+    if (mode == 'create'){
+      return {
+        Travel_History: []
+      }
+    }else if(mode =='edit'){
+      const Travel_History = initialState.Travel_History;
+      return {
+        Travel_History: Travel_History
+      }
+    }
+  } 
   const formik = useFormik(
     {
         //enableReinitialize: true,
-        initialValues:{
-            Travel_History:[]
-        },
+        initialValues:initialValue(),
         validationSchema: Yup.object().shape({
             Travel_History: Yup.array().of(
                 Yup.object().shape({
@@ -34,10 +47,13 @@ const TravelHistory = (props) => {
         }),
         onSubmit: (values)=>{
             const TravelHistory = _.cloneDeep(values);
-
-            report_data.case = {...report_data.case, ...TravelHistory};
-            props.navigation.navigate("Hospitalization",{report_data: report_data})
-
+            if(mode === 'create'){
+              report_data.case = {...report_data.case, ...TravelHistory};
+              // console.log(report_data);
+              props.navigation.navigate("Hospitalization",{report_data: report_data, mode: mode})
+            }else if(mode ==='edit'){
+              props.navigation.navigate("Hospitalization",{initialState:{...initialState,...TravelHistory}, mode: mode})
+            }
         }
     }
   )
