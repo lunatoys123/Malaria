@@ -28,15 +28,17 @@ const Hospitalization = (props) => {
   const context = useContext(Auth_Global);
   const [visible, setVisible] = useState(false);
   const [message, setMessage] = useState("");
+  const [submit, setSubmit] = useState(false);
 
   useFocusEffect(
     useCallback(()=>{
         const {loading, Message, status} = ReportState;
-        if(loading === LOADING_STATUS.FULFILLED){
+        if(loading === LOADING_STATUS.FULFILLED && submit){
           setVisible(true);
-          setMessage(Message)
+          setMessage(Message);
+          setSubmit(false);
         }
-      },[ReportState])
+      },[ReportState, submit])
   )
 
   // useEffect(()=>{
@@ -85,6 +87,7 @@ const Hospitalization = (props) => {
       )
     }),
     onSubmit:async(values)=>{
+      setSubmit(true);
       const Hospitalization = _.cloneDeep(values)
       
       report_data.case = {...report_data.case, ...Hospitalization}

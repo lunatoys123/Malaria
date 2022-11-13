@@ -25,7 +25,14 @@ const TravelHistory = (props) => {
         Travel_History: []
       }
     }else if(mode =='edit'){
-      const Travel_History = initialState.Travel_History;
+      var Travel_History = initialState.Travel_History;
+      Travel_History = Travel_History.map((d)=>{
+        return {
+          ...d,
+          Date_Start: new Date(d.Date_Start),
+          Date_End: new Date(d.Date_End)
+        }
+      })
       return {
         Travel_History: Travel_History
       }

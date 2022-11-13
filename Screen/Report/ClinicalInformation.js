@@ -53,23 +53,35 @@ const ClinicalInformation = (props) => {
             }
         }else if(mode == "edit"){
             //console.log(initialState);
+            const Initial_Symptoms = initialState.Symptoms;
+            const Initial_Clinical = initialState.Clinical_Complications;
+            const Initial_Previous_Malaria = initialState.Previous_Diagnosis_Malaria;
+
+            var Previous_Diagnosis_Malaria ={
+                Diagnosed_Malaria_previous: Initial_Previous_Malaria.Diagnosed_Malaria_previous
+            }
+
+            if (Initial_Previous_Malaria.Diagnosed_Malaria_previous === "yes"){
+                Previous_Diagnosis_Malaria = {
+                    ...Previous_Diagnosis_Malaria,                   
+                    Previously_Diagnosis: {id: Initial_Previous_Malaria.Previously_Diagnosis, item: Initial_Previous_Malaria.Previously_Diagnosis},
+                    Previous_illness_date: new Date(initialState.Previous_Diagnosis_Malaria.Previous_illness_date)
+                }
+            }
+
             return {
                 Symptoms:{
-                    Sign: initialState.Symptoms.Sign.map((d)=>({id: d, item: d})),
-                    Onset_date: new Date(initialState.Symptoms.Onset_date),
-                    Remark: initialState.Symptoms.Remark,
-                    Symptomatic: initialState.Symptoms.Symptomatic
+                    Sign: Initial_Symptoms.Sign.map((d)=>({id: d, item: d})),
+                    Onset_date: new Date(Initial_Symptoms.Onset_date),
+                    Remark: Initial_Symptoms.Remark,
+                    Symptomatic: Initial_Symptoms.Symptomatic
                 },
                 Clinical_Complications:{
-                    Complications:initialState.Clinical_Complications.Complications.map((d)=>({id: d,item: d})),
-                    Description:initialState.Clinical_Complications.Description,
+                    Complications:Initial_Clinical.Complications.map((d)=>({id: d,item: d})),
+                    Description:Initial_Clinical.Description,
                     //Previously_Diagnosis:{}
                 },
-                Previous_Diagnosis_Malaria:{
-                    Diagnosed_Malaria_previous: initialState.Previous_Diagnosis_Malaria.Diagnosed_Malaria_previous,
-                    Previously_Diagnosis: {id: initialState.Previous_Diagnosis_Malaria.Previously_Diagnosis, item: initialState.Previous_Diagnosis_Malaria.Previously_Diagnosis},
-                    Previous_illness_date: new Date(initialState.Previous_Diagnosis_Malaria.Previous_illness_date)
-                },
+                Previous_Diagnosis_Malaria: Previous_Diagnosis_Malaria,
                 Patient_Status: initialState.Patient_Status,
                 Status_date: new Date(initialState.Status_date),
                 Report_Status: initialState.Report_Status
