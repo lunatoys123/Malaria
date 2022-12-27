@@ -122,3 +122,116 @@ export const Diagnosis = [
         item:'Unknown'
     }
 ]
+
+export const TherapyOptions = [
+    {
+        id:'Chlorquine',
+        item:'Chloroquine'
+    },
+    {
+        id:'Primaquine',
+        item:'Primaquine'
+    },
+    {
+        id:'Pyrimethamine-sulfadoxine',
+        item:'Pyrimethamine-sulfadoxine'
+    },
+    {
+        id:'Mefloquine',
+        item:'Mefloquine'
+    },
+    {
+        id:'Atovaquone-proguanil',
+        item:'Atovaquone-proguanil'
+    },
+    {
+        id:'Exchange transfusion',
+        item:'Exchange transfusion'
+    },
+    {
+        id:'Tetracycline/doxycycline',
+        item:'Tetracycline/doxycycline'
+    },
+    {
+        id:'Quinine/quindine',
+        item:'Quinine/quindine'
+    },
+    {
+        id:'Other',
+        item:'Other'
+    }
+
+]
+
+export const Drug_Taken_Options= [
+    {
+        id:'Chloroquine',
+        item:'Chloroquine'
+    },
+    {
+        id:'Doxycycline',
+        item:'Doxycycline'
+    },
+    {
+        id:'Atovaquone-proguanil',
+        item:'Atovaquone-proguanil'
+    },
+    {
+        id:'Mefloroquine',
+        item:'Mefloroquine'
+    },
+    {
+        id:'Primqauine',
+        item:'Primqauine'
+    },
+    {
+        id:'Other',
+        item:'Other'
+    }
+]
+
+export const pills_taken_Options = [
+    {
+        id:'Yes, missed no dose',
+        item:'Yes, missed no dose'
+    },
+    {
+        id:'No, missed one to few does',
+        item:'No, missed one to few does'
+    },
+    {
+        id:'No, missed more than a few, but less than half of the doses',
+        item:'No, missed more than a few, but less than half of the doses'
+    },
+    {
+        id:'No, missed half or more of the doses',
+        item:'No, missed half or more of the doses'
+    },
+    {
+        id:'Other',
+        item:'Other'
+    }
+]
+
+export const missed_doses_Reason = [
+    {
+        id:'Forget',
+        item:'Forget'
+    },
+    {
+        id:"Didn't think needed",
+        item:"Didn't think needed"
+    },
+    {
+        id:"Had a side effect",
+        item:"Had a side effect"
+    },
+    {
+        id:'Was advised by others to stop',
+        item:'Was advised by others to stop'
+    },
+    {
+        id:'Prematurely stopped taking once home',
+        item:'Prematurely stopped taking once home'
+    }
+]

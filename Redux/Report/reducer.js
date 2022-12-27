@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { LOADING_STATUS } from "../../Common/status_code";
-import { AddReport } from "./action";
+import { AddReport, AddTreatment, EditReport, EditTreatment } from "./action";
 
 const initialState = {
     loading: LOADING_STATUS.IDLE,
@@ -37,12 +37,24 @@ const ReportSlice = createSlice({
     extraReducers:{
         [AddReport.pending]: pendingReducer,
         [AddReport.rejected]: rejectReducer,
-        [AddReport.fulfilled]: fulFilledReducer
+        [AddReport.fulfilled]: fulFilledReducer,
+        [AddTreatment.pending]: pendingReducer,
+        [AddTreatment.rejected]: rejectReducer,
+        [AddTreatment.fulfilled]: fulFilledReducer,
+        [EditReport.pending]: pendingReducer,
+        [EditReport.rejected]: rejectReducer,
+        [EditReport.fulfilled]: fulFilledReducer,
+        [EditTreatment.pending]: pendingReducer,
+        [EditTreatment.rejected]: rejectReducer,
+        [EditTreatment.fulfilled]: fulFilledReducer,
     }
 });
 
 export const ReportReducer = ReportSlice.reducer;
 export const ReportAction = {
     AddReport,
+    AddTreatment,
+    EditReport,
+    EditTreatment,
     ...ReportSlice.actions
 }

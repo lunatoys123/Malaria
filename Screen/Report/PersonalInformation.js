@@ -64,7 +64,7 @@ const PersonalInformation = (props) => {
 
 
   const formik = useFormik({
-    // enableReinitialize: true,
+    enableReinitialize: true,
     initialValues: initialValues(),
     validationSchema: Yup.object().shape({
       Name: Yup.string().required("Name is Needed"),

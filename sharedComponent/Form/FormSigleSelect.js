@@ -17,7 +17,7 @@ const FormSigleSelect = (props) => {
     } = props
     return (
         <FormControl isInvalid={_.get(formik.errors, id)!=null}>
-            <VStack space={2}>
+            <VStack space={1}>
                 <FormControl.Label>{Label}</FormControl.Label>
                 <SelectBox
                     options={options}

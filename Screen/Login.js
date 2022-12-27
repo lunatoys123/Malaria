@@ -42,7 +42,8 @@ const Login = (props) => {
         title: token_response.status,
         description: token_response.Message,
         placement: "top",
-        duration: 500,
+        duration: 100,
+        isClosable: true,
       });
       props.navigation.navigate("main");
     } else {
@@ -50,7 +51,8 @@ const Login = (props) => {
         title: token_response.status,
         description: token_response.Message,
         placement: "top",
-        duration: 500,
+        duration: 100,
+        isClosable: true,
       });
     }
   };
