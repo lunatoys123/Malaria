@@ -107,6 +107,8 @@ const Laboratory = () => {
           .required("Phone Number is required"),
       }),
     }),
+    validateOnChange: false,
+    validateOnBlur: false,
     onSubmit: (values) => {
       console.log(values);
     },
