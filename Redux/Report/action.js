@@ -24,7 +24,7 @@ export const AddReport = createAsyncThunk(
         },
       }
     );
-    console.log(response.data);
+    //console.log(response.data);
 
     return response.data;
   }
@@ -47,7 +47,7 @@ export const AddTreatment = createAsyncThunk(
       }
     );
 
-    console.log(response.data);
+    //console.log(response.data);
     return response.data;
   }
 );
@@ -71,7 +71,7 @@ export const EditReport = createAsyncThunk(
         },
       }
     );
-    console.log(response.data);
+    //console.log(response.data);
     return response.data;
   }
 );

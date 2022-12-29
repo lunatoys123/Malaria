@@ -1,12 +1,12 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import Report from "../Screen/Report/Report";
 import ClinicalInformation from "../Screen/Report/ClinicalInformation";
 import PersonalInformation from "../Screen/Report/PersonalInformation";
 import TravelHistory from "../Screen/Report/TravelHistory";
 import Hospitalization from "../Screen/Report/Hospitalization";
 import PatientCaseNavigator from "./PatientCaseNavigator";
 import Treatment from "../Screen/Report/Treatment";
+import Laboratory from "../Screen/Report/Laboratory";
 
 const stack = createStackNavigator();
 const ReportNavigator = () => {
@@ -37,10 +37,8 @@ const ReportNavigator = () => {
         component={Hospitalization}
         options={{ headerTitle: "Hospitalization" }}
       />
-      <stack.Screen
-        name="Treatment"
-        component={Treatment}
-      />
+      <stack.Screen name="Treatment" component={Treatment} />
+      <stack.Screen name="Laboratory" component={Laboratory} />
     </stack.Navigator>
   );
 };

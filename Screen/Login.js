@@ -21,16 +21,6 @@ const Login = (props) => {
   const context = useContext(Auth_Global);
   const toast = useToast();
   const [Loading, setLoading] = useState(false);
-  // useEffect(() => {
-  //   if(context.user.Authenticated){
-  //     Toast.show({
-  //       topOffset: 60,
-  //       type: "info",
-  //       text1: "This is an info message",
-  //     });
-  //     // props.navigation.navigate("main");
-  //   }
-  // }, [context.user.Authenticated]);
 
   const onSubmit = async (user) => {
     setLoading(true);
@@ -43,7 +33,6 @@ const Login = (props) => {
         description: token_response.Message,
         placement: "top",
         duration: 100,
-        isClosable: true,
       });
       props.navigation.navigate("main");
     } else {
@@ -52,7 +41,6 @@ const Login = (props) => {
         description: token_response.Message,
         placement: "top",
         duration: 100,
-        isClosable: true,
       });
     }
   };

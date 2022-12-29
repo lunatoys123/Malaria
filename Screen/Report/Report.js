@@ -69,10 +69,17 @@ const Report = (props) => {
 
   const editTreatment = async (case_id) => {
     const initialState = await getTreatmentByCaseId({ case_id: case_id });
-    props.navigation.navigate("Treatment", {mode: Operation_Mode.edit, initialState: initialState})
+    props.navigation.navigate("Treatment", {
+      mode: Operation_Mode.edit,
+      initialState: initialState,
+    });
   };
 
-  
+  const createLaboratory = () => {
+    props.navigation.navigate("Laboratory", {
+      mode: Operation_Mode.create,
+    });
+  };
 
   return (
     <VStack divider={<Divider />}>
@@ -135,11 +142,13 @@ const Report = (props) => {
                               size="sm"
                               onPress={() => createTreatment(d._id)}
                             >
-                              Add Treatment
+                              Create Treatment
                             </Button>
                           )}
 
-                          <Button size="sm">Add Laboratory</Button>
+                          <Button size="sm" onPress={() => createLaboratory()}>
+                            Add Laboratory
+                          </Button>
                         </Button.Group>
                       </ScrollView>
                     </Box>

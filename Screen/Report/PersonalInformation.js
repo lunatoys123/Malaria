@@ -140,11 +140,11 @@ const PersonalInformation = (props) => {
     };
   };
 
-  const onChange = (targetField) => {
-    return (val) => {
-      formik.setFieldValue(targetField, val.toLocaleDateString("en-US"));
-    };
-  };
+  // const onChange = (targetField) => {
+  //   return (val) => {
+  //     formik.setFieldValue(targetField, val.toLocaleDateString("en-US"));
+  //   };
+  // };
 
   const onChangeTime = (event, selectedDate, id, callback) => {;
     const currentDate = selectedDate;

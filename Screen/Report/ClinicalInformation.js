@@ -51,7 +51,6 @@ const ClinicalInformation = (props) => {
         Clinical_Complications: {
           Complications: [],
           Description: "",
-          //Previously_Diagnosis:{}
         },
         Previous_Diagnosis_Malaria: {
           Previous_illness_date: new Date(),

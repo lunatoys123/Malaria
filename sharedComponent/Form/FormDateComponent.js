@@ -16,7 +16,7 @@ const FormDateComponent = (props) => {
   } = props
   return (
     <FormControl isInvalid={_.get(formik.values, id)!== null}>
-      <VStack space={2}>
+      <VStack>
           <FormControl.Label>{Label}</FormControl.Label>
           <Input 
               placeholder={Label}
