@@ -6,7 +6,7 @@ import { caseAction } from "../../Redux/Case/reducer";
 import Auth_Global from "../../Context/store/Auth_Global";
 import { LOADING_STATUS, Operation_Mode } from "../../Common/status_code";
 import { useFocusEffect } from "@react-navigation/native";
-import { getCaseByCaseId, getTreatmentByCaseId } from "../../Common/functions";
+import { getCaseByCaseId, getTreatmentByCaseId, getLaboratoryByCaseId } from "../../Common/functions";
 
 const Report = (props) => {
 	const dispatch = useDispatch();
@@ -67,6 +67,14 @@ const Report = (props) => {
 		props.navigation.navigate("Laboratory", {
 			mode: Operation_Mode.create,
 			case_id: case_id,
+		});
+	};
+
+	const editLaboratory = async (case_id) => {
+		const initialState = await getLaboratoryByCaseId({ case_id: case_id });
+		props.navigation.navigate("Laboratory", {
+			mode: Operation_Mode.edit,
+			initialState: initialState,
 		});
 	};
 
@@ -168,13 +176,21 @@ const Report = (props) => {
 															Create Treatment
 														</Button>
 													)}
-
-													<Button
-														size="sm"
-														onPress={() => createLaboratory(d._id)}
-													>
-														Add Laboratory
-													</Button>
+													{d.haveLaboratory ? (
+														<Button
+															size="sm"
+															onPress={() => editLaboratory(d._id)}
+														>
+															Update Laboratory
+														</Button>
+													) : (
+														<Button
+															size="sm"
+															onPress={() => createLaboratory(d._id)}
+														>
+															Add Laboratory
+														</Button>
+													)}
 												</Button.Group>
 											</ScrollView>
 										</Box>

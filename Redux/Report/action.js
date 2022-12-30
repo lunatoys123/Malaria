@@ -108,3 +108,26 @@ export const AddLaboratory = createAsyncThunk("report/addLaboratory", async (val
 
 	return response.data;
 });
+
+export const EditLaboratory = createAsyncThunk("report/editLaboratory", async (values) => {
+	const jwt = await AsyncStorage.getItem("jwt");
+	const id = values.id;
+	const Laboratory = values.Laboratory;
+
+	const response = await axios.put(
+		`${URL}/Malaria/Case/updateLaboratoryByCaseId`,
+		{
+			id,
+			Laboratory,
+		},
+		{
+			headers: {
+				Authorization: `Bearer ${jwt}`,
+			},
+		}
+	);
+
+	console.log(response.data);
+
+	return response.data;
+});

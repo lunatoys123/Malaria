@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { LOADING_STATUS } from "../../Common/status_code";
-import { AddReport, AddTreatment, EditReport, EditTreatment, AddLaboratory } from "./action";
+import { AddReport, AddTreatment, EditReport, EditTreatment, AddLaboratory, EditLaboratory } from "./action";
 
 const initialState = {
 	loading: LOADING_STATUS.IDLE,
@@ -50,6 +50,9 @@ const ReportSlice = createSlice({
 		[AddLaboratory.pending]: pendingReducer,
 		[AddLaboratory.rejected]: rejectReducer,
 		[AddLaboratory.fulfilled]: fulFilledReducer,
+		[EditLaboratory.pending]: pendingReducer,
+		[EditLaboratory.rejected]: rejectReducer,
+		[EditLaboratory.fulfilled]: fulFilledReducer,
 	},
 });
 
@@ -60,5 +63,6 @@ export const ReportAction = {
 	EditReport,
 	EditTreatment,
 	AddLaboratory,
+	EditLaboratory,
 	...ReportSlice.actions,
 };

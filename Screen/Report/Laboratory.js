@@ -12,7 +12,7 @@ import FontIcon from "react-native-vector-icons/FontAwesome";
 import FormInputField from "../../sharedComponent/Form/FormInputField";
 import "yup-phone-lite";
 import { useSelector, useDispatch } from "react-redux";
-import { LOADING_STATUS } from "../../Common/status_code";
+import { LOADING_STATUS, Operation_Mode } from "../../Common/status_code";
 import { useFocusEffect } from "@react-navigation/native";
 import { Report } from "../../Redux/Report/Selector";
 import { ReportAction } from "../../Redux/Report/reducer";
@@ -21,6 +21,8 @@ import AntIcon from "react-native-vector-icons/AntDesign";
 
 const Laboratory = (props) => {
 	const case_id = props.route.params.case_id;
+	const mode = props.route.params.mode;
+	const initialState = props.route.params.initialState;
 	const dispatch = useDispatch();
 	const ReportState = useSelector(Report());
 	const [showBloodSmearDate, setBloodSmearDate] = useState(false);
@@ -40,32 +42,68 @@ const Laboratory = (props) => {
 			}
 		}, [ReportState, submit])
 	);
+
+	const initialValues = () => {
+		if (mode === Operation_Mode.create) {
+			return {
+				Blood_Smear: {
+					status: "",
+					Description: "",
+					Collection_Date: new Date(),
+					Laboratory_name: "",
+					Phone_Number: "",
+				},
+				PCR_of_Blood: {
+					status: "",
+					Description: "",
+					Collection_Date: new Date(),
+					Laboratory_name: "",
+					Phone_Number: "",
+				},
+				RDT: {
+					status: "",
+					Description: "",
+					Type: "",
+					Type_Other: "",
+					Collection_Date: new Date(),
+					Laboratory_name: "",
+					Phone_Number: "",
+				},
+			};
+		} else if (mode === Operation_Mode.edit) {
+			const Blood_Smear = initialState.Blood_Smear;
+			const PCR_of_Blood = initialState.PCR_of_Blood;
+			const RDT = initialState.RDT;
+
+			return {
+				Blood_Smear: {
+					status: Blood_Smear.status,
+					Description: { id: Blood_Smear.Description, item: Blood_Smear.Description },
+					Collection_Date: new Date(Blood_Smear.Collection_Date),
+					Laboratory_name: Blood_Smear.Laboratory_name,
+					Phone_Number: Blood_Smear.Phone_Number,
+				},
+				PCR_of_Blood: {
+					status: PCR_of_Blood.status,
+					Description: { id: PCR_of_Blood.Description, item: PCR_of_Blood.Description },
+					Collection_Date: new Date(PCR_of_Blood.Collection_Date),
+					Laboratory_name: PCR_of_Blood.Laboratory_name,
+					Phone_Number: PCR_of_Blood.Phone_Number,
+				},
+				RDT: {
+					status: RDT.status,
+					Description: { id: RDT.Description, item: RDT.Description },
+					Type: RDT.Type,
+					Type_Other: RDT.Type_Other,
+					Collection_Date: new Date(RDT.Collection_Date),
+					Laboratory_name: RDT.Laboratory_name,
+					Phone_Number: RDT.Phone_Number,
+				},
+			};
+		}
+	};
 	const formik = useFormik({
-		initialValues: {
-			Blood_Smear: {
-				status: "",
-				Description: "",
-				Collection_Date: new Date(),
-				Laboratory_name: "",
-				Phone_Number: "",
-			},
-			PCR_of_Blood: {
-				status: "",
-				Description: "",
-				Collection_Date: new Date(),
-				Laboratory_name: "",
-				Phone_Number: "",
-			},
-			RDT: {
-				status: "",
-				Description: "",
-				Type: "",
-				Type_Other: "",
-				Collection_Date: new Date(),
-				Laboratory_name: "",
-				Phone_Number: "",
-			},
-		},
+		initialValues: initialValues(),
 		validationSchema: Yup.object().shape({
 			Blood_Smear: Yup.object().shape({
 				status: Yup.string().required("Microscropy of Blood Smear is Required"),
@@ -116,17 +154,28 @@ const Laboratory = (props) => {
 		onSubmit: (values) => {
 			setSubmit(true);
 			const Laboratory = _.cloneDeep(values);
+			//console.log(Laboratory);
 
 			const Blood_Smear = Laboratory.Blood_Smear;
+			Blood_Smear.Description = Blood_Smear.status !== "Positive" ? "" : Blood_Smear.description;
 			Blood_Smear.Description = Blood_Smear.Description === "" ? "" : Blood_Smear.Description.id;
 
 			const PCR_of_Blood = Laboratory.PCR_of_Blood;
+			PCR_of_Blood.Description = PCR_of_Blood.status !== "Positive" ? "" : PCR_of_Blood.description;
 			PCR_of_Blood.Description = PCR_of_Blood.Description === "" ? "" : PCR_of_Blood.Description.id;
 
 			const RDT = Laboratory.RDT;
+			RDT.Description = RDT.status !== "Positive" ? "" : RDT.description;
 			RDT.Description = RDT.Description === "" ? "" : RDT.Description.id;
 
-			dispatch(ReportAction.AddLaboratory({ case_id: case_id, Laboratory: Laboratory }));
+			RDT.Type_Other = RDT.Type !== "Other" ? "" : RDT.Type_Other;
+
+			if (mode === Operation_Mode.create) {
+				dispatch(ReportAction.AddLaboratory({ case_id: case_id, Laboratory: Laboratory }));
+			} else if (mode === Operation_Mode.edit) {
+				const id = initialState._id;
+				dispatch(ReportAction.EditLaboratory({ id: id, Laboratory: Laboratory }));
+			}
 		},
 	});
 
@@ -365,13 +414,14 @@ const Laboratory = (props) => {
 						keyboardType="numeric"
 					/>
 				</Card_Component>
+
 				<Button
 					w="90%"
 					alignSelf="center"
 					mt="3"
 					onPress={() => SubmitWithAlert(formik.values)}
 				>
-					Create Laboratory
+					{mode === Operation_Mode.create ? "Submit Laboratory" : mode === Operation_Mode.edit ? "Update Laboratory" : null}
 				</Button>
 				<FancyAlert
 					visible={visible}
