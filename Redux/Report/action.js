@@ -2,7 +2,15 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LOADING_STATUS } from "../../Common/status_code";
 
+export const Initialilze = createAsyncThunk("report/Initialize", () => {
+	return {
+		loading: LOADING_STATUS.IDLE,
+		Message: "",
+		status: "",
+	};
+});
 export const AddReport = createAsyncThunk("report/createReport", async (values) => {
 	const jwt = await AsyncStorage.getItem("jwt");
 	const Patient_data = values.report_data.Patient_data;

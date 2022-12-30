@@ -39,6 +39,7 @@ const Laboratory = (props) => {
 				setVisible(true);
 				setMessage(Message);
 				setSubmit(false);
+				dispatch(ReportAction.Initialilze());
 			}
 		}, [ReportState, submit])
 	);

@@ -31,7 +31,7 @@ const Report = (props) => {
 					Doctor_id: context.user.userInfo.Doctor_id,
 				})
 			);
-		}, [])
+		}, [dispatch])
 	);
 
 	const createReport = () => {
