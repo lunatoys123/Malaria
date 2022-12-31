@@ -6,7 +6,7 @@ import { caseAction } from "../../Redux/Case/reducer";
 import Auth_Global from "../../Context/store/Auth_Global";
 import { LOADING_STATUS, Operation_Mode } from "../../Common/status_code";
 import { useFocusEffect } from "@react-navigation/native";
-import { getCaseByCaseId, getTreatmentByCaseId, getLaboratoryByCaseId } from "../../Common/functions";
+import { getCaseByCaseId, getTreatmentByCaseId, getLaboratoryByCaseId, generatePDF } from "../../Common/functions";
 import LoadingSpinner from "../../sharedComponent/Loading";
 
 const Report = (props) => {
@@ -22,6 +22,7 @@ const Report = (props) => {
 			const { loading, data } = CaseState;
 			if (loading === LOADING_STATUS.FULFILLED) {
 				setData(data);
+				setLoading(false);
 			}
 		}, [CaseState])
 	);
@@ -34,7 +35,7 @@ const Report = (props) => {
 					Doctor_id: context.user.userInfo.Doctor_id,
 				})
 			);
-			setLoading(false);
+			//setLoading(false);
 		}, [dispatch])
 	);
 
@@ -138,6 +139,7 @@ const Report = (props) => {
 											bg="white"
 											shadow="3"
 											my="2"
+											key={d._id}
 										>
 											<VStack
 												space="3"
@@ -152,10 +154,22 @@ const Report = (props) => {
 													</Heading>
 												</Box>
 												<Box px="4">
-													<Text>{`\u2B24 Patient id: ${d.Patient_id}`}</Text>
-													<Text>{`\u2B24 Patient Status: ${d.Patient_Status}`}</Text>
-													<Text>{`\u2B24 Report Status: ${d.Report_Status}`}</Text>
-													<Text>{`\u2B24 Status Date: ${d.Status_date.substring(0, 10)}`}</Text>
+													<Text>
+														{`\u2B24 Patient id: `}
+														<Text bold>{d.Patient_id}</Text>
+													</Text>
+													<Text>
+														{`\u2B24 Patient Status: `}
+														<Text bold>{d.Patient_Status}</Text>
+													</Text>
+													<Text>
+														{`\u2B24 Report Status: `}
+														<Text bold> {d.Report_Status}</Text>
+													</Text>
+													<Text>
+														{`\u2B24 Status Date: `}
+														<Text bold>{d.Status_date.substring(0, 10)}</Text>
+													</Text>
 												</Box>
 												<Box
 													px="4"
@@ -199,7 +213,12 @@ const Report = (props) => {
 																	Add Laboratory
 																</Button>
 															)}
-															<Button size="sm">View Report</Button>
+															<Button
+																size="sm"
+																onPress={() => generatePDF(d._id)}
+															>
+																View Report
+															</Button>
 														</Button.Group>
 													</ScrollView>
 												</Box>
