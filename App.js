@@ -10,39 +10,39 @@ import store from "./store";
 import { Provider } from "react-redux";
 
 LogBox.ignoreAllLogs();
-LogBox.ignoreLogs(["Warning:","No element found","VirtualizedLists should never be nested"]);
+LogBox.ignoreLogs(["Warning:", "No element found", "VirtualizedLists should never be nested"]);
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  return (
-    <NavigationContainer>
-      <Provider store={store}>
-        <NativeBaseProvider>
-          <Auth>
-            <Stack.Navigator initialRouteName="Login">
-              <Stack.Screen
-                name="Login"
-                component={Login}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="main"
-                component={Main}
-                options={{ headerShown: false }}
-              />
-            </Stack.Navigator>
-          </Auth>
-        </NativeBaseProvider>
-      </Provider>
-    </NavigationContainer>
-  );
+	return (
+		<NavigationContainer>
+			<Provider store={store}>
+				<NativeBaseProvider>
+					<Auth>
+						<Stack.Navigator initialRouteName="Login">
+							<Stack.Screen
+								name="Login"
+								component={Login}
+								options={{ headerShown: false }}
+							/>
+							<Stack.Screen
+								name="main"
+								component={Main}
+								options={{ headerShown: false }}
+							/>
+						</Stack.Navigator>
+					</Auth>
+				</NativeBaseProvider>
+			</Provider>
+		</NavigationContainer>
+	);
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+	container: {
+		flex: 1,
+		backgroundColor: "#fff",
+		alignItems: "center",
+		justifyContent: "center",
+	},
 });
