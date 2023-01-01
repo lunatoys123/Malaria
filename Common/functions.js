@@ -3,7 +3,7 @@ import { URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Print from "expo-print";
 
-export const getCaseByCaseId = async (values) => {
+export const getCaseByCaseId = async values => {
 	const jwt = await AsyncStorage.getItem("jwt");
 	const case_id = values.case_id;
 
@@ -17,7 +17,7 @@ export const getCaseByCaseId = async (values) => {
 	return response.data;
 };
 
-export const getTreatmentByCaseId = async (values) => {
+export const getTreatmentByCaseId = async values => {
 	const jwt = await AsyncStorage.getItem("jwt");
 	const case_id = values.case_id;
 
@@ -31,7 +31,7 @@ export const getTreatmentByCaseId = async (values) => {
 	return response.data;
 };
 
-export const getLaboratoryByCaseId = async (values) => {
+export const getLaboratoryByCaseId = async values => {
 	const jwt = await AsyncStorage.getItem("jwt");
 	const case_id = values.case_id;
 
@@ -45,7 +45,21 @@ export const getLaboratoryByCaseId = async (values) => {
 	return response.data;
 };
 
-export const generatePDF = async (id) => {
+export const getPersonalInformationById = async values => {
+	const jwt = await AsyncStorage.getItem("jwt");
+	const Patient_id = values.Patient_id;
+
+	const response = await axios.get(`${URL}/Malaria/Patient/getPatientById`, {
+		params: { Patient_id },
+		headers: {
+			Authorization: `Bearer ${jwt}`,
+		},
+	});
+
+	return response.data;
+};
+
+export const generatePDF = async id => {
 	const jwt = await AsyncStorage.getItem("jwt");
 
 	const response = await axios.get(`${URL}/Malaria/Case/view/case/${id}`, {
@@ -55,7 +69,7 @@ export const generatePDF = async (id) => {
 	});
 
 	const data = response.data;
-	console.log(data);
+	//console.log(data);
 
 	const Patient = data.Patient;
 	const Clinical_Complications = data.Clinical_Complications;
@@ -66,11 +80,16 @@ export const generatePDF = async (id) => {
 	const Laboratory = data.Laboratory;
 
 	const container = "display: grid; grid-template-columns: 25% 25% 25% 25%;";
-	const sectionItem = "grid-area: span 1 / span 4; background-color: #189BE5; border-style: solid; border-width: 1px; padding: 10px;";
-	const columnHeader = "background-color: lightblue; border-style: solid; border-width: 1px; flex: 1; word-wrap: break-word; padding: 10px;";
-	const columndata = "border-style: solid; border-width: 1px; text-align: center; padding: 10px; word-wrap: break-word;";
-	const LongItem = "grid-area: span 1 / span 3; border-style: solid; border-width: 1px; word-wrap: break-word; padding: 10px;";
-	const rowItem = "grid-area: span 1 / span 4; border-style: solid; border-width: 1px; word-wrap: break-word; background-color: #74A1F6; padding-left: 10px;";
+	const sectionItem =
+		"grid-area: span 1 / span 4; background-color: #189BE5; border-style: solid; border-width: 1px; padding: 10px;";
+	const columnHeader =
+		"background-color: lightblue; border-style: solid; border-width: 1px; flex: 1; word-wrap: break-word; padding: 10px;";
+	const columndata =
+		"border-style: solid; border-width: 1px; text-align: center; padding: 10px; word-wrap: break-word;";
+	const LongItem =
+		"grid-area: span 1 / span 3; border-style: solid; border-width: 1px; word-wrap: break-word; padding: 10px;";
+	const rowItem =
+		"grid-area: span 1 / span 4; border-style: solid; border-width: 1px; word-wrap: break-word; background-color: #74A1F6; padding-left: 10px;";
 
 	const html = `
 		<html>
@@ -231,9 +250,13 @@ export const generatePDF = async (id) => {
 						</div>
 						<div style="${container}">
 							<div style="${columnHeader}">Drug taken</div>
-							<div style="${columndata}">${Treatment.Drug_taken === "Other" ? Treatment.Drug_taken_Other : Treatment.Drug_taken}</div>
+							<div style="${columndata}">${
+						Treatment.Drug_taken === "Other" ? Treatment.Drug_taken_Other : Treatment.Drug_taken
+					}</div>
 							<div style="${columnHeader}">Therapy</div>
-							<div style="${columndata}">${Treatment.Therapy === "Other" ? Treatment.Therapy_Other : Treatment.Therapy}</div>
+							<div style="${columndata}">${
+						Treatment.Therapy === "Other" ? Treatment.Therapy_Other : Treatment.Therapy
+					}</div>
 						</div>
 						<div style="${container}">
 							${
@@ -319,7 +342,9 @@ export const generatePDF = async (id) => {
 							</div>
 							<div style="${container}">
 								<div style="${columnHeader}">Type</div>
-								<div style="${LongItem}">${Laboratory.RDT.Type === "Other" ? Laboratory.RDT.Type_Other : Laboratory.RDT.Type}</div>
+								<div style="${LongItem}">${
+						Laboratory.RDT.Type === "Other" ? Laboratory.RDT.Type_Other : Laboratory.RDT.Type
+					}</div>
 							</div>
 							<div style="${container}">
 								<div style="${columnHeader}">Description</div>

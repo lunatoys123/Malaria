@@ -1,15 +1,32 @@
 import React, { useEffect, useContext, useState, useCallback } from "react";
-import { FormControl, Text, Box, HStack, Button, Heading, VStack, Divider, ScrollView, Modal, Input } from "native-base";
+import {
+	FormControl,
+	Text,
+	Box,
+	HStack,
+	Button,
+	Heading,
+	VStack,
+	Divider,
+	ScrollView,
+	Modal,
+	Input,
+} from "native-base";
 import { useSelector, useDispatch } from "react-redux";
 import { Case } from "../../Redux/Case/selector";
 import { caseAction } from "../../Redux/Case/reducer";
 import Auth_Global from "../../Context/store/Auth_Global";
 import { LOADING_STATUS, Operation_Mode } from "../../Common/status_code";
 import { useFocusEffect } from "@react-navigation/native";
-import { getCaseByCaseId, getTreatmentByCaseId, getLaboratoryByCaseId, generatePDF } from "../../Common/functions";
+import {
+	getCaseByCaseId,
+	getTreatmentByCaseId,
+	getLaboratoryByCaseId,
+	generatePDF,
+} from "../../Common/functions";
 import LoadingSpinner from "../../sharedComponent/Loading";
 
-const Report = (props) => {
+const Report = props => {
 	const dispatch = useDispatch();
 	const CaseState = useSelector(Case());
 	const context = useContext(Auth_Global);
@@ -42,10 +59,11 @@ const Report = (props) => {
 	const createReport = () => {
 		props.navigation.navigate("PersonalInformation", {
 			mode: Operation_Mode.create,
+			//initialState: initialState,
 		});
 	};
 
-	const updateReport = async (case_id) => {
+	const updateReport = async case_id => {
 		const initialState = await getCaseByCaseId({ case_id: case_id });
 		props.navigation.navigate("ClinicalInformation", {
 			mode: Operation_Mode.edit,
@@ -53,14 +71,14 @@ const Report = (props) => {
 		});
 	};
 
-	const createTreatment = async (case_id) => {
+	const createTreatment = async case_id => {
 		props.navigation.navigate("Treatment", {
 			mode: Operation_Mode.create,
 			case_id: case_id,
 		});
 	};
 
-	const editTreatment = async (case_id) => {
+	const editTreatment = async case_id => {
 		const initialState = await getTreatmentByCaseId({ case_id: case_id });
 		props.navigation.navigate("Treatment", {
 			mode: Operation_Mode.edit,
@@ -68,14 +86,14 @@ const Report = (props) => {
 		});
 	};
 
-	const createLaboratory = (case_id) => {
+	const createLaboratory = case_id => {
 		props.navigation.navigate("Laboratory", {
 			mode: Operation_Mode.create,
 			case_id: case_id,
 		});
 	};
 
-	const editLaboratory = async (case_id) => {
+	const editLaboratory = async case_id => {
 		const initialState = await getLaboratoryByCaseId({ case_id: case_id });
 		props.navigation.navigate("Laboratory", {
 			mode: Operation_Mode.edit,
@@ -89,30 +107,14 @@ const Report = (props) => {
 				<LoadingSpinner />
 			) : (
 				<VStack divider={<Divider />}>
-					<Box
-						border="1"
-						borderRadius="md"
-						mt="3"
-						p="3"
-						alignSelf="center"
-					>
+					<Box border="1" borderRadius="md" mt="3" p="3" alignSelf="center">
 						<VStack space={3}>
-							<HStack
-								alignItems="center"
-								space={2}
-							>
-								<Heading
-									size="sm"
-									w="50%"
-								>
+							<HStack alignItems="center" space={2}>
+								<Heading size="sm" w="50%">
 									Your Report
 								</Heading>
 								<Box w="50%">
-									<HStack
-										alignSelf="flex-end"
-										space={2}
-										px="2"
-									>
+									<HStack alignSelf="flex-end" space={2} px="2">
 										<Button
 											colorScheme="success"
 											size="sm"
@@ -120,36 +122,26 @@ const Report = (props) => {
 										>
 											Search
 										</Button>
-										<Button
-											size="sm"
-											onPress={() => createReport()}
-										>
+										<Button size="sm" onPress={() => createReport()}>
 											Create
 										</Button>
 									</HStack>
 								</Box>
 							</HStack>
 							<Divider />
-							<ScrollView>
+							<ScrollView
+								nestedScrollEnabled={true}
+								contentContainerStyle={{
+									paddingBottom: 60,
+								}}
+								width="100%"
+							>
 								{Data &&
-									Data.map((d) => (
-										<Box
-											border="1"
-											borderRadius="md"
-											bg="white"
-											shadow="3"
-											my="2"
-											key={d._id}
-										>
-											<VStack
-												space="3"
-												divider={<Divider />}
-											>
+									Data.map(d => (
+										<Box border="1" borderRadius="md" bg="white" shadow="3" my="2" key={d._id}>
+											<VStack space="3" divider={<Divider />}>
 												<Box px="4">
-													<Heading
-														size="sm"
-														pt="3"
-													>
+													<Heading size="sm" pt="3">
 														{d.Patient_Name}
 													</Heading>
 												</Box>
@@ -171,52 +163,31 @@ const Report = (props) => {
 														<Text bold>{d.Status_date.substring(0, 10)}</Text>
 													</Text>
 												</Box>
-												<Box
-													px="4"
-													pb="4"
-												>
+												<Box px="4" pb="4">
 													<ScrollView horizontal={true}>
 														<Button.Group space={2}>
-															<Button
-																size="sm"
-																onPress={() => updateReport(d._id)}
-															>
+															<Button size="sm" onPress={() => updateReport(d._id)}>
 																Update Report
 															</Button>
 															{d.haveTreatment ? (
-																<Button
-																	size="sm"
-																	onPress={() => editTreatment(d._id)}
-																>
+																<Button size="sm" onPress={() => editTreatment(d._id)}>
 																	Update Treatment
 																</Button>
 															) : (
-																<Button
-																	size="sm"
-																	onPress={() => createTreatment(d._id)}
-																>
+																<Button size="sm" onPress={() => createTreatment(d._id)}>
 																	Create Treatment
 																</Button>
 															)}
 															{d.haveLaboratory ? (
-																<Button
-																	size="sm"
-																	onPress={() => editLaboratory(d._id)}
-																>
+																<Button size="sm" onPress={() => editLaboratory(d._id)}>
 																	Update Laboratory
 																</Button>
 															) : (
-																<Button
-																	size="sm"
-																	onPress={() => createLaboratory(d._id)}
-																>
+																<Button size="sm" onPress={() => createLaboratory(d._id)}>
 																	Add Laboratory
 																</Button>
 															)}
-															<Button
-																size="sm"
-																onPress={() => generatePDF(d._id)}
-															>
+															<Button size="sm" onPress={() => generatePDF(d._id)}>
 																View Report
 															</Button>
 														</Button.Group>
@@ -227,10 +198,7 @@ const Report = (props) => {
 									))}
 							</ScrollView>
 						</VStack>
-						<Modal
-							isOpen={ShowSearchModal}
-							onClose={() => setShowSearchModal(false)}
-						>
+						<Modal isOpen={ShowSearchModal} onClose={() => setShowSearchModal(false)} size="full">
 							<Modal.Content>
 								<Modal.CloseButton />
 								<Modal.Header>Search</Modal.Header>
