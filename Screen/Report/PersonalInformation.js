@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
 	Center,
 	ScrollView,
@@ -7,10 +7,9 @@ import {
 	Pressable,
 	Icon,
 	Button,
-	Box,
 	Text,
 	View,
-	Heading,
+	AlertDialog,
 } from "native-base";
 import { useFormik } from "formik";
 import { Gender_option } from "../../Common/Options";
@@ -30,16 +29,31 @@ import { Operation_Mode } from "../../Common/status_code";
 import { useDispatch, useSelector } from "react-redux";
 import { Patient } from "../../Redux/Patient/Selector";
 import { PatientActions } from "../../Redux/Patient/reducer";
+import { useFocusEffect } from "@react-navigation/native";
+import { LOADING_STATUS } from "../../Common/status_code";
 
 const PersonalInformation = props => {
 	const dispatch = useDispatch();
 	const PatientState = useSelector(Patient());
 	const [showPregnantDate, setShowPregnantDate] = useState(false);
-	//const [PregnantDate, setPregnantDate] = useState(new Date());
 	const [visible, setVisible] = useState(false);
 	const [errorField, setErrorField] = useState([]);
+	const [Updated, setUpdated] = useState(false);
+	const [submit, setSubmit] = useState(false);
+	const [message, setMessage] = useState("");
 	const mode = props.route.params.mode;
 	const initialState = props.route.params.initialState;
+
+	useFocusEffect(
+		useCallback(() => {
+			const { loading, Message, status } = PatientState;
+			if (loading === LOADING_STATUS.FULFILLED && submit) {
+				setMessage(Message);
+				setSubmit(false);
+				setUpdated(true);
+			}
+		}, [PatientState, submit])
+	);
 
 	const initialValues = () => {
 		if (mode === Operation_Mode.create) {
@@ -150,7 +164,7 @@ const PersonalInformation = props => {
 		validateOnBlur: false,
 		onSubmit: values => {
 			//console.log(values);
-
+			setSubmit(true);
 			var report_data = _.cloneDeep(values);
 			if (report_data.Gender === "Male") {
 				if ("Pregnant" in report_data) {
@@ -208,6 +222,12 @@ const PersonalInformation = props => {
 			formik.handleSubmit();
 		}
 	};
+
+	const ReturnToReportPage = () => {
+		setUpdated(false);
+		props.navigation.navigate("Main");
+	};
+
 	return (
 		<ScrollView
 			nestedScrollEnabled={true}
@@ -306,7 +326,18 @@ const PersonalInformation = props => {
 							: null}
 					</Text>
 				</Button>
-
+				<AlertDialog isOpen={Updated} onClose={() => setUpdated(false)} size="full">
+					<AlertDialog.Content>
+						<AlertDialog.CloseButton />
+						<AlertDialog.Header>Updated Status</AlertDialog.Header>
+						<AlertDialog.Body>{message}</AlertDialog.Body>
+						<AlertDialog.Footer>
+							<Button w="100%" onPress={() => ReturnToReportPage()}>
+								Confirm
+							</Button>
+						</AlertDialog.Footer>
+					</AlertDialog.Content>
+				</AlertDialog>
 				<FancyAlert
 					visible={visible}
 					icon={

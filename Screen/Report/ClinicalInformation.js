@@ -17,8 +17,8 @@ import FormMultiSelect from "../../sharedComponent/Form/FormMultiSelect";
 import FormSigleSelect from "../../sharedComponent/Form/FormSigleSelect";
 import FormDateComponent from "../../sharedComponent/Form/FormDateComponent";
 import FormRadioGroup from "../../sharedComponent/Form/FormRadioGroup";
-
 import FontIcon from "react-native-vector-icons/FontAwesome";
+import { Operation_Mode } from "../../Common/status_code";
 import {
 	Signs,
 	Clinical_Complications,
@@ -35,12 +35,13 @@ const ClinicalInformation = props => {
 	var report_data = props.route.params.report_data;
 	const mode = props.route.params.mode;
 	const initialState = props.route.params.initialState;
+	const Patient_id = props.route.params.Patient_id;
 	const [show, setShow] = useState(false);
 	const [onSetDateShow, setonSetDateShow] = useState(false);
 	const [previousIllnewssDate, setpreviousIllnewssDate] = useState(false);
 
 	const initialValues = () => {
-		if (mode === "create") {
+		if (mode === Operation_Mode.create || mode === Operation_Mode.createWithPatientId) {
 			return {
 				Symptoms: {
 					Sign: [],
@@ -57,7 +58,7 @@ const ClinicalInformation = props => {
 				},
 				Status_date: new Date(),
 			};
-		} else if (mode == "edit") {
+		} else if (mode == Operation_Mode.edit) {
 			//console.log(initialState);
 			const Initial_Symptoms = initialState.Symptoms;
 			const Initial_Clinical = initialState.Clinical_Complications;
@@ -134,6 +135,8 @@ const ClinicalInformation = props => {
 			Status_date: Yup.date(),
 			Report_Status: Yup.string().required("Report status is required"),
 		}),
+		validateOnChange: false,
+		validateOnBlur: false,
 		onSubmit: values => {
 			const Clinical_data = _.cloneDeep(values);
 
@@ -155,14 +158,21 @@ const ClinicalInformation = props => {
 				Clinical_data.Clinical_Complications.Complications.map(d => d.item);
 			Clinical_data.Symptoms.Sign = Clinical_data.Symptoms.Sign.map(d => d.item);
 
-			if (mode === "create") {
+			if (mode === Operation_Mode.createWithPatientId) {
+				report_data = { ...report_data, case: { ...Clinical_data, Patient_id: Patient_id } };
+
+				props.navigation.navigate("TravelHistory", {
+					report_data: report_data,
+					mode: mode,
+				});
+			} else if (mode === Operation_Mode.create) {
 				report_data = { ...report_data, case: { ...Clinical_data } };
 				//console.log(report_data);
 				props.navigation.navigate("TravelHistory", {
 					report_data: report_data,
 					mode: mode,
 				});
-			} else if (mode === "edit") {
+			} else if (mode === Operation_Mode.edit) {
 				props.navigation.navigate("TravelHistory", {
 					report_data: { ...report_data, case: { ...Clinical_data } },
 					initialState,

@@ -10,37 +10,41 @@ import Laboratory from "../Screen/Report/Laboratory";
 
 const stack = createStackNavigator();
 const ReportNavigator = () => {
-  return (
-    <stack.Navigator>
-      <stack.Screen
-        name="Main"
-        component={PatientCaseNavigator}
-        options={{ headerShown: false }}
-      />
-      <stack.Screen
-        name="PersonalInformation"
-        component={PersonalInformation}
-        options={{ headerTitle: "Patient Information" }}
-      />
-      <stack.Screen
-        name="ClinicalInformation"
-        component={ClinicalInformation}
-        options={{ headerTitle: "Clinical Information" }}
-      />
-      <stack.Screen
-        name="TravelHistory"
-        component={TravelHistory}
-        options={{ headerTitle: "Travel History" }}
-      />
-      <stack.Screen
-        name="Hospitalization"
-        component={Hospitalization}
-        options={{ headerTitle: "Hospitalization" }}
-      />
-      <stack.Screen name="Treatment" component={Treatment} />
-      <stack.Screen name="Laboratory" component={Laboratory} />
-    </stack.Navigator>
-  );
+	return (
+		<stack.Navigator>
+			<stack.Screen name="Main" component={PatientCaseNavigator} options={{ headerShown: false }} />
+			<stack.Screen
+				name="PersonalInformation"
+				component={PersonalInformation}
+				options={{
+					headerTitle: "Patient Information",
+					presentation: "modal",
+					headerMode: "screen",
+				}}
+			/>
+			<stack.Screen
+				name="ClinicalInformation"
+				component={ClinicalInformation}
+				options={{
+					headerTitle: "Clinical Information",
+					presentation: "modal",
+					headerMode: "screen",
+				}}
+			/>
+			<stack.Screen
+				name="TravelHistory"
+				component={TravelHistory}
+				options={{ headerTitle: "Travel History", presentation: "modal", headerMode: "screen" }}
+			/>
+			<stack.Screen
+				name="Hospitalization"
+				component={Hospitalization}
+				options={{ headerTitle: "Hospitalization", presentation: "modal", headerMode: "screen" }}
+			/>
+			<stack.Screen name="Treatment" component={Treatment} />
+			<stack.Screen name="Laboratory" component={Laboratory} />
+		</stack.Navigator>
+	);
 };
 
 export default ReportNavigator;

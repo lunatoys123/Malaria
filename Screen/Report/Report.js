@@ -53,8 +53,9 @@ const Report = props => {
 				})
 			);
 			//setLoading(false);
-		}, [dispatch])
+		}, [])
 	);
+
 
 	const createReport = () => {
 		props.navigation.navigate("PersonalInformation", {
@@ -117,12 +118,11 @@ const Report = props => {
 									<HStack alignSelf="flex-end" space={2} px="2">
 										<Button
 											colorScheme="success"
-											size="sm"
 											onPress={() => setShowSearchModal(true)}
 										>
 											Search
 										</Button>
-										<Button size="sm" onPress={() => createReport()}>
+										<Button onPress={() => createReport()}>
 											Create
 										</Button>
 									</HStack>

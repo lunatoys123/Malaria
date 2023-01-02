@@ -28,20 +28,20 @@ const Login = (props) => {
     setLoading(false);
 
     if (token_response.status === status_code.Success) {
-      toast.show({
-        title: token_response.status,
-        description: token_response.Message,
-        placement: "top",
-        duration: 100,
-      });
+      // toast.show({
+      //   title: token_response.status,
+      //   description: token_response.Message,
+      //   placement: "top",
+      //   duration: 100,
+      // });
       props.navigation.navigate("main");
     } else {
-      toast.show({
-        title: token_response.status,
-        description: token_response.Message,
-        placement: "top",
-        duration: 100,
-      });
+      // toast.show({
+      //   title: token_response.status,
+      //   description: token_response.Message,
+      //   placement: "top",
+      //   duration: 100,
+      // });
     }
   };
 

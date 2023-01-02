@@ -31,4 +31,5 @@ export const WHO_Indicator_code = {
 export const Operation_Mode = {
   create: "create",
   edit: "edit",
+  createWithPatientId: "createWithPatientId",
 };

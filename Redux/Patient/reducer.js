@@ -7,6 +7,7 @@ const initialState = {
 	data: [],
 	Message: "",
 	status: "",
+	Error: "",
 };
 
 const PendingReducer = (state, action) => {
@@ -47,9 +48,9 @@ const PatientSlice = createSlice({
 		[getPatientList.pending]: PendingReducer,
 		[getPatientList.rejected]: RejectReducer,
 		[getPatientList.fulfilled]: LoadDataFulfillReducer,
-        [editPersonalInformation.pending]: PendingReducer,
-        [editPersonalInformation.rejected]: RejectReducer,
-        [editPersonalInformation.fulfilled]: UpdateFulfillReducer
+		[editPersonalInformation.pending]: PendingReducer,
+		[editPersonalInformation.rejected]: RejectReducer,
+		[editPersonalInformation.fulfilled]: UpdateFulfillReducer,
 	},
 });
 

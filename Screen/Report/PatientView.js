@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback } from "react";
+import React, { useState, useContext, useCallback, useEffect } from "react";
 import {
 	VStack,
 	Box,
@@ -48,6 +48,14 @@ const PatientView = props => {
 		props.navigation.navigate("PersonalInformation", {
 			mode: Operation_Mode.edit,
 			initialState: initialState,
+		});
+	};
+
+	const AddReportwithPersonalInformation = async Patient_id => {
+		//const Patient_data = await getPersonalInformationById({ Patient_id: Patient_id });
+		props.navigation.navigate("ClinicalInformation", {
+			mode: Operation_Mode.createWithPatientId,
+			Patient_id: Patient_id,
 		});
 	};
 
@@ -118,7 +126,12 @@ const PatientView = props => {
 											<Button size="sm" onPress={() => editPersonalInformation(d.Patient_id)}>
 												Update
 											</Button>
-											<Button size="sm">Add Report</Button>
+											<Button
+												size="sm"
+												onPress={() => AddReportwithPersonalInformation(d.Patient_id)}
+											>
+												Add Report
+											</Button>
 										</HStack>
 									</VStack>
 								</Box>

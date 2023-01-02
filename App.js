@@ -8,6 +8,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import store from "./store";
 import { Provider } from "react-redux";
+import 'react-native-gesture-handler';
 
 LogBox.ignoreAllLogs();
 LogBox.ignoreLogs(["Warning:", "No element found", "VirtualizedLists should never be nested"]);
@@ -19,17 +20,16 @@ export default function App() {
 			<Provider store={store}>
 				<NativeBaseProvider>
 					<Auth>
-						<Stack.Navigator initialRouteName="Login">
-							<Stack.Screen
-								name="Login"
-								component={Login}
-								options={{ headerShown: false }}
-							/>
-							<Stack.Screen
-								name="main"
-								component={Main}
-								options={{ headerShown: false }}
-							/>
+						<Stack.Navigator
+							initialRouteName="Login"
+							screenOptions={{
+								tabBarHideOnKeyboar: true,
+								tabBarShowLabel: true,
+								tabBarActiveTintColor: "#e91e63",
+							}}
+						>
+							<Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+							<Stack.Screen name="main" component={Main} options={{ headerShown: false }} />
 						</Stack.Navigator>
 					</Auth>
 				</NativeBaseProvider>
