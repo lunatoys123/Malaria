@@ -41,8 +41,16 @@ const ReportNavigator = () => {
 				component={Hospitalization}
 				options={{ headerTitle: "Hospitalization", presentation: "modal", headerMode: "screen" }}
 			/>
-			<stack.Screen name="Treatment" component={Treatment} />
-			<stack.Screen name="Laboratory" component={Laboratory} />
+			<stack.Screen
+				name="Treatment"
+				component={Treatment}
+				options={{ presentation: "modal", headerMode: "screen" }}
+			/>
+			<stack.Screen
+				name="Laboratory"
+				component={Laboratory}
+				options={{ presentation: "modal", headerMode: "screen" }}
+			/>
 		</stack.Navigator>
 	);
 };

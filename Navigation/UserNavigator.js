@@ -7,7 +7,7 @@ import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Tab = createMaterialBottomTabNavigator();
 
-const Main = () => {
+const UserNavigator = () => {
 	return (
 		<Tab.Navigator initialRouteName="Summary">
 			<Tab.Screen
@@ -30,4 +30,4 @@ const Main = () => {
 	);
 };
 
-export default Main;
+export default UserNavigator;

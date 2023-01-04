@@ -2,13 +2,15 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, LogBox } from "react-native";
 import { NativeBaseProvider } from "native-base";
 import Login from "./Screen/Login";
-import Main from "./Navigation/Main";
+import Main from "./Navigation/UserNavigator";
 import Auth from "./Context/store/Auth";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import store from "./store";
 import { Provider } from "react-redux";
-import 'react-native-gesture-handler';
+import "react-native-gesture-handler";
+import UserNavigator from "./Navigation/UserNavigator";
+import AdminNavigator from "./Navigation/AdminNavigator";
 
 LogBox.ignoreAllLogs();
 LogBox.ignoreLogs(["Warning:", "No element found", "VirtualizedLists should never be nested"]);
@@ -29,7 +31,16 @@ export default function App() {
 							}}
 						>
 							<Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-							<Stack.Screen name="main" component={Main} options={{ headerShown: false }} />
+							<Stack.Screen
+								name="User"
+								component={UserNavigator}
+								options={{ headerShown: false }}
+							/>
+							<Stack.Screen
+								name="Admin"
+								component={AdminNavigator}
+								options={{ headerShown: false }}
+							/>
 						</Stack.Navigator>
 					</Auth>
 				</NativeBaseProvider>
