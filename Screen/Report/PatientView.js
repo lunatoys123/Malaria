@@ -16,7 +16,7 @@ import { PatientActions } from "../../Redux/Patient/reducer";
 import Auth_Global from "../../Context/store/Auth_Global";
 import { LOADING_STATUS, Operation_Mode } from "../../Common/status_code";
 import { useFocusEffect } from "@react-navigation/native";
-import { getPersonalInformationById } from "../../Common/functions";
+import { getPersonalInformationById } from "../../Common/User_Functions";
 import LoadingSpinner from "../../sharedComponent/Loading";
 
 const PatientView = props => {

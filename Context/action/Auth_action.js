@@ -21,11 +21,17 @@ export const loginUser = async (user, dispatch) => {
 				AsyncStorage.setItem("jwt", token);
 				const decoded = jwt_decode(token);
 
-        token_response.status = data.status;
+				token_response.status = data.status;
 				token_response.Message = data.Message;
-        token_response.user_role = decoded.role
+				token_response.user_role = decoded.role;
 				//console.log(decoded);
-				dispatch(setCurrentUser(decoded));
+				dispatch(
+					setCurrentUser({
+						Doctor_id: decoded.Doctor_id,
+						login_name: decoded.login_name,
+						role: decoded.role,
+					})
+				);
 			}
 		})
 		.catch(err => {

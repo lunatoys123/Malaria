@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useCallback } from "react";
+import React, { useContext, useState, useCallback } from "react";
 import {
 	FormControl,
 	Text,
@@ -12,10 +12,7 @@ import {
 	Modal,
 	Input,
 	Menu,
-	HamburgerIcon,
-	Pressable,
 	IconButton,
-	Center,
 } from "native-base";
 import { useSelector, useDispatch } from "react-redux";
 import { Case } from "../../Redux/Case/selector";
@@ -28,7 +25,7 @@ import {
 	getTreatmentByCaseId,
 	getLaboratoryByCaseId,
 	generatePDF,
-} from "../../Common/functions";
+} from "../../Common/User_Functions";
 import LoadingSpinner from "../../sharedComponent/Loading";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -200,7 +197,7 @@ const Report = props => {
 														</Menu>
 													</HStack>
 												</Box>
-												<Box px="4">
+												<Box px="4" pb="2">
 													<Text>
 														{`\u2B24 Patient id: `}
 														<Text bold>{d.Patient_id}</Text>
@@ -218,36 +215,6 @@ const Report = props => {
 														<Text bold>{d.Status_date.substring(0, 10)}</Text>
 													</Text>
 												</Box>
-												{/* <Box px="4" pb="4">
-													<ScrollView horizontal={true}>
-														<Button.Group space={2}>
-															<Button size="sm" onPress={() => updateReport(d._id)}>
-																Update Report
-															</Button>
-															{d.haveTreatment ? (
-																<Button size="sm" onPress={() => editTreatment(d._id)}>
-																	Update Treatment
-																</Button>
-															) : (
-																<Button size="sm" onPress={() => createTreatment(d._id)}>
-																	Create Treatment
-																</Button>
-															)}
-															{d.haveLaboratory ? (
-																<Button size="sm" onPress={() => editLaboratory(d._id)}>
-																	Update Laboratory
-																</Button>
-															) : (
-																<Button size="sm" onPress={() => createLaboratory(d._id)}>
-																	Add Laboratory
-																</Button>
-															)}
-															<Button size="sm" onPress={() => generatePDF(d._id)}>
-																View Report
-															</Button>
-														</Button.Group>
-													</ScrollView>
-												</Box> */}
 											</VStack>
 										</Box>
 									))}
