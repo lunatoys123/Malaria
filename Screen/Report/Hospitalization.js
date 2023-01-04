@@ -177,7 +177,13 @@ const Hospitalization = props => {
 	};
 	return (
 		<>
-			<ScrollView contentContainerStyle={{ paddingBottom: 60 }} width="100%">
+			<ScrollView
+				nestedScrollEnabled={true}
+				contentContainerStyle={{
+					paddingBottom: 60,
+				}}
+				width="100%"
+			>
 				<Center>
 					<Card_Component heading="Hospitalization">
 						<VStack space={2}>

@@ -11,6 +11,11 @@ import {
 	ScrollView,
 	Modal,
 	Input,
+	Menu,
+	HamburgerIcon,
+	Pressable,
+	IconButton,
+	Center,
 } from "native-base";
 import { useSelector, useDispatch } from "react-redux";
 import { Case } from "../../Redux/Case/selector";
@@ -25,6 +30,7 @@ import {
 	generatePDF,
 } from "../../Common/functions";
 import LoadingSpinner from "../../sharedComponent/Loading";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const Report = props => {
 	const dispatch = useDispatch();
@@ -55,7 +61,6 @@ const Report = props => {
 			//setLoading(false);
 		}, [])
 	);
-
 
 	const createReport = () => {
 		props.navigation.navigate("PersonalInformation", {
@@ -116,15 +121,10 @@ const Report = props => {
 								</Heading>
 								<Box w="50%">
 									<HStack alignSelf="flex-end" space={2} px="2">
-										<Button
-											colorScheme="success"
-											onPress={() => setShowSearchModal(true)}
-										>
+										<Button colorScheme="success" onPress={() => setShowSearchModal(true)}>
 											Search
 										</Button>
-										<Button onPress={() => createReport()}>
-											Create
-										</Button>
+										<Button onPress={() => createReport()}>Create</Button>
 									</HStack>
 								</Box>
 							</HStack>
@@ -139,11 +139,66 @@ const Report = props => {
 								{Data &&
 									Data.map(d => (
 										<Box border="1" borderRadius="md" bg="white" shadow="3" my="2" key={d._id}>
-											<VStack space="3" divider={<Divider />}>
+											<VStack
+												//space="3"
+												divider={
+													<Divider
+														_light={{
+															bg: "muted.400",
+														}}
+														_dark={{
+															bg: "muted.50",
+														}}
+													/>
+												}
+											>
 												<Box px="4">
-													<Heading size="sm" pt="3">
-														{d.Patient_Name}
-													</Heading>
+													<HStack alignItems="center">
+														<Heading size="sm" w="90%">
+															{d.Patient_Name}
+														</Heading>
+														<Menu
+															width="190"
+															trigger={triggerProps => {
+																return (
+																	<IconButton
+																		size="md"
+																		justifyContent="flex-start"
+																		_icon={{
+																			as: MaterialIcons,
+																			name: "menu",
+																		}}
+																		//accessibilityLabel="More options menu"
+																		{...triggerProps}
+																	/>
+																);
+															}}
+														>
+															<Menu.Item onPress={() => updateReport(d._id)}>
+																Update Report
+															</Menu.Item>
+															{d.haveTreatment ? (
+																<Menu.Item onPress={() => editTreatment(d._id)}>
+																	Update Treatment
+																</Menu.Item>
+															) : (
+																<Menu.Item onPress={() => createTreatment(d._id)}>
+																	Create Treatment
+																</Menu.Item>
+															)}
+
+															{d.haveLaboratory ? (
+																<Menu.Item onPress={() => editLaboratory(d._id)}>
+																	Update Laboratory
+																</Menu.Item>
+															) : (
+																<Menu.Item onPress={() => createLaboratory(d._id)}>
+																	Add Laboratory
+																</Menu.Item>
+															)}
+															<Menu.Item onPress={() => generatePDF(d._id)}>View Report</Menu.Item>
+														</Menu>
+													</HStack>
 												</Box>
 												<Box px="4">
 													<Text>
@@ -163,7 +218,7 @@ const Report = props => {
 														<Text bold>{d.Status_date.substring(0, 10)}</Text>
 													</Text>
 												</Box>
-												<Box px="4" pb="4">
+												{/* <Box px="4" pb="4">
 													<ScrollView horizontal={true}>
 														<Button.Group space={2}>
 															<Button size="sm" onPress={() => updateReport(d._id)}>
@@ -192,7 +247,7 @@ const Report = props => {
 															</Button>
 														</Button.Group>
 													</ScrollView>
-												</Box>
+												</Box> */}
 											</VStack>
 										</Box>
 									))}

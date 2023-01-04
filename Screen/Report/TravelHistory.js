@@ -147,7 +147,13 @@ const TravelHistory = props => {
 
 	return (
 		<>
-			<ScrollView contentContainerStyle={{ paddingBottom: 60 }} width="100%">
+			<ScrollView
+				nestedScrollEnabled={true}
+				contentContainerStyle={{
+					paddingBottom: 60,
+				}}
+				width="100%"
+			>
 				<FormControl>
 					<Center>
 						<Card_Component heading="Travel History">

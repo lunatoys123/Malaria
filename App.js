@@ -2,7 +2,6 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, LogBox } from "react-native";
 import { NativeBaseProvider } from "native-base";
 import Login from "./Screen/Login";
-import Main from "./Navigation/UserNavigator";
 import Auth from "./Context/store/Auth";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
