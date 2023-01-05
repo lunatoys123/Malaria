@@ -9,12 +9,19 @@ const Tab = createMaterialBottomTabNavigator();
 
 const UserNavigator = () => {
 	return (
-		<Tab.Navigator initialRouteName="Summary">
+		<Tab.Navigator
+			initialRouteName="Summary"
+			barStyle={{ backgroundColor: "#EADFFA", height: 70 }}
+			inactiveColor="#A29AAD"
+			activeColor="#645F6B"
+		>
 			<Tab.Screen
 				name="Summary"
 				component={SummaryNavigator}
 				options={{
-					tabBarIcon: ({ color }) => <Icon name="database" color={color} size={30} />,
+					tabBarIcon: ({ focused, size, color }) => (
+						<Icon name="database" color={color} size={focused ? 30 : 25} />
+					),
 					headerShown: false,
 				}}
 			/>
@@ -22,7 +29,9 @@ const UserNavigator = () => {
 				name="Report"
 				component={ReportNavigator}
 				options={{
-					tabBarIcon: ({ color }) => <MaterialIcon name="doctor" color={color} size={30} />,
+					tabBarIcon: ({ focused, size, color }) => (
+						<MaterialIcon name="doctor" color={color} size={focused ? 30 : 25} />
+					),
 					headerShown: false,
 				}}
 			/>

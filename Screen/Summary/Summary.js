@@ -26,7 +26,7 @@ const Summary_container = props => {
 	useEffect(() => {
 		setLoading(true);
 		dispatch(SummaryAction.Preview());
-	}, [dispatch]);
+	}, []);
 
 	useEffect(() => {
 		const { option, loading } = SummaryState;
