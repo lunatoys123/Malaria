@@ -13,7 +13,11 @@ const AccountManagementNavigator = () => {
 				component={AccountManagement}
 				options={{ headerShown: false }}
 			/>
-			<Stack.Screen name="AddUser" component={AddUser} options={{headerTitle:"Add User"}}/>
+			<Stack.Screen
+				name="AddUser"
+				component={AddUser}
+				options={{ headerTitle: "Add User" }}
+			/>
 		</Stack.Navigator>
 	);
 };

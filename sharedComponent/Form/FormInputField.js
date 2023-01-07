@@ -11,6 +11,7 @@ const FormInputField = props => {
 		keyboardType = "text",
 		isRequired = false,
 		type = "text",
+		rightElement = null
 	} = props;
 	return (
 		<FormControl isRequired={isRequired} isInvalid={_.get(formik.errors, id) !== null}>
@@ -37,6 +38,8 @@ const FormInputField = props => {
 						value={_.get(formik.values, id) != null ? _.get(formik.values, id) : ""}
 						keyboardType={keyboardType}
 						type={type}
+						rightElement={rightElement}
+						
 					/>
 				)}
 				<FormControl.ErrorMessage>{_.get(formik.errors, id)}</FormControl.ErrorMessage>

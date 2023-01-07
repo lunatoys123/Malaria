@@ -16,6 +16,7 @@ import Auth_Global from "../Context/store/Auth_Global";
 import { loginUser } from "../Context/action/Auth_action";
 import { status_code } from "../Common/status_code";
 import LoadingSpinner from "../sharedComponent/Loading";
+import { Admin_Role } from "../Common/role";
 
 const Login = props => {
 	const context = useContext(Auth_Global);
@@ -34,7 +35,7 @@ const Login = props => {
 			//   placement: "top",
 			//   duration: 100,
 			// });
-			if (token_response.user_role === "CA") {
+			if (token_response.user_role === Admin_Role) {
 				props.navigation.navigate("Admin");
 			} else {
 				props.navigation.navigate("User");

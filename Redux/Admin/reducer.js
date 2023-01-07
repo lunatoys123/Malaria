@@ -1,10 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { LOADING_STATUS } from "../../Common/status_code";
-import { GetUserFromHospital } from "./action";
+import { GetUserFromHospital, AddUserToOrganization, Initialilze } from "./action";
 
 const initialState = {
 	loading: LOADING_STATUS.IDLE,
 	AccountManagement: [],
+	status: "",
+	Message: "",
+	Error: "",
 };
 
 const pendingReducer = (state, action) => {
@@ -18,6 +21,8 @@ const rejectReducer = (state, action) => {
 	return {
 		...state,
 		loading: LOADING_STATUS.REJECTED,
+		status: action.payload.status,
+		Error: action.payload.Error,
 	};
 };
 
@@ -28,6 +33,24 @@ const AccountManagementFulfillReducer = (state, action) => {
 		AccountManagement: action.payload.AccountManagement,
 	};
 };
+
+const AddUserFulfillReducer = (state, action) => {
+	return {
+		...state,
+		loading: LOADING_STATUS.FULFILLED,
+		status: action.payload.status,
+		Message: action.payload.Message,
+	};
+};
+
+const InitialReducer = (state, action) => {
+	return {
+		...state,
+		loading: action.payload.loading,
+		Message: "",
+		status: "",
+	};
+};
 const AdminSlice = createSlice({
 	name: "Admin",
 	initialState,
@@ -35,11 +58,17 @@ const AdminSlice = createSlice({
 		[GetUserFromHospital.pending]: pendingReducer,
 		[GetUserFromHospital.rejected]: rejectReducer,
 		[GetUserFromHospital.fulfilled]: AccountManagementFulfillReducer,
+		[AddUserToOrganization.pending]: pendingReducer,
+		[AddUserToOrganization.rejected]: rejectReducer,
+		[AddUserToOrganization.fulfilled]: AddUserFulfillReducer,
+		[Initialilze.fulfilled]: InitialReducer,
 	},
 });
 
 export const AdminReducer = AdminSlice.reducer;
 export const AdminAction = {
 	GetUserFromHospital,
+	AddUserToOrganization,
+	Initialilze,
 	...AdminSlice.actions,
 };

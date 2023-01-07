@@ -32,6 +32,7 @@ const AccountManagement = props => {
 			const { loading, AccountManagement } = AdminState;
 			if (loading === LOADING_STATUS.FULFILLED) {
 				setAccount(AccountManagement);
+				dispatch(AdminAction.Initialilze());
 			}
 		}, [AdminState])
 	);
@@ -47,39 +48,41 @@ const AccountManagement = props => {
 	};
 
 	return (
-		<Box safeArea mt="3">
-			<VStack space="2">
-				<HStack alignItems="center">
-					<Heading ml="4" w="65%">
-						Admin Panel
-					</Heading>
-					<Button
-						leftIcon={<AntDesign name="addusergroup" color="white" size={20} />}
-						size="sm"
-						onPress={() => createUser()}
-					>
-						Add User
-					</Button>
-				</HStack>
-				<Divider />
-				<VStack space={2} w="90%" alignSelf="center">
-					<Input
-						placeholder="Search For User"
-						backgroundColor="white"
-						borderRadius="4"
-						fontSize="14"
-					/>
-					<Button leftIcon={<Ionicons name="search" size={20} color="white" />}>Search</Button>
-				</VStack>
+		<VStack divider={<Divider />}>
+			<Box border="1" borderRadius="md" mt="3" alignSelf="center" safeArea>
+				<VStack space={3}>
+					<HStack alignItems="center">
+						<Heading ml="4" w="65%">
+							Admin Panel
+						</Heading>
+						<Button
+							leftIcon={<AntDesign name="addusergroup" color="white" size={20} />}
+							size="sm"
+							onPress={() => createUser()}
+						>
+							Add User
+						</Button>
+					</HStack>
+					<Divider />
+					<VStack space={2} w="90%" alignSelf="center">
+						<Input
+							placeholder="Search For User"
+							backgroundColor="white"
+							borderRadius="4"
+							fontSize="14"
+						/>
+						<Button leftIcon={<Ionicons name="search" size={20} color="white" />}>Search</Button>
+					</VStack>
 
-				<ScrollView
-					nestedScrollEnabled={true}
-					contentContainerStyle={{
-						paddingBottom: 60,
-					}}
-					width="100%"
-				>
-					{Account.length > 0 &&
+					<ScrollView
+						nestedScrollEnabled={true}
+						contentContainerStyle={{
+							paddingBottom: 60,
+						}}
+						width="100%"
+					>
+						
+						{Account.length > 0 &&
 						Account.map(d => (
 							<Box
 								border="1"
@@ -97,6 +100,8 @@ const AccountManagement = props => {
 											<Heading w="90%">{d.Login_name}</Heading>
 											<Menu
 												width="190"
+												placement="bottom"
+												defaultIsOpen={false}
 												trigger={triggerProps => {
 													return (
 														<IconButton
@@ -115,6 +120,7 @@ const AccountManagement = props => {
 												<Menu.Item>View Patient Reports</Menu.Item>
 												<Menu.Item>View Audit Trail</Menu.Item>
 												<Menu.Item>Change Password</Menu.Item>
+												<Menu.Item>Remove User</Menu.Item>
 											</Menu>
 										</HStack>
 									</Box>
@@ -128,14 +134,19 @@ const AccountManagement = props => {
 												{`\u2B24 Phone Number: `}
 												<Text bold>{d.Phone_number}</Text>
 											</Text>
+											<Text>
+												{`\u2B24 Account Status: `}
+												<Text bold>{d.Account_status}</Text>
+											</Text>
 										</VStack>
 									</Box>
 								</VStack>
 							</Box>
 						))}
-				</ScrollView>
-			</VStack>
-		</Box>
+					</ScrollView>
+				</VStack>
+			</Box>
+		</VStack>
 	);
 };
 

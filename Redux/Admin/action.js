@@ -2,6 +2,15 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LOADING_STATUS } from "../../Common/status_code";
+
+export const Initialilze = createAsyncThunk("Admin/Initialilze", () => {
+	return {
+		loading: LOADING_STATUS.IDLE,
+		Message: "",
+		status: "",
+	};
+});
 
 export const GetUserFromHospital = createAsyncThunk(
 	"Admin/AccountManagement",
@@ -14,5 +23,48 @@ export const GetUserFromHospital = createAsyncThunk(
 			},
 		});
 		return response.data;
+	}
+);
+
+export const AddUserToOrganization = createAsyncThunk(
+	"Admin/AddUser",
+	async (user, { rejectWithValue }) => {
+		const jwt = await AsyncStorage.getItem("jwt");
+
+		try {
+			const response = await axios.post(
+				`${URL}/Malaria/User/register`,
+				{
+					user,
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${jwt}`,
+					},
+				}
+			);
+			return response.data;
+		} catch (e) {
+			return rejectWithValue(e.response.data);
+		}
+
+		// const response = await axios
+		// 	.post(
+		// 		`${URL}/Malaria/User/register`,
+		// 		{
+		// 			user,
+		// 		},
+		// 		{
+		// 			headers: {
+		// 				Authorization: `Bearer ${jwt}`,
+		// 			},
+		// 		}
+		// 	)
+		// 	.catch(err => {
+		// 		//console.log(err.response.data);
+		// 		return rejectWithValue(err);
+		// 	});
+		// // console.log(response);
+		// return response.data;
 	}
 );

@@ -314,11 +314,11 @@ export const RDT_Options = [
 export const Role_Options = [
 	{
 		id: Admin_Role,
-		item: Admin_Role,
+		item: "Admin",
 	},
 	{
 		id: Normal_User_Role,
-		item: Normal_User_Role,
+		item: "Normal User",
 	},
 ];
 

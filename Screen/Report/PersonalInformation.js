@@ -328,7 +328,7 @@ const PersonalInformation = props => {
 				</Button>
 				<AlertDialog isOpen={Updated} onClose={() => setUpdated(false)} size="full">
 					<AlertDialog.Content>
-						<AlertDialog.CloseButton />
+						{/* <AlertDialog.CloseButton /> */}
 						<AlertDialog.Header>Updated Status</AlertDialog.Header>
 						<AlertDialog.Body>{message}</AlertDialog.Body>
 						<AlertDialog.Footer>
