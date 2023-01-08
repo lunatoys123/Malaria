@@ -12,11 +12,11 @@ import {
 } from "native-base";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import Auth_Global from "../Context/store/Auth_Global";
-import { loginUser } from "../Context/action/Auth_action";
-import { status_code } from "../Common/status_code";
-import LoadingSpinner from "../sharedComponent/Loading";
-import { Admin_Role } from "../Common/role";
+import Auth_Global from "../../Context/store/Auth_Global";
+import { loginUser } from "../../Context/action/Auth_action";
+import { status_code, Account_status } from "../../Common/status_code";
+import LoadingSpinner from "../../sharedComponent/Loading";
+import { Admin_Role, Normal_User_Role } from "../../Common/role";
 
 const Login = props => {
 	const context = useContext(Auth_Global);
@@ -35,10 +35,20 @@ const Login = props => {
 			//   placement: "top",
 			//   duration: 100,
 			// });
-			if (token_response.user_role === Admin_Role) {
-				props.navigation.navigate("Admin");
-			} else {
-				props.navigation.navigate("User");
+			if (token_response.Account_status === Account_status.Active) {
+				switch (token_response.user_role) {
+					case Admin_Role:
+						props.navigation.navigate("Admin");
+						break;
+					case Normal_User_Role:
+						props.navigation.navigate("User");
+						break;
+					default:
+						console.error("Invalid user role");
+						break;
+				}
+			} else if (token_response.Account_status === Account_status.Pending) {
+				props.navigation.navigate("ResetPassword");
 			}
 		} else {
 			// toast.show({

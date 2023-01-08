@@ -1,6 +1,5 @@
 import React, { useContext, useCallback, useState } from "react";
 import {
-	Center,
 	ScrollView,
 	Box,
 	Heading,

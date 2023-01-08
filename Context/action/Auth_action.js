@@ -24,7 +24,7 @@ export const loginUser = async (user, dispatch) => {
 				token_response.status = data.status;
 				token_response.Message = data.Message;
 				token_response.user_role = decoded.role;
-
+				token_response.Account_status = decoded.Account_status
 				//console.log(decoded);
 				dispatch(
 					setCurrentUser({

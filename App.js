@@ -1,7 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, LogBox } from "react-native";
 import { NativeBaseProvider } from "native-base";
-import Login from "./Screen/Login";
+import Login from "./Screen/Login/Login";
+import ResetPassword from "./Screen/Login/ResetPassword";
 import Auth from "./Context/store/Auth";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -38,6 +39,11 @@ export default function App() {
 							<Stack.Screen
 								name="Admin"
 								component={AdminNavigator}
+								options={{ headerShown: false }}
+							/>
+							<Stack.Screen
+								name="ResetPassword"
+								component={ResetPassword}
 								options={{ headerShown: false }}
 							/>
 						</Stack.Navigator>

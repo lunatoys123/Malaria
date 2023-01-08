@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Admin } from "../../Redux/Admin/selector";
 import { AdminAction } from "../../Redux/Admin/reducer";
 import { useFocusEffect } from "@react-navigation/native";
-import { LOADING_STATUS } from "../../Common/status_code";
+import { LOADING_STATUS, status_code } from "../../Common/status_code";
 
 const AddUser = props => {
 	const dispatch = useDispatch();
@@ -25,12 +25,20 @@ const AddUser = props => {
 	const [UserCreated, setUserCreated] = useState(false);
 	const [message, setMessage] = useState("");
 	const [submit, setSubmit] = useState(false);
+	const [status, setStatus] = useState("");
 
 	useFocusEffect(
 		useCallback(() => {
-			const { loading, Message } = AdminState;
-			if ((loading === LOADING_STATUS.FULFILLED || loading === LOADING_STATUS.REJECTED) && submit) {
+			const { loading, Message, Error, status } = AdminState;
+			if (loading === LOADING_STATUS.FULFILLED && submit) {
+				setStatus(status);
 				setMessage(Message);
+				setUserCreated(true);
+				setSubmit(false);
+				dispatch(AdminAction.Initialilze());
+			} else if (loading === LOADING_STATUS.REJECTED && submit) {
+				setStatus(status);
+				setMessage(Error);
 				setUserCreated(true);
 				setSubmit(false);
 				dispatch(AdminAction.Initialilze());
@@ -42,7 +50,7 @@ const AddUser = props => {
 		initialValues: {
 			Login_name: "",
 			Email: "",
-			Password: "",
+			// Password: "",
 			Role: "",
 			Phone_number: "",
 		},
@@ -51,12 +59,12 @@ const AddUser = props => {
 			Email: Yup.string()
 				.email("Please provide a valid email address")
 				.required("New User email should be provided"),
-			Password: Yup.string()
-				.required("Password is required")
-				.min(8, "must be at least 8 characters")
-				.matches(/[0-9]/, "Password requires a number")
-				.matches(/[a-z]/, "Password requires a lowercase letter")
-				.matches(/[A-Z]/, "Password requires an uppercase letter"),
+			// Password: Yup.string()
+			// 	.required("Password is required")
+			// 	.min(8, "must be at least 8 characters")
+			// 	.matches(/[0-9]/, "Password requires a number")
+			// 	.matches(/[a-z]/, "Password requires a lowercase letter")
+			// 	.matches(/[A-Z]/, "Password requires an uppercase letter"),
 			Role: Yup.object().required("Role need to establish for user"),
 			Phone_number: Yup.string()
 				.phone("HK", "Please Enter valid phone number")
@@ -68,7 +76,12 @@ const AddUser = props => {
 
 			newUser.Hospital_id = context.user.userInfo.Hospital_id;
 			newUser.Role = newUser.Role.id;
-			dispatch(AdminAction.AddUserToOrganization(newUser));
+			dispatch(
+				AdminAction.AddUserToOrganization({
+					user: newUser,
+					Doctor_id: context.user.userInfo.Doctor_id,
+				})
+			);
 		},
 	});
 
@@ -88,9 +101,11 @@ const AddUser = props => {
 		}
 	};
 
-	const ReturnToAdminPanel = () => {
+	const CheckConfirm = () => {
 		setUserCreated(false);
-		props.navigation.navigate("AccountManagement");
+		if (status === status_code.Success) {
+			props.navigation.navigate("AccountManagement");
+		}
 	};
 
 	return (
@@ -106,7 +121,7 @@ const AddUser = props => {
 					<Card_Component heading="New User">
 						<FormInputField formik={formik} Label="Login Name" id="Login_name" isRequired={true} />
 						<FormInputField formik={formik} Label="Email" id="Email" isRequired={true} />
-						<FormInputField
+						{/* <FormInputField
 							formik={formik}
 							Label="Password"
 							id="Password"
@@ -122,7 +137,7 @@ const AddUser = props => {
 									/>
 								</Pressable>
 							}
-						/>
+						/> */}
 						<FormSigleSelect
 							formik={formik}
 							id="Role"
@@ -144,12 +159,12 @@ const AddUser = props => {
 					Add New User
 				</Button>
 			</VStack>
-			<AlertDialog isOpen={UserCreated} onClose={() => setUserCreated(false)} size="full">
+			<AlertDialog isOpen={UserCreated} onClose={() => setUserCreated(false)} size="xl">
 				<AlertDialog.Content>
 					<AlertDialog.Header>User creation Status</AlertDialog.Header>
 					<AlertDialog.Body>{message}</AlertDialog.Body>
 					<AlertDialog.Footer>
-						<Button w="100%" onPress={() => ReturnToAdminPanel()}>
+						<Button w="100%" onPress={() => CheckConfirm()}>
 							Confirm
 						</Button>
 					</AlertDialog.Footer>

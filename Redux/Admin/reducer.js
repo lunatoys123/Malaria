@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { LOADING_STATUS } from "../../Common/status_code";
-import { GetUserFromHospital, AddUserToOrganization, Initialilze } from "./action";
+import { GetUserFromHospital, AddUserToOrganization, Initialilze, ResetPasswordForNewUser } from "./action";
 
 const initialState = {
 	loading: LOADING_STATUS.IDLE,
@@ -43,6 +43,15 @@ const AddUserFulfillReducer = (state, action) => {
 	};
 };
 
+const ResetPasswordFulfillReducer = (state, action) => {
+	return {
+		...state,
+		loading: LOADING_STATUS.FULFILLED,
+		status: action.payload.status,
+		Message: action.payload.Message,
+	};
+};
+
 const InitialReducer = (state, action) => {
 	return {
 		...state,
@@ -61,6 +70,9 @@ const AdminSlice = createSlice({
 		[AddUserToOrganization.pending]: pendingReducer,
 		[AddUserToOrganization.rejected]: rejectReducer,
 		[AddUserToOrganization.fulfilled]: AddUserFulfillReducer,
+		[ResetPasswordForNewUser.pending]: pendingReducer,
+		[ResetPasswordForNewUser.rejected]: rejectReducer,
+		[ResetPasswordForNewUser.fulfilled]: ResetPasswordFulfillReducer,
 		[Initialilze.fulfilled]: InitialReducer,
 	},
 });
@@ -70,5 +82,6 @@ export const AdminAction = {
 	GetUserFromHospital,
 	AddUserToOrganization,
 	Initialilze,
+	ResetPasswordForNewUser,
 	...AdminSlice.actions,
 };

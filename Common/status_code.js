@@ -33,3 +33,8 @@ export const Operation_Mode = {
   edit: "edit",
   createWithPatientId: "createWithPatientId",
 };
+
+export const Account_status = {
+  Active: "active",
+  Pending: "Pending",
+}

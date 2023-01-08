@@ -28,14 +28,15 @@ export const GetUserFromHospital = createAsyncThunk(
 
 export const AddUserToOrganization = createAsyncThunk(
 	"Admin/AddUser",
-	async (user, { rejectWithValue }) => {
+	async ({ user, Doctor_id }, { rejectWithValue }) => {
 		const jwt = await AsyncStorage.getItem("jwt");
-
+		console.log(Doctor_id);
 		try {
 			const response = await axios.post(
 				`${URL}/Malaria/User/register`,
 				{
 					user,
+					Doctor_id,
 				},
 				{
 					headers: {
@@ -47,24 +48,26 @@ export const AddUserToOrganization = createAsyncThunk(
 		} catch (e) {
 			return rejectWithValue(e.response.data);
 		}
+	}
+);
 
-		// const response = await axios
-		// 	.post(
-		// 		`${URL}/Malaria/User/register`,
-		// 		{
-		// 			user,
-		// 		},
-		// 		{
-		// 			headers: {
-		// 				Authorization: `Bearer ${jwt}`,
-		// 			},
-		// 		}
-		// 	)
-		// 	.catch(err => {
-		// 		//console.log(err.response.data);
-		// 		return rejectWithValue(err);
-		// 	});
-		// // console.log(response);
-		// return response.data;
+export const ResetPasswordForNewUser = createAsyncThunk(
+	"Admin/ResetPasswordForNewUser",
+	async ({ Doctor_id, Password }) => {
+		const jwt = await AsyncStorage.getItem("jwt");
+		const response = await axios.post(
+			`${URL}/Malaria/User/ResetPassword`,
+			{
+				Doctor_id,
+				Password,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${jwt}`,
+				},
+			}
+		);
+
+		return response.data;
 	}
 );
