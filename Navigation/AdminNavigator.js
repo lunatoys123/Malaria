@@ -1,6 +1,7 @@
 import React from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import AccountManagementNavigator from "./AccountManagementNavigator";
+import MessageBox from "../Screen/Message/MessageBox";
 
 import FontIcon from "react-native-vector-icons/FontAwesome5";
 
@@ -21,6 +22,10 @@ const AdminNavigator = () => {
 						<FontIcon name="user" color={color} size={focused ? 30 : 25} />
 					),
 				}}
+			/>
+			<Tab.Screen 
+				name="MessageBox"
+				component={MessageBox}	
 			/>
 			
 		</Tab.Navigator>
