@@ -12,11 +12,11 @@ export const Initialilze = createAsyncThunk("Admin/Initialilze", () => {
 	};
 });
 
-export const GetUserFromHospital = createAsyncThunk(
+export const GetNormalUsersFromHospital = createAsyncThunk(
 	"Admin/AccountManagement",
 	async ({ Doctor_id }) => {
 		const jwt = await AsyncStorage.getItem("jwt");
-		const response = await axios.get(`${URL}/Malaria/User/GetUserFromHospital`, {
+		const response = await axios.get(`${URL}/Malaria/User/GetNormalUsersFromHospital`, {
 			params: { Doctor_id },
 			headers: {
 				Authorization: `Bearer ${jwt}`,

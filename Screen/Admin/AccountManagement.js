@@ -38,7 +38,7 @@ const AccountManagement = props => {
 
 	useFocusEffect(
 		useCallback(() => {
-			dispatch(AdminAction.GetUserFromHospital({ Doctor_id: context.user.userInfo.Doctor_id }));
+			dispatch(AdminAction.GetNormalUsersFromHospital({ Doctor_id: context.user.userInfo.Doctor_id }));
 		}, [dispatch])
 	);
 

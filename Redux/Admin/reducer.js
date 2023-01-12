@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { LOADING_STATUS } from "../../Common/status_code";
-import { GetUserFromHospital, AddUserToOrganization, Initialilze, ResetPasswordForNewUser } from "./action";
+import { GetNormalUsersFromHospital, AddUserToOrganization, Initialilze, ResetPasswordForNewUser } from "./action";
 
 const initialState = {
 	loading: LOADING_STATUS.IDLE,
@@ -64,9 +64,9 @@ const AdminSlice = createSlice({
 	name: "Admin",
 	initialState,
 	extraReducers: {
-		[GetUserFromHospital.pending]: pendingReducer,
-		[GetUserFromHospital.rejected]: rejectReducer,
-		[GetUserFromHospital.fulfilled]: AccountManagementFulfillReducer,
+		[GetNormalUsersFromHospital.pending]: pendingReducer,
+		[GetNormalUsersFromHospital.rejected]: rejectReducer,
+		[GetNormalUsersFromHospital.fulfilled]: AccountManagementFulfillReducer,
 		[AddUserToOrganization.pending]: pendingReducer,
 		[AddUserToOrganization.rejected]: rejectReducer,
 		[AddUserToOrganization.fulfilled]: AddUserFulfillReducer,
@@ -79,7 +79,7 @@ const AdminSlice = createSlice({
 
 export const AdminReducer = AdminSlice.reducer;
 export const AdminAction = {
-	GetUserFromHospital,
+	GetNormalUsersFromHospital,
 	AddUserToOrganization,
 	Initialilze,
 	ResetPasswordForNewUser,

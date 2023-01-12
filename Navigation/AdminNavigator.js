@@ -1,8 +1,8 @@
 import React from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import AccountManagementNavigator from "./AccountManagementNavigator";
-import MessageBox from "../Screen/Message/MessageBox";
-
+import MessageNavigator from "./MessageNavigator";
+import { AntDesign } from "@expo/vector-icons";
 import FontIcon from "react-native-vector-icons/FontAwesome5";
 
 const Tab = createMaterialBottomTabNavigator();
@@ -23,11 +23,15 @@ const AdminNavigator = () => {
 					),
 				}}
 			/>
-			<Tab.Screen 
-				name="MessageBox"
-				component={MessageBox}	
+			<Tab.Screen
+				name="MessageNavigator"
+				component={MessageNavigator}
+				options={{
+					tabBarIcon: ({ focused, size, color }) => (
+						<AntDesign name="message1" size={focused ? 30 : 25} color={color} />
+					),
+				}}
 			/>
-			
 		</Tab.Navigator>
 	);
 };

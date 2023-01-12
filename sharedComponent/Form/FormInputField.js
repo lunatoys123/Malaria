@@ -11,7 +11,8 @@ const FormInputField = props => {
 		keyboardType = "text",
 		isRequired = false,
 		type = "text",
-		rightElement = null
+		rightElement = null,
+		height = 30,
 	} = props;
 	return (
 		<FormControl isRequired={isRequired} isInvalid={_.get(formik.errors, id) !== null}>
@@ -20,7 +21,7 @@ const FormInputField = props => {
 
 				{isTextArea ? (
 					<TextArea
-						h={20}
+						h={height}
 						placeholder={Label}
 						value={_.get(formik.values, id) != null ? _.get(formik.values, id) : ""}
 						onChangeText={text => {
@@ -39,7 +40,6 @@ const FormInputField = props => {
 						keyboardType={keyboardType}
 						type={type}
 						rightElement={rightElement}
-						
 					/>
 				)}
 				<FormControl.ErrorMessage>{_.get(formik.errors, id)}</FormControl.ErrorMessage>
