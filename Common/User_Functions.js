@@ -115,13 +115,14 @@ export const generatePDF = async id => {
 						<div style="${columndata}">${Patient.Phone}</div>
 					</div>
 					${
-						Patient.Gender === "Female"?
-						`<div style="${container}" class="breakavoid">
+						Patient.Gender === "Female"
+							? `<div style="${container}" class="breakavoid">
 						    <div style="${columnHeader}">Pregnant</div>
 							<div style="${columndata}">${Patient.Pregnant ? "Yes" : "No"}</div>
 							<div style="${columnHeader}">Pregnant Date</div>
 							<div style="${columndata}">${Patient.PregnantDate.substring(0, 10)}</div>
-						</div>`:``
+						</div>`
+							: ``
 					}
 				</div>
 				<div style="width: 90%; justify-content: center; align-items: center; margin: auto;" class="breakavoid">
@@ -400,4 +401,19 @@ export const generatePDF = async id => {
 		html: html,
 		printerUrl: "",
 	});
+};
+
+export const SetMessageStateToRead = async MessageId => {
+	const jwt = await AsyncStorage.getItem("jwt");
+
+	const response = await axios.post(
+		`${URL}/Malaria/Message/ReadState`,
+		{ MessageId },
+		{
+			headers: {
+				Authorization: `Bearer ${jwt}`,
+			},
+		}
+	);
+	return response.data;
 };

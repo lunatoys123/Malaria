@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import MessageBox from "../Screen/Message/MessageBox";
 import SendMessageTemplete from "../Screen/Message/SendMessageTemplete";
@@ -17,9 +17,13 @@ const MessageNavigator = () => {
 					headerShown: false,
 				}}
 			/>
-			<stack.Screen name="SendMessage" component={SendMessageTemplete} options={{
-				headerTitle:"Send Message",
-			}}/>
+			<stack.Screen
+				name="SendMessage"
+				component={SendMessageTemplete}
+				options={{
+					headerTitle: "Send Message",
+				}}
+			/>
 		</stack.Navigator>
 	);
 };

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { GetAllUserInHospital, SendMessageToUsers } from "./action";
+import { GetAllUserInHospital, SendMessageToUsers, GetMessageForUser, GetUnreadCount } from "./action";
 import { LOADING_STATUS } from "../../Common/status_code";
 
 const initialState = {
@@ -8,6 +8,8 @@ const initialState = {
 	Error: "",
 	Message: "",
 	Receipents: [],
+	Message_Stack: [],
+	unreadCount: 0,
 };
 
 const pendingReducer = (state, action) => {
@@ -37,10 +39,28 @@ const fulfilledReducer = (state, action) => {
 const sendMessageFulfillReducer = (state, action) => {
 	return {
 		...state,
+		Loading: LOADING_STATUS.FULFILLED,
 		Message: action.payload.Message,
-		status: action.payload.status
-	}
+		status: action.payload.status,
+	};
 };
+
+const GetMessageFulfillReducer = (state, action) => {
+	return {
+		...state,
+		Loading: LOADING_STATUS.FULFILLED,
+		Message_Stack: action.payload.Message_Object,
+	};
+};
+
+const GetUnreadCountFulfillReducer = (state, action) => {
+	return {
+		...state,
+		Loading: LOADING_STATUS.FULFILLED,
+		unreadCount: action.payload.unreadCount
+
+	}
+}
 
 const MessageSlice = createSlice({
 	name: "Message",
@@ -51,7 +71,13 @@ const MessageSlice = createSlice({
 		[GetAllUserInHospital.fulfilled]: fulfilledReducer,
 		[SendMessageToUsers.pending]: pendingReducer,
 		[SendMessageToUsers.rejected]: rejectedReducer,
-		[SendMessageToUsers.fulfilled]: sendMessageFulfillReducer
+		[SendMessageToUsers.fulfilled]: sendMessageFulfillReducer,
+		[GetMessageForUser.pending]: pendingReducer,
+		[GetMessageForUser.rejected]: rejectedReducer,
+		[GetMessageForUser.fulfilled]: GetMessageFulfillReducer,
+		[GetUnreadCount.pending]: pendingReducer,
+		[GetUnreadCount.rejected]: rejectedReducer,
+		[GetUnreadCount.fulfilled]: GetUnreadCountFulfillReducer
 	},
 });
 
@@ -59,5 +85,7 @@ export const MessageReducer = MessageSlice.reducer;
 export const MessageAction = {
 	GetAllUserInHospital,
 	SendMessageToUsers,
+	GetMessageForUser,
+	GetUnreadCount,
 	...MessageSlice.actions,
 };
