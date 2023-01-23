@@ -103,6 +103,7 @@ export const AddLaboratory = createAsyncThunk("report/addLaboratory", async valu
 	const case_id = values.case_id;
 	const Laboratory = values.Laboratory;
 
+
 	const response = await axios.post(
 		`${URL}/Malaria/Case/AddLabortary`,
 		{

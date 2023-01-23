@@ -1,9 +1,24 @@
 import React, { useState, useCallback } from "react";
-import { ScrollView, Center, Radio, Button, Pressable, Icon, Text, View, VStack } from "native-base";
+import {
+	ScrollView,
+	Center,
+	Radio,
+	Button,
+	Pressable,
+	Icon,
+	Text,
+	View,
+	VStack,
+} from "native-base";
 import Card_Component from "../../sharedComponent/Card_Component";
 import FormRadioGroup from "../../sharedComponent/Form/FormRadioGroup";
 import { useFormik } from "formik";
-import { Laboratory_result_Option, Laboratory_Positive, RDT_Options, RDT_Type_Option } from "../../Common/Options";
+import {
+	Laboratory_result_Option,
+	Laboratory_Positive,
+	RDT_Options,
+	RDT_Type_Option,
+} from "../../Common/Options";
 import * as Yup from "yup";
 import _ from "lodash";
 import FormSigleSelect from "../../sharedComponent/Form/FormSigleSelect";
@@ -19,7 +34,7 @@ import { ReportAction } from "../../Redux/Report/reducer";
 import { FancyAlert } from "react-native-expo-fancy-alerts";
 import AntIcon from "react-native-vector-icons/AntDesign";
 
-const Laboratory = (props) => {
+const Laboratory = props => {
 	const case_id = props.route.params.case_id;
 	const mode = props.route.params.mode;
 	const initialState = props.route.params.initialState;
@@ -116,7 +131,9 @@ const Laboratory = (props) => {
 				}),
 				Collection_Date: Yup.date().required("Collection Date is required"),
 				Laboratory_name: Yup.string().required("Laboratory name is required"),
-				Phone_Number: Yup.string().phone("HK", "Please enter a valid phone number").required("Phone Number is required"),
+				Phone_Number: Yup.string()
+					.phone("HK", "Please enter a valid phone number")
+					.required("Phone Number is required"),
 			}),
 			PCR_of_Blood: Yup.object().shape({
 				status: Yup.string().required("PCR of Blood status is required"),
@@ -128,7 +145,9 @@ const Laboratory = (props) => {
 				}),
 				Collection_Date: Yup.date().required("Collection Date is required"),
 				Laboratory_name: Yup.string().required("Laboratory name is required"),
-				Phone_Number: Yup.string().phone("HK", "Please enter a valid phone number").required("Phone Number is required"),
+				Phone_Number: Yup.string()
+					.phone("HK", "Please enter a valid phone number")
+					.required("Phone Number is required"),
 			}),
 			RDT: Yup.object().shape({
 				status: Yup.string().required("RDT status is required"),
@@ -147,12 +166,14 @@ const Laboratory = (props) => {
 				}),
 				Collection_Date: Yup.date().required("Collection Date is required"),
 				Laboratory_name: Yup.string().required("Laboratory name is required"),
-				Phone_Number: Yup.string().phone("HK", "Please enter a valid phone number").required("Phone Number is required"),
+				Phone_Number: Yup.string()
+					.phone("HK", "Please enter a valid phone number")
+					.required("Phone Number is required"),
 			}),
 		}),
 		validateOnChange: false,
 		validateOnBlur: false,
-		onSubmit: (values) => {
+		onSubmit: values => {
 			setSubmit(true);
 			const Laboratory = _.cloneDeep(values);
 			//console.log(Laboratory);
@@ -180,13 +201,13 @@ const Laboratory = (props) => {
 		},
 	});
 
-	const onChange = (targetField) => {
-		return (val) => {
+	const onChange = targetField => {
+		return val => {
 			formik.setFieldValue(targetField, val);
 		};
 	};
 
-	const SubmitWithAlert = async (values) => {
+	const SubmitWithAlert = async values => {
 		//console.log("SubmitWithAlert", values);
 		const validation = await formik.validateForm(values);
 		if (!_.isEmpty(validation)) {
@@ -222,12 +243,8 @@ const Laboratory = (props) => {
 						Horizontal={false}
 						id="Blood_Smear.status"
 					>
-						{Laboratory_result_Option.map((d) => (
-							<Radio
-								value={d.value}
-								size="sm"
-								key={d.value}
-							>
+						{Laboratory_result_Option.map(d => (
+							<Radio value={d.value} size="sm" key={d.value}>
 								{d.Label}
 							</Radio>
 						))}
@@ -248,11 +265,7 @@ const Laboratory = (props) => {
 						Label="Collection Date"
 						rightElement={
 							<Pressable onPress={() => setBloodSmearDate(true)}>
-								<Icon
-									as={<FontIcon name="calendar" />}
-									size={5}
-									mr={2}
-								/>
+								<Icon as={<FontIcon name="calendar" />} size={5} mr={2} />
 							</Pressable>
 						}
 						id="Blood_Smear.Collection_Date"
@@ -281,12 +294,8 @@ const Laboratory = (props) => {
 						Horizontal={false}
 						id="PCR_of_Blood.status"
 					>
-						{Laboratory_result_Option.map((d) => (
-							<Radio
-								value={d.value}
-								size="sm"
-								key={d.value}
-							>
+						{Laboratory_result_Option.map(d => (
+							<Radio value={d.value} size="sm" key={d.value}>
 								{d.Label}
 							</Radio>
 						))}
@@ -307,11 +316,7 @@ const Laboratory = (props) => {
 						Label="Collection Date"
 						rightElement={
 							<Pressable onPress={() => setPCRDate(true)}>
-								<Icon
-									as={<FontIcon name="calendar" />}
-									size={5}
-									mr={2}
-								/>
+								<Icon as={<FontIcon name="calendar" />} size={5} mr={2} />
 							</Pressable>
 						}
 						id="PCR_of_Blood.Collection_Date"
@@ -340,12 +345,8 @@ const Laboratory = (props) => {
 						Horizontal={false}
 						id="RDT.status"
 					>
-						{Laboratory_result_Option.map((d) => (
-							<Radio
-								value={d.value}
-								size="sm"
-								key={d.value}
-							>
+						{Laboratory_result_Option.map(d => (
+							<Radio value={d.value} size="sm" key={d.value}>
 								{d.Label}
 							</Radio>
 						))}
@@ -361,17 +362,9 @@ const Laboratory = (props) => {
 							hideInputFilter={true}
 						/>
 					)}
-					<FormRadioGroup
-						formik={formik}
-						Label={"Specify RDT"}
-						id="RDT.Type"
-					>
-						{RDT_Type_Option.map((d) => (
-							<Radio
-								value={d.value}
-								size="sm"
-								key={d.value}
-							>
+					<FormRadioGroup formik={formik} Label={"Specify RDT"} id="RDT.Type">
+						{RDT_Type_Option.map(d => (
+							<Radio value={d.value} size="sm" key={d.value}>
 								{d.Label}
 							</Radio>
 						))}
@@ -389,11 +382,7 @@ const Laboratory = (props) => {
 						Label="Collection Date"
 						rightElement={
 							<Pressable onPress={() => setRPTDDate(true)}>
-								<Icon
-									as={<FontIcon name="calendar" />}
-									size={5}
-									mr={2}
-								/>
+								<Icon as={<FontIcon name="calendar" />} size={5} mr={2} />
 							</Pressable>
 						}
 						id="RPT.Collection_Date"
@@ -416,13 +405,12 @@ const Laboratory = (props) => {
 					/>
 				</Card_Component>
 
-				<Button
-					w="90%"
-					alignSelf="center"
-					mt="3"
-					onPress={() => SubmitWithAlert(formik.values)}
-				>
-					{mode === Operation_Mode.create ? "Submit Laboratory" : mode === Operation_Mode.edit ? "Update Laboratory" : null}
+				<Button w="90%" alignSelf="center" mt="3" onPress={() => SubmitWithAlert(formik.values)}>
+					{mode === Operation_Mode.create
+						? "Submit Laboratory"
+						: mode === Operation_Mode.edit
+						? "Update Laboratory"
+						: null}
 				</Button>
 				<FancyAlert
 					visible={visible}
@@ -438,21 +426,14 @@ const Laboratory = (props) => {
 								width: "100%",
 							}}
 						>
-							<AntIcon
-								name="checkcircle"
-								size={30}
-								color="white"
-							/>
+							<AntIcon name="checkcircle" size={30} color="white" />
 						</View>
 					}
 					style={{ backgroundColor: "white" }}
 				>
 					<VStack>
 						<Text>{message}</Text>
-						<Button
-							onPress={() => ReturnToReportPage(false)}
-							my={3}
-						>
+						<Button onPress={() => ReturnToReportPage(false)} my={3}>
 							OK
 						</Button>
 					</VStack>

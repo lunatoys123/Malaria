@@ -135,7 +135,7 @@ const Report = props => {
 							>
 								{Data &&
 									Data.map(d => (
-										<Box border="1" borderRadius="md" bg="white" shadow="3" my="2" key={d._id}>
+										<Box border="1" borderRadius="md" bg="white" shadow="3" my="2" key={d._id} borderWidth={1} borderColor="indigo.400">
 											<VStack
 												//space="3"
 												divider={
@@ -190,7 +190,7 @@ const Report = props => {
 																</Menu.Item>
 															) : (
 																<Menu.Item onPress={() => createLaboratory(d._id)}>
-																	Add Laboratory
+																	Create Laboratory
 																</Menu.Item>
 															)}
 															<Menu.Item onPress={() => generatePDF(d._id)}>View Report</Menu.Item>
