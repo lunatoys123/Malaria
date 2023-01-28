@@ -1,10 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { LOADING_STATUS } from "../../Common/status_code";
-import { GetNormalUsersFromHospital, AddUserToOrganization, Initialilze, ResetPasswordForNewUser } from "./action";
+import {
+	GetNormalUsersFromHospital,
+	AddUserToOrganization,
+	Initialilze,
+	ResetPasswordForNewUser,
+	GetAuditFromDoctorId,
+} from "./action";
 
 const initialState = {
 	loading: LOADING_STATUS.IDLE,
 	AccountManagement: [],
+	Audit_Log: [],
 	status: "",
 	Message: "",
 	Error: "",
@@ -60,6 +67,14 @@ const InitialReducer = (state, action) => {
 		status: "",
 	};
 };
+
+const AuditFulfillReducer = (state, action) => {
+	return {
+		...state,
+		loading: LOADING_STATUS.FULFILLED,
+		Audit_Log: action.payload,
+	};
+};
 const AdminSlice = createSlice({
 	name: "Admin",
 	initialState,
@@ -74,6 +89,9 @@ const AdminSlice = createSlice({
 		[ResetPasswordForNewUser.rejected]: rejectReducer,
 		[ResetPasswordForNewUser.fulfilled]: ResetPasswordFulfillReducer,
 		[Initialilze.fulfilled]: InitialReducer,
+		[GetAuditFromDoctorId.pending]: pendingReducer,
+		[GetAuditFromDoctorId.rejected]: rejectReducer,
+		[GetAuditFromDoctorId.fulfilled]: AuditFulfillReducer,
 	},
 });
 
@@ -83,5 +101,6 @@ export const AdminAction = {
 	AddUserToOrganization,
 	Initialilze,
 	ResetPasswordForNewUser,
+	GetAuditFromDoctorId,
 	...AdminSlice.actions,
 };

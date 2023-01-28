@@ -9,6 +9,12 @@ import {
 	Link,
 	Button,
 	useToast,
+	PresenceTransition,
+	Alert,
+	Text,
+	IconButton,
+	CloseIcon,
+	HStack,
 } from "native-base";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -22,6 +28,8 @@ const Login = props => {
 	const context = useContext(Auth_Global);
 	const toast = useToast();
 	const [Loading, setLoading] = useState(false);
+	const [showLoginAlert, setShowLoginAlert] = useState(false);
+	const [Message, setMessage] = useState("");
 
 	const onSubmit = async user => {
 		setLoading(true);
@@ -30,10 +38,10 @@ const Login = props => {
 
 		if (token_response.status === status_code.Success) {
 			// toast.show({
-			//   title: token_response.status,
-			//   description: token_response.Message,
-			//   placement: "top",
-			//   duration: 100,
+			// 	title: token_response.status,
+			// 	description: token_response.Message,
+			// 	placement: "top",
+			// 	duration: 100,
 			// });
 			if (token_response.Account_status === Account_status.Active) {
 				switch (token_response.user_role) {
@@ -52,11 +60,13 @@ const Login = props => {
 			}
 		} else {
 			// toast.show({
-			//   title: token_response.status,
-			//   description: token_response.Message,
-			//   placement: "top",
-			//   duration: 100,
+			// 	title: token_response.status,
+			// 	description: token_response.Message,
+			// 	placement: "top",
+			// 	duration: 100,
 			// });
+			setMessage(token_response.Message);
+			setShowLoginAlert(true);
 		}
 	};
 
@@ -119,6 +129,44 @@ const Login = props => {
 								</VStack>
 							)}
 						</Formik>
+						<PresenceTransition
+							visible={showLoginAlert}
+							initial={{
+								opacity: 0,
+								scale: 0,
+							}}
+							animate={{
+								opacity: 1,
+								scale: 1,
+								transition: {
+									duration: 250,
+								},
+							}}
+						>
+							<Alert justifyContent="center" status="error" mt="3">
+								<HStack flexShrink={1} space={2} justifyContent="space-between">
+									<HStack space={2} flexShrink={1} alignContent="center">
+										<Alert.Icon mt="1" />
+										<VStack>
+											<Text fontSize="md" color="coolGray.800">
+												{Message}
+											</Text>
+										</VStack>
+									</HStack>
+									<IconButton
+										variant="unstyled"
+										_focus={{
+											borderWidth: 0,
+										}}
+										icon={<CloseIcon size="3" />}
+										_icon={{
+											color: "coolGray.600",
+										}}
+										onPress={() => setShowLoginAlert(false)}
+									/>
+								</HStack>
+							</Alert>
+						</PresenceTransition>
 					</Box>
 				</Center>
 			)}

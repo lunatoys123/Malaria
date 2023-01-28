@@ -13,6 +13,8 @@ import {
 	Input,
 	Menu,
 	IconButton,
+	Pressable,
+	HamburgerIcon
 } from "native-base";
 import { useSelector, useDispatch } from "react-redux";
 import { Case } from "../../Redux/Case/selector";
@@ -135,7 +137,16 @@ const Report = props => {
 							>
 								{Data &&
 									Data.map(d => (
-										<Box border="1" borderRadius="md" bg="white" shadow="3" my="2" key={d._id} borderWidth={1} borderColor="indigo.400">
+										<Box
+											border="1"
+											borderRadius="md"
+											bg="white"
+											shadow="3"
+											my="2"
+											key={d._id}
+											borderWidth={1}
+											borderColor="indigo.400"
+										>
 											<VStack
 												//space="3"
 												divider={
@@ -158,16 +169,13 @@ const Report = props => {
 															width="190"
 															trigger={triggerProps => {
 																return (
-																	<IconButton
-																		size="md"
-																		justifyContent="flex-start"
-																		_icon={{
-																			as: MaterialIcons,
-																			name: "menu",
+																	<Pressable {...triggerProps}>
+																		{({ isPressed }) => {
+																			return (
+																				<HamburgerIcon color={isPressed ? "indigo.500" : "black"} />
+																			);
 																		}}
-																		//accessibilityLabel="More options menu"
-																		{...triggerProps}
-																	/>
+																	</Pressable>
 																);
 															}}
 														>

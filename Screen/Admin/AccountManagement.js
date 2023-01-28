@@ -11,6 +11,8 @@ import {
 	IconButton,
 	Input,
 	Button,
+	Pressable,
+	HamburgerIcon,
 } from "native-base";
 import Auth_Global from "../../Context/store/Auth_Global";
 import { useFocusEffect } from "@react-navigation/native";
@@ -31,14 +33,16 @@ const AccountManagement = props => {
 			const { loading, AccountManagement } = AdminState;
 			if (loading === LOADING_STATUS.FULFILLED) {
 				setAccount(AccountManagement);
-				dispatch(AdminAction.Initialilze());
+				//dispatch(AdminAction.Initialilze());
 			}
 		}, [AdminState])
 	);
 
 	useFocusEffect(
 		useCallback(() => {
-			dispatch(AdminAction.GetNormalUsersFromHospital({ Doctor_id: context.user.userInfo.Doctor_id }));
+			dispatch(
+				AdminAction.GetNormalUsersFromHospital({ Doctor_id: context.user.userInfo.Doctor_id })
+			);
 		}, [dispatch])
 	);
 
@@ -80,68 +84,60 @@ const AccountManagement = props => {
 						}}
 						width="100%"
 					>
-						
 						{Account.length > 0 &&
-						Account.map(d => (
-							<Box
-								border="1"
-								borderRadius="lg"
-								w="90%"
-								bg="white"
-								alignSelf="center"
-								mt="3"
-								borderWidth="1"
-								borderColor="indigo.400"
-							>
-								<VStack space="2" divider={<Divider />}>
-									<Box px="4">
-										<HStack alignItems="center">
+							Account.map((d, index) => (
+								<Box
+									border="1"
+									borderRadius="lg"
+									w="90%"
+									bg="white"
+									alignSelf="center"
+									mt="3"
+									borderWidth="1"
+									borderColor="indigo.400"
+									key={index}
+								>
+									<VStack space="2" divider={<Divider />}>
+										<Box px="4">
 											<Heading w="90%">{d.Login_name}</Heading>
-											<Menu
-												width="190"
-												placement="bottom"
-												defaultIsOpen={false}
-												trigger={triggerProps => {
-													return (
-														<IconButton
-															size="md"
-															justifyContent="flex-start"
-															_icon={{
-																as: MaterialIcons,
-																name: "menu",
-															}}
-															//accessibilityLabel="More options menu"
-															{...triggerProps}
-														/>
-													);
-												}}
-											>
-												<Menu.Item>View Patient Reports</Menu.Item>
-												<Menu.Item>View Audit Trail</Menu.Item>
-												<Menu.Item>Change Password</Menu.Item>
-												<Menu.Item>Remove User</Menu.Item>
-											</Menu>
-										</HStack>
-									</Box>
-									<Box px="4" pb="4">
-										<VStack>
-											<Text>
-												{`\u2B24 Email: `}
-												<Text bold>{d.Email}</Text>
-											</Text>
-											<Text>
-												{`\u2B24 Phone Number: `}
-												<Text bold>{d.Phone_number}</Text>
-											</Text>
-											<Text>
-												{`\u2B24 Account Status: `}
-												<Text bold>{d.Account_status}</Text>
-											</Text>
-										</VStack>
-									</Box>
-								</VStack>
-							</Box>
-						))}
+										</Box>
+										<Box px="4" pb="4">
+											<VStack>
+												<Text>
+													{`\u2B24 Email: `}
+													<Text bold>{d.Email}</Text>
+												</Text>
+												<Text>
+													{`\u2B24 Phone Number: `}
+													<Text bold>{d.Phone_number}</Text>
+												</Text>
+												<Text>
+													{`\u2B24 Account Status: `}
+													<Text bold>{d.Account_status}</Text>
+												</Text>
+											</VStack>
+										</Box>
+										<ScrollView horizontal={true}>
+											<HStack space={2} py="2" px="2">
+												<Button size="sm">View Patient Reports</Button>
+												<Button
+													size="sm"
+													onPress={() =>
+														props.navigation.navigate("Audit", {
+															Doctor_name: d.Login_name,
+															Doctor_id: d._id,
+														})
+													}
+												>
+													View Audit Trail
+												</Button>
+												<Button size="sm">Change Password</Button>
+												<Button size="sm">Remove User</Button>
+											</HStack>
+										</ScrollView>
+									</VStack>
+								</Box>
+							))}
 					</ScrollView>
 				</VStack>
 			</Box>

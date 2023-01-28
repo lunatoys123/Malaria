@@ -90,7 +90,7 @@ const Laboratory = props => {
 			const Blood_Smear = initialState.Blood_Smear;
 			const PCR_of_Blood = initialState.PCR_of_Blood;
 			const RDT = initialState.RDT;
-
+			//console.log(Blood_Smear);
 			return {
 				Blood_Smear: {
 					status: Blood_Smear.status,
@@ -175,22 +175,32 @@ const Laboratory = props => {
 		validateOnBlur: false,
 		onSubmit: values => {
 			setSubmit(true);
-			const Laboratory = _.cloneDeep(values);
-			//console.log(Laboratory);
+			console.log(values);
 
-			const Blood_Smear = Laboratory.Blood_Smear;
-			Blood_Smear.Description = Blood_Smear.status !== "Positive" ? "" : Blood_Smear.description;
-			Blood_Smear.Description = Blood_Smear.Description === "" ? "" : Blood_Smear.Description.id;
+			const Laboratory = {};
 
-			const PCR_of_Blood = Laboratory.PCR_of_Blood;
-			PCR_of_Blood.Description = PCR_of_Blood.status !== "Positive" ? "" : PCR_of_Blood.description;
-			PCR_of_Blood.Description = PCR_of_Blood.Description === "" ? "" : PCR_of_Blood.Description.id;
+			Laboratory.Blood_Smear = {
+				...values.Blood_Smear,
+			};
+			Laboratory.Blood_Smear.Description =
+				Laboratory.Blood_Smear.status !== "Positive" ? "" : Laboratory.Blood_Smear.Description;
+			Laboratory.Blood_Smear.Description =
+				Laboratory.Blood_Smear.Description === "" ? "" : Laboratory.Blood_Smear.Description.id;
 
-			const RDT = Laboratory.RDT;
-			RDT.Description = RDT.status !== "Positive" ? "" : RDT.description;
-			RDT.Description = RDT.Description === "" ? "" : RDT.Description.id;
+			Laboratory.PCR_of_Blood = {
+				...values.PCR_of_Blood,
+			}
 
-			RDT.Type_Other = RDT.Type !== "Other" ? "" : RDT.Type_Other;
+			Laboratory.PCR_of_Blood.Description = Laboratory.PCR_of_Blood.status !== "Positive" ? "" : Laboratory.PCR_of_Blood.Description;
+			Laboratory.PCR_of_Blood.Description = Laboratory.PCR_of_Blood.Description === "" ? "" : Laboratory.PCR_of_Blood.Description.id;
+
+			Laboratory.RDT = {
+				...values.RDT
+			}
+
+			Laboratory.RDT.Description = Laboratory.RDT.status !== "Positive" ? "" : Laboratory.RDT.Description;
+			Laboratory.RDT.Description = Laboratory.RDT.Description === "" ? "" : Laboratory.RDT.Description.id;
+
 
 			if (mode === Operation_Mode.create) {
 				dispatch(ReportAction.AddLaboratory({ case_id: case_id, Laboratory: Laboratory }));
@@ -209,6 +219,7 @@ const Laboratory = props => {
 
 	const SubmitWithAlert = async values => {
 		//console.log("SubmitWithAlert", values);
+		console.log(_.get(formik.values, "Blood_Smear.Description"));
 		const validation = await formik.validateForm(values);
 		if (!_.isEmpty(validation)) {
 			console.log(validation);
@@ -251,13 +262,10 @@ const Laboratory = props => {
 					</FormRadioGroup>
 					{_.get(formik.values, "Blood_Smear.status") === "Positive" && (
 						<FormSigleSelect
-							options={Laboratory_Positive}
 							formik={formik}
-							Label="Specify (if positive)"
-							placeholder="Description"
+							options={Laboratory_Positive}
 							id="Blood_Smear.Description"
 							onChange={onChange}
-							hideInputFilter={true}
 						/>
 					)}
 					<FormDateComponent

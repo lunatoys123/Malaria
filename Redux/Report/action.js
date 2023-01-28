@@ -103,7 +103,6 @@ export const AddLaboratory = createAsyncThunk("report/addLaboratory", async valu
 	const case_id = values.case_id;
 	const Laboratory = values.Laboratory;
 
-
 	const response = await axios.post(
 		`${URL}/Malaria/Case/AddLabortary`,
 		{
@@ -124,7 +123,7 @@ export const EditLaboratory = createAsyncThunk("report/editLaboratory", async va
 	const jwt = await AsyncStorage.getItem("jwt");
 	const id = values.id;
 	const Laboratory = values.Laboratory;
-
+	console.log(id);
 	const response = await axios.put(
 		`${URL}/Malaria/Case/updateLaboratoryByCaseId`,
 		{
