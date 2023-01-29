@@ -14,7 +14,7 @@ import {
 	Menu,
 	IconButton,
 	Pressable,
-	HamburgerIcon
+	HamburgerIcon,
 } from "native-base";
 import { useSelector, useDispatch } from "react-redux";
 import { Case } from "../../Redux/Case/selector";
@@ -30,6 +30,7 @@ import {
 } from "../../Common/User_Functions";
 import LoadingSpinner from "../../sharedComponent/Loading";
 import { MaterialIcons } from "@expo/vector-icons";
+import Border from "../../sharedComponent/Common/Border";
 
 const Report = props => {
 	const dispatch = useDispatch();
@@ -137,16 +138,7 @@ const Report = props => {
 							>
 								{Data &&
 									Data.map(d => (
-										<Box
-											border="1"
-											borderRadius="md"
-											bg="white"
-											shadow="3"
-											my="2"
-											key={d._id}
-											borderWidth={1}
-											borderColor="indigo.400"
-										>
+										<Border key={d._id}>
 											<VStack
 												//space="3"
 												divider={
@@ -167,6 +159,7 @@ const Report = props => {
 														</Heading>
 														<Menu
 															width="190"
+															defaultIsOpen={false}
 															trigger={triggerProps => {
 																return (
 																	<Pressable {...triggerProps}>
@@ -224,7 +217,7 @@ const Report = props => {
 													</Text>
 												</Box>
 											</VStack>
-										</Box>
+										</Border>
 									))}
 							</ScrollView>
 						</VStack>

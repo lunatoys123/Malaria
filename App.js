@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, LogBox } from "react-native";
-import { NativeBaseProvider } from "native-base";
+import { NativeBaseProvider, extendTheme, v33xTheme } from "native-base";
 import Login from "./Screen/Login/Login";
 import ResetPassword from "./Screen/Login/ResetPassword";
 import Auth from "./Context/store/Auth";

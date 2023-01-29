@@ -21,6 +21,7 @@ import { Admin } from "../../Redux/Admin/selector";
 import { useSelector, useDispatch } from "react-redux";
 import { LOADING_STATUS } from "../../Common/status_code";
 import { MaterialIcons, AntDesign, Ionicons } from "@expo/vector-icons";
+import Border from "../../sharedComponent/Common/Border";
 
 const AccountManagement = props => {
 	const dispatch = useDispatch(props);
@@ -86,21 +87,56 @@ const AccountManagement = props => {
 					>
 						{Account.length > 0 &&
 							Account.map((d, index) => (
-								<Box
-									border="1"
-									borderRadius="lg"
-									w="90%"
-									bg="white"
-									alignSelf="center"
-									mt="3"
-									borderWidth="1"
-									borderColor="indigo.400"
+								<Border
+									width="90%"
 									key={index}
 								>
 									<VStack space="2" divider={<Divider />}>
-										<Box px="4">
-											<Heading w="90%">{d.Login_name}</Heading>
-										</Box>
+										<HStack>
+											<HStack px="4" py="2" alignItems="center">
+												<Heading w="90%">{d.Login_name}</Heading>
+												<Box>
+													<Menu
+														width="190"
+														defaultIsOpen={false}
+														trigger={triggerProps => {
+															return (
+																<Pressable {...triggerProps}>
+																	{({ isPressed }) => {
+																		return (
+																			<HamburgerIcon color={isPressed ? "indigo.500" : "black"} />
+																		);
+																	}}
+																</Pressable>
+															);
+														}}
+													>
+														<Menu.Item
+															onPress={() => {
+																props.navigation.navigate("ViewDoctorReport", {
+																	Doctor_name: d.Login_name,
+																	Doctor_id: d._id,
+																});
+															}}
+														>
+															View Patient Reports
+														</Menu.Item>
+														<Menu.Item
+															onPress={() =>
+																props.navigation.navigate("Audit", {
+																	Doctor_name: d.Login_name,
+																	Doctor_id: d._id,
+																})
+															}
+														>
+															View Audit Trail
+														</Menu.Item>
+														<Menu.Item>Change Password</Menu.Item>
+														<Menu.Item>Remove User</Menu.Item>
+													</Menu>
+												</Box>
+											</HStack>
+										</HStack>
 										<Box px="4" pb="4">
 											<VStack>
 												<Text>
@@ -119,7 +155,17 @@ const AccountManagement = props => {
 										</Box>
 										<ScrollView horizontal={true}>
 											<HStack space={2} py="2" px="2">
-												<Button size="sm">View Patient Reports</Button>
+												<Button
+													size="sm"
+													onPress={() => {
+														props.navigation.navigate("ViewDoctorReport", {
+															Doctor_name: d.Login_name,
+															Doctor_id: d._id,
+														});
+													}}
+												>
+													View Patient Reports
+												</Button>
 												<Button
 													size="sm"
 													onPress={() =>
@@ -136,7 +182,7 @@ const AccountManagement = props => {
 											</HStack>
 										</ScrollView>
 									</VStack>
-								</Box>
+								</Border>
 							))}
 					</ScrollView>
 				</VStack>

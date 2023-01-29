@@ -61,37 +61,36 @@ export const getPersonalInformationById = async values => {
 
 export const generatePDF = async id => {
 	const jwt = await AsyncStorage.getItem("jwt");
+	try {
+		const response = await axios.get(`${URL}/Malaria/Case/view/case/${id}`, {
+			headers: {
+				Authorization: `Bearer ${jwt}`,
+			},
+		});
 
-	const response = await axios.get(`${URL}/Malaria/Case/view/case/${id}`, {
-		headers: {
-			Authorization: `Bearer ${jwt}`,
-		},
-	});
+		const data = response.data;
 
-	const data = response.data;
-	console.log(data);
+		const Patient = data.Patient;
+		const Clinical_Complications = data.Clinical_Complications;
+		const Hospitalization = data.Hospitalization;
+		const Previous_Diagnosis_Malaria = data.Previous_Diagnosis_Malaria;
+		const Symptoms = data.Symptoms;
+		const Treatment = data.Treatment;
+		const Laboratory = data.Laboratory;
 
-	const Patient = data.Patient;
-	const Clinical_Complications = data.Clinical_Complications;
-	const Hospitalization = data.Hospitalization;
-	const Previous_Diagnosis_Malaria = data.Previous_Diagnosis_Malaria;
-	const Symptoms = data.Symptoms;
-	const Treatment = data.Treatment;
-	const Laboratory = data.Laboratory;
+		const container = "display: grid; grid-template-columns: 25% 25% 25% 25%;";
+		const sectionItem =
+			"grid-area: span 1 / span 4; background-color: #189BE5; border-style: solid; border-width: 1px; padding: 10px;";
+		const columnHeader =
+			"background-color: lightblue; border-style: solid; border-width: 1px; flex: 1; word-wrap: break-word; padding: 10px;";
+		const columndata =
+			"border-style: solid; border-width: 1px; text-align: center; padding: 10px; word-wrap: break-word;";
+		const LongItem =
+			"grid-area: span 1 / span 3; border-style: solid; border-width: 1px; word-wrap: break-word; padding: 10px;";
+		const rowItem =
+			"grid-area: span 1 / span 4; border-style: solid; border-width: 1px; word-wrap: break-word; background-color: #74A1F6; padding-left: 10px;";
 
-	const container = "display: grid; grid-template-columns: 25% 25% 25% 25%;";
-	const sectionItem =
-		"grid-area: span 1 / span 4; background-color: #189BE5; border-style: solid; border-width: 1px; padding: 10px;";
-	const columnHeader =
-		"background-color: lightblue; border-style: solid; border-width: 1px; flex: 1; word-wrap: break-word; padding: 10px;";
-	const columndata =
-		"border-style: solid; border-width: 1px; text-align: center; padding: 10px; word-wrap: break-word;";
-	const LongItem =
-		"grid-area: span 1 / span 3; border-style: solid; border-width: 1px; word-wrap: break-word; padding: 10px;";
-	const rowItem =
-		"grid-area: span 1 / span 4; border-style: solid; border-width: 1px; word-wrap: break-word; background-color: #74A1F6; padding-left: 10px;";
-
-	const html = `
+		const html = `
 		<html>
 			<head>
 				<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
@@ -192,9 +191,13 @@ export const generatePDF = async id => {
 					</div>
 				</div>
 				<div style="width: 90%; justify-content: center; align-items: center; margin: auto;" class="breakavoid">
-					<div style="${container}" class="breakavoid">
-						<div style="${sectionItem}">Hospitalization</div>
-					</div>
+				${
+					Hospitalization.length > 0
+						? `<div style="${container}" class="breakavoid">
+							<div style="${sectionItem}">Hospitalization</div>
+						  </div>`
+						: ``
+				}	
 					${Hospitalization.map((d, index) => {
 						return `
 									<div style="${container}" class="breakavoid">
@@ -231,7 +234,8 @@ export const generatePDF = async id => {
 					</div>
 					<div style="${container}" class="breakavoid">
 						${
-							Previous_Diagnosis_Malaria.Diagnosed_Malaria_previous === "No"
+							Previous_Diagnosis_Malaria.Diagnosed_Malaria_previous === "No" ||
+							Previous_Diagnosis_Malaria.Diagnosed_Malaria_previous === "Unknown"
 								? `<div style="${columnHeader}">Malaria Diagnosed Previously</div>
 							<div style="${LongItem}">${Previous_Diagnosis_Malaria.Diagnosed_Malaria_previous}</div>`
 								: `<div style="${columnHeader}">Malaria Diagnosed Previously</div>
@@ -397,10 +401,13 @@ export const generatePDF = async id => {
 			</style>
 		</html>
 		`;
-	await Print.printAsync({
-		html: html,
-		printerUrl: "",
-	});
+		await Print.printAsync({
+			html: html,
+			printerUrl: "",
+		});
+	} catch (err) {
+		console.error(err);
+	}
 };
 
 export const SetMessageStateToRead = async MessageId => {

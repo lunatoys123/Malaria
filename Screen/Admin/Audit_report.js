@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { LOADING_STATUS } from "../../Common/status_code";
 import { AdminAction } from "../../Redux/Admin/reducer";
 import { Admin } from "../../Redux/Admin/selector";
+import Border from "../../sharedComponent/Common/Border";
 
 const Audit_report = props => {
 	const dispatch = useDispatch();
@@ -39,15 +40,8 @@ const Audit_report = props => {
 					width="100%"
 				>
 					{AuditLog.map((d, index) => (
-						<Box
-							border="1"
-							borderRadius="lg"
-							w="90%"
-							bg="white"
-							alignSelf="center"
-							mt="3"
-							borderWidth="1"
-							borderColor="indigo.400"
+						<Border
+							width="90%"
 							key={index}
 						>
 							<VStack divider={<Divider />} px="2">
@@ -55,7 +49,7 @@ const Audit_report = props => {
 								<Text>{d.Activity}</Text>
 								<Text>{d.dtCreated}</Text>
 							</VStack>
-						</Box>
+						</Border>
 					))}
 				</ScrollView>
 			</Center>
