@@ -43,6 +43,7 @@ const Login = props => {
 			// 	placement: "top",
 			// 	duration: 100,
 			// });
+			setShowLoginAlert(false);
 			if (token_response.Account_status === Account_status.Active) {
 				switch (token_response.user_role) {
 					case Admin_Role:
@@ -119,6 +120,7 @@ const Login = props => {
 												color: "indigo.500",
 											}}
 											alignSelf="flex-end"
+											onPress={()=> props.navigation.navigate("ForgetNavigator")}
 										>
 											Forget Password
 										</Link>

@@ -1,8 +1,9 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, LogBox } from "react-native";
-import { NativeBaseProvider, extendTheme, v33xTheme } from "native-base";
+import { StyleSheet, LogBox } from "react-native";
+import { NativeBaseProvider } from "native-base";
 import Login from "./Screen/Login/Login";
 import ResetPassword from "./Screen/Login/ResetPassword";
+import ForgetPassword from "./Screen/Login/ForgetPassword";
 import Auth from "./Context/store/Auth";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -11,6 +12,7 @@ import { Provider } from "react-redux";
 import "react-native-gesture-handler";
 import UserNavigator from "./Navigation/UserNavigator";
 import AdminNavigator from "./Navigation/AdminNavigator";
+import ForgetPasswordNavigator from "./Navigation/ForgetPasswordNavigator";
 
 LogBox.ignoreAllLogs();
 LogBox.ignoreLogs(["Warning:", "No element found", "VirtualizedLists should never be nested"]);
@@ -44,6 +46,11 @@ export default function App() {
 							<Stack.Screen
 								name="ResetPassword"
 								component={ResetPassword}
+								options={{ headerShown: false }}
+							/>
+							<Stack.Screen
+								name="ForgetNavigator"
+								component={ForgetPasswordNavigator}
 								options={{ headerShown: false }}
 							/>
 						</Stack.Navigator>

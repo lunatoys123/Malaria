@@ -424,3 +424,46 @@ export const SetMessageStateToRead = async MessageId => {
 	);
 	return response.data;
 };
+
+export const ForgetPasswordProcess = async ({ Email }) => {
+	const jwt = await AsyncStorage.getItem("jwt");
+	try {
+		const response = await axios.post(
+			`${URL}/Malaria/User/ForgetPasswordProcess`,
+			{
+				Email,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${jwt}`,
+				},
+			}
+		);
+
+		return response.data;
+	} catch (err) {
+		return err.response.data;
+	}
+};
+
+export const CheckAuthenticationCode = async ({ AuthenticationCode, Email }) => {
+	const jwt = await AsyncStorage.getItem("jwt");
+	try {
+		const response = await axios.post(
+			`${URL}/Malaria/User/Recovery_Authentication`,
+			{
+				AuthenticationCode,
+				Email,
+			},
+			{
+				headers: {
+					Authorization: `Bearer ${jwt}`,
+				},
+			}
+		);
+
+		return response.data;
+	} catch (err) {
+		console.error(err);
+	}
+};
