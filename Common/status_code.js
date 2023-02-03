@@ -50,9 +50,15 @@ export const Operation_Mode = {
 export const Account_status = {
 	Active: "active",
 	Pending: "Pending",
+	Blocked: "Blocked",
 };
 
 export const Message_status = {
 	read: "read",
 	unread: "unread",
 };
+
+export const User_Status = {
+	newUser: "NewUser",
+	reset: "reset"
+}

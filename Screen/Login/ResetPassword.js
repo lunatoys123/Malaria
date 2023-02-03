@@ -9,13 +9,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Admin } from "../../Redux/Admin/selector";
 import { AdminAction } from "../../Redux/Admin/reducer";
 import { useFocusEffect } from "@react-navigation/native";
-import { LOADING_STATUS } from "../../Common/status_code";
+import { LOADING_STATUS, User_Status } from "../../Common/status_code";
 import { Admin_Role, Normal_User_Role } from "../../Common/role";
 
 const ResetPassword = props => {
 	const dispatch = useDispatch();
 	const AdminState = useSelector(Admin());
 	const context = useContext(Auth_Global);
+	const mode = props.route.params.mode;
+	const Email = props.route.params.Email;
 
 	const [submit, setSubmit] = useState(false);
 	const [message, setMessage] = useState("");
@@ -38,12 +40,23 @@ const ResetPassword = props => {
 		}),
 		onSubmit: values => {
 			setSubmit(true);
-			dispatch(
-				AdminAction.ResetPasswordForNewUser({
-					Doctor_id: context.user.userInfo.Doctor_id,
-					Password: values.Password,
-				})
-			);
+			if (mode === User_Status.newUser) {
+				dispatch(
+					AdminAction.ResetPasswordForUser({
+						Recovery_Info: context.user.userInfo.Doctor_id,
+						Password: values.Password,
+						mode: User_Status.newUser,
+					})
+				);
+			} else if (mode === User_Status.reset) {
+				dispatch(
+					AdminAction.ResetPasswordForUser({
+						Recovery_Info: Email,
+						Password: values.Password,
+						mode: User_Status.reset,
+					})
+				);
+			}
 		},
 	});
 
@@ -71,15 +84,19 @@ const ResetPassword = props => {
 
 	const ReturnToAdminPanel = async () => {
 		setResetPassword(false);
-		if (context.user.userInfo.role === Admin_Role) {
-			props.navigation.navigate("Admin");
-		} else if (context.user.userInfo.role === Normal_User_Role) {
-			props.navigation.navigate("User");
+		if (mode === User_Status.newUser) {
+			if (context.user.userInfo.role === Admin_Role) {
+				props.navigation.navigate("Admin");
+			} else if (context.user.userInfo.role === Normal_User_Role) {
+				props.navigation.navigate("User");
+			}
+		} else if (mode === User_Status.reset) {
+			props.navigation.navigate("Login");
 		}
 	};
 	return (
 		<Center w="100%">
-			<Box safeArea w="90%">
+			<Box safeArea w="90%" py="8">
 				<Center>
 					<Heading>Reset Password</Heading>
 				</Center>

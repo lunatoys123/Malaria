@@ -20,7 +20,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import Auth_Global from "../../Context/store/Auth_Global";
 import { loginUser } from "../../Context/action/Auth_action";
-import { status_code, Account_status } from "../../Common/status_code";
+import { status_code, Account_status, User_Status } from "../../Common/status_code";
 import LoadingSpinner from "../../sharedComponent/Loading";
 import { Admin_Role, Normal_User_Role } from "../../Common/role";
 
@@ -57,7 +57,9 @@ const Login = props => {
 						break;
 				}
 			} else if (token_response.Account_status === Account_status.Pending) {
-				props.navigation.navigate("ResetPassword");
+				props.navigation.navigate("ResetPassword", { mode: User_Status.newUser });
+			} else if (token_response.Account_status == Account_status.Blocked) {
+				props.navigation.navigate("Error");
 			}
 		} else {
 			// toast.show({
@@ -120,7 +122,7 @@ const Login = props => {
 												color: "indigo.500",
 											}}
 											alignSelf="flex-end"
-											onPress={()=> props.navigation.navigate("ForgetNavigator")}
+											onPress={() => props.navigation.navigate("ForgetNavigator")}
 										>
 											Forget Password
 										</Link>

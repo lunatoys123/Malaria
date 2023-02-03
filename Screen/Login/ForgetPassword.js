@@ -28,7 +28,7 @@ const ForgetPassword = props => {
 	const onSubmit = async value => {
 		const Email = value.Email;
 		const response = await ForgetPasswordProcess({ Email });
-		console.log(response);
+		//console.log(response);
 		if (response.status === status_code.Failed) {
 			setShowAlert(true);
 			setAlertMessage(response.Message);

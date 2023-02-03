@@ -13,6 +13,7 @@ import "react-native-gesture-handler";
 import UserNavigator from "./Navigation/UserNavigator";
 import AdminNavigator from "./Navigation/AdminNavigator";
 import ForgetPasswordNavigator from "./Navigation/ForgetPasswordNavigator";
+import Error_Page from "./Screen/Login/Error_Page";
 
 LogBox.ignoreAllLogs();
 LogBox.ignoreLogs(["Warning:", "No element found", "VirtualizedLists should never be nested"]);
@@ -48,6 +49,7 @@ export default function App() {
 								component={ResetPassword}
 								options={{ headerShown: false }}
 							/>
+							<Stack.Screen name="Error" component={Error_Page} options={{ headerShown: false }} />
 							<Stack.Screen
 								name="ForgetNavigator"
 								component={ForgetPasswordNavigator}

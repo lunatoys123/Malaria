@@ -51,15 +51,16 @@ export const AddUserToOrganization = createAsyncThunk(
 	}
 );
 
-export const ResetPasswordForNewUser = createAsyncThunk(
+export const ResetPasswordForUser = createAsyncThunk(
 	"Admin/ResetPasswordForNewUser",
-	async ({ Doctor_id, Password }) => {
+	async ({ Recovery_Info, Password, mode }) => {
 		const jwt = await AsyncStorage.getItem("jwt");
 		const response = await axios.post(
 			`${URL}/Malaria/User/ResetPassword`,
 			{
-				Doctor_id,
+				Recovery_Info,
 				Password,
+				mode,
 			},
 			{
 				headers: {

@@ -4,7 +4,7 @@ import {
 	GetNormalUsersFromHospital,
 	AddUserToOrganization,
 	Initialilze,
-	ResetPasswordForNewUser,
+	ResetPasswordForUser,
 	GetAuditFromDoctorId,
 } from "./action";
 
@@ -85,9 +85,9 @@ const AdminSlice = createSlice({
 		[AddUserToOrganization.pending]: pendingReducer,
 		[AddUserToOrganization.rejected]: rejectReducer,
 		[AddUserToOrganization.fulfilled]: AddUserFulfillReducer,
-		[ResetPasswordForNewUser.pending]: pendingReducer,
-		[ResetPasswordForNewUser.rejected]: rejectReducer,
-		[ResetPasswordForNewUser.fulfilled]: ResetPasswordFulfillReducer,
+		[ResetPasswordForUser.pending]: pendingReducer,
+		[ResetPasswordForUser.rejected]: rejectReducer,
+		[ResetPasswordForUser.fulfilled]: ResetPasswordFulfillReducer,
 		[Initialilze.fulfilled]: InitialReducer,
 		[GetAuditFromDoctorId.pending]: pendingReducer,
 		[GetAuditFromDoctorId.rejected]: rejectReducer,
@@ -100,7 +100,7 @@ export const AdminAction = {
 	GetNormalUsersFromHospital,
 	AddUserToOrganization,
 	Initialilze,
-	ResetPasswordForNewUser,
+	ResetPasswordForUser  ,
 	GetAuditFromDoctorId,
 	...AdminSlice.actions,
 };

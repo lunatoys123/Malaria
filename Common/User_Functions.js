@@ -464,6 +464,6 @@ export const CheckAuthenticationCode = async ({ AuthenticationCode, Email }) => 
 
 		return response.data;
 	} catch (err) {
-		console.error(err);
+		return err.response.data;
 	}
 };

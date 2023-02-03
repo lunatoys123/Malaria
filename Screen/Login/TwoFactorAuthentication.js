@@ -1,13 +1,36 @@
 import React, { useState } from "react";
-import { Box, Center, Text, VStack, Heading, FormControl, Input, Button } from "native-base";
+import {
+	Box,
+	Center,
+	Text,
+	VStack,
+	Heading,
+	FormControl,
+	Input,
+	Button,
+	PresenceTransition,
+	Alert,
+	HStack,
+	IconButton,
+	CloseIcon,
+} from "native-base";
 import { CheckAuthenticationCode } from "../../Common/User_Functions";
+import { status_code, User_Status } from "../../Common/status_code";
 
 const TwoFactorAuthentication = props => {
 	const Email = props.route.params.Email;
 	const [AuthenticationCode, setAuthenticationCode] = useState("");
+	const [AuthenticationAlert, setAuthenticationAlert] = useState(false);
+	const [AlertMessage, setAlertMessage] = useState("");
 
 	const submit = async () => {
-		const response = await CheckAuthenticationCode({AuthenticationCode, Email});
+		const response = await CheckAuthenticationCode({ AuthenticationCode, Email });
+		if (response.status === status_code.Failed) {
+			setAuthenticationAlert(true);
+			setAlertMessage(response.Message);
+		} else {
+			props.navigation.navigate("ResetPassword", { mode: User_Status.reset, Email });
+		}
 	};
 	return (
 		<Center width="100%">
@@ -31,6 +54,47 @@ const TwoFactorAuthentication = props => {
 					<Button isDisabled={AuthenticationCode.length < 6} onPress={() => submit()}>
 						Enter
 					</Button>
+					<PresenceTransition
+						visible={AuthenticationAlert}
+						initial={{
+							opacity: 0,
+							scale: 0,
+						}}
+						animate={{
+							opacity: 1,
+							scale: 1,
+							transition: {
+								duration: 250,
+							},
+						}}
+					>
+						<Alert justifyContent="center" status="error" mt="3">
+							<HStack flexShrink={1} space={2} justifyContent="space-between">
+								<HStack space={2} flexShrink={1} alignContent="center">
+									<Alert.Icon mt="1" />
+									<VStack>
+										<Text fontSize="md" color="coolGray.800">
+											{AlertMessage}
+										</Text>
+									</VStack>
+								</HStack>
+								<IconButton
+									variant="unstyled"
+									_focus={{
+										borderWidth: 0,
+									}}
+									icon={<CloseIcon size="3" />}
+									_icon={{
+										color: "coolGray.600",
+									}}
+									onPress={() => {
+										setAuthenticationAlert(false);
+										setAlertMessage("");
+									}}
+								/>
+							</HStack>
+						</Alert>
+					</PresenceTransition>
 				</VStack>
 			</Box>
 		</Center>
