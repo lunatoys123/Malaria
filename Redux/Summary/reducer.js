@@ -7,6 +7,8 @@ const initialState = {
 	loading: LOADING_STATUS.IDLE,
 	countries: [],
 	WHO_Data: [],
+	Table_data: [],
+	Analytics: {},
 };
 
 const PendingReducer = (state, action) => {
@@ -38,6 +40,8 @@ const PreviewDataFullfillReducer = (state, action) => {
 		loading: LOADING_STATUS.FULFILLED,
 		status: action.payload.status,
 		WHO_Data: action.payload.data,
+		Table_data: action.payload.Table_data,
+		Analytics: action.payload.Analytics
 	};
 };
 

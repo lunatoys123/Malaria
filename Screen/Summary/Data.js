@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Dimensions, BackHandler } from "react-native";
+import { BackHandler } from "react-native";
 import {
-	View,
-	Text,
 	Center,
 	Select,
 	Box,
@@ -12,18 +10,23 @@ import {
 	useToast,
 	ScrollView,
 	VStack,
-	Pressable,
 	Icon,
 	IconButton,
+	Link,
+	Text,
 } from "native-base";
 import { useSelector, useDispatch } from "react-redux";
 import { Summary } from "../../Redux/Summary/Selector";
 import { SummaryAction } from "../../Redux/Summary/reducer";
-import { LOADING_STATUS } from "../../Common/status_code";
+import { LOADING_STATUS, Data_Mode } from "../../Common/status_code";
 import LoadingSpinner from "../../sharedComponent/Loading";
-import { LineChart } from "react-native-chart-kit";
-import { Rect, Text as TextSvG, Svg } from "react-native-svg";
 import { Ionicons } from "@expo/vector-icons";
+import * as XLSX from "xlsx";
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
+import GraphView from "./Views/GraphView";
+import TableView from "./Views/TableView";
+import AnalyticsView from "./Views/AnalyticsView";
 
 const Data = props => {
 	const toast = useToast();
@@ -34,8 +37,12 @@ const Data = props => {
 	const [selectcountry, setSelectCountry] = useState(null);
 	const [loading, setLoading] = useState(false);
 	const [WHO_DATA, setWHO_DATA] = useState([]);
-	const DEVICE_WIDTH = Dimensions.get("window").width;
+	const [Table_Data, setTable_Data] = useState([]);
+	const [Analytics_Data, setAnalytics_Data] = useState({});
 	const [tooltipPosition, setTooltipPosition] = useState([]);
+	const [dataModel, setDataModel] = useState(Data_Mode.Graph);
+	const [currentCountry, setCurrentCountry] = useState(null);
+	const [targetCountry, setTargetCountry] = useState(null);
 
 	useEffect(() => {
 		// dispatch(SummaryAction.WHO_Data({ option: option }));
@@ -54,11 +61,13 @@ const Data = props => {
 	}, []);
 
 	useEffect(() => {
-		const { countries, loading, WHO_Data } = SummaryState;
+		const { countries, loading, WHO_Data, Table_data, Analytics } = SummaryState;
 		if (loading === LOADING_STATUS.FULFILLED) {
 			setCountries(countries);
 			setLoading(false);
 			setWHO_DATA(WHO_Data);
+			setTable_Data(Table_data);
+			setAnalytics_Data(Analytics);
 
 			const tooltipPos = [];
 			for (let i = 0; i < WHO_Data.length; i++) {
@@ -77,7 +86,7 @@ const Data = props => {
 		props.navigation.setOptions({
 			headerLeft: () => (
 				<IconButton
-					icon={<Icon as={<Ionicons name="arrow-back" size={24} color="black"/>} />}
+					icon={<Icon as={<Ionicons name="arrow-back" size={24} color="black" />} />}
 					onPress={() => {
 						dispatch(SummaryAction.Initialize());
 						props.navigation.goBack();
@@ -101,25 +110,58 @@ const Data = props => {
 		}
 	};
 
-	const ConstructLabel = d => {
-		if (d) {
-			var labels = d.map(w => {
-				return w.Year;
+	const CompareData = () => {
+		if (targetCountry == null || currentCountry == null) {
+			console.log("error on compare");
+			toast.show({
+				title: "Error",
+				description: "Please select a country",
+				placement: "top",
+				duration: 500,
 			});
-
-			return labels;
 		}
-		return [];
 	};
 
-	const ConstructDataSet = d => {
-		if (d) {
-			var dataset = d.map(w => {
-				return Number(w.value);
-			});
-			return dataset;
+	const GenerateExcel = () => {
+		var data_array = [];
+		data_array.push([option]);
+		data_array.push(["Data", "Value"]);
+
+		const extract_Table_data = Table_Data.map(d => {
+			return { Year: d.Year, value: d.value ? d.value : 0 };
+		});
+
+		for (let i = 0; i < extract_Table_data.length; i++) {
+			data_array.push([extract_Table_data[i].Year, extract_Table_data[i].value]);
 		}
-		return [];
+
+		//console.log(data_array);
+
+		let data_wb = XLSX.utils.book_new();
+		let data_ws = XLSX.utils.aoa_to_sheet(data_array);
+
+		XLSX.utils.book_append_sheet(data_wb, data_ws, "Country Data", true);
+
+		var Analytics_array = [];
+		Analytics_array.push([option]);
+		Analytics_array.push(["Analytics", "Value"]);
+
+		const analytics_key = Object.keys(Analytics_Data);
+		for (let i = 0; i < analytics_key.length; i++) {
+			const key = analytics_key[i];
+			Analytics_array.push([key, Analytics_Data[key]]);
+		}
+		let Analytics_ws = XLSX.utils.aoa_to_sheet(Analytics_array);
+
+		XLSX.utils.book_append_sheet(data_wb, Analytics_ws, "Analytics", true);
+		const base64 = XLSX.write(data_wb, { type: "base64" });
+		const filename = FileSystem.documentDirectory + selectcountry;
+
+		FileSystem.writeAsStringAsync(filename, base64, {
+			encoding: FileSystem.EncodingType.Base64,
+		}).then(() => {
+			Sharing.shareAsync(filename);
+		});
 	};
 
 	return (
@@ -127,9 +169,90 @@ const Data = props => {
 			{loading ? (
 				<LoadingSpinner />
 			) : (
-				<Box safeArea alignItems="center" mt={3}>
-					<Box maxW="300">
-						<HStack space={2}>
+				<>
+					<Box bg="white" width="100%" shadow={3} borderWidth={1} borderColor="indigo.500">
+						<Center>
+							<VStack space={2} py={3}>
+								<Button.Group
+									isAttached
+									colorScheme="blue"
+									mx={{
+										base: "auto",
+										md: 0,
+									}}
+									size="sm"
+									alignItems="center"
+									width="100%"
+								>
+									<Button
+										size="sm"
+										variant={dataModel == Data_Mode.Graph ? "solid" : "outline"}
+										onPress={() => setDataModel(Data_Mode.Graph)}
+									>
+										Graph View
+									</Button>
+									<Button
+										size="sm"
+										variant={dataModel == Data_Mode.Table ? "solid" : "outline"}
+										onPress={() => setDataModel(Data_Mode.Table)}
+									>
+										Table View
+									</Button>
+									<Button
+										size="sm"
+										variant={dataModel == Data_Mode.Compare ? "solid" : "outline"}
+										onPress={() => setDataModel(Data_Mode.Compare)}
+									>
+										Compare View
+									</Button>
+								</Button.Group>
+							</VStack>
+						</Center>
+					</Box>
+					{dataModel == Data_Mode.Compare ? (
+						<VStack space={2} py={3} width="90%" alignItems="center">
+							<HStack alignItems="center" space={2}>
+								<Text>Country 1</Text>
+								<Select
+									selectedValue={currentCountry}
+									minW="200"
+									placeholder="Select country"
+									_selectedItem={{
+										bg: "teal.600",
+										endIcon: <CheckIcon size="5" />,
+									}}
+									onValueChange={itemValue => setCurrentCountry(itemValue)}
+								>
+									{country &&
+										country.map(c => {
+											return <Select.Item label={c.Options} value={c.code} key={c.code} />;
+										})}
+								</Select>
+							</HStack>
+							<HStack alignItems="center" space={2}>
+								<Text>Country 2</Text>
+								<Select
+									selectedValue={targetCountry}
+									minW="200"
+									placeholder="Select country"
+									_selectedItem={{
+										bg: "teal.600",
+										endIcon: <CheckIcon size="5" />,
+									}}
+									onValueChange={itemValue => setTargetCountry(itemValue)}
+								>
+									{country &&
+										country.map(c => {
+											return <Select.Item label={c.Options} value={c.code} key={c.code} />;
+										})}
+								</Select>
+							</HStack>
+							<Button width="100%" onPress={CompareData}>
+								Compare
+							</Button>
+						</VStack>
+					) : (
+						<HStack space={2} alignSelf="center" py={3}>
 							<Select
 								selectedValue={selectcountry}
 								minW="200"
@@ -147,121 +270,42 @@ const Data = props => {
 							</Select>
 							<Button onPress={selectCountries}>Select country</Button>
 						</HStack>
-					</Box>
-					<Box>
-						<ScrollView
-							nestedScrollEnabled={true}
-							contentContainerStyle={{ paddingBottom: 100 }}
-							width="100%"
-						>
-							<VStack space={2}>
-								{WHO_DATA &&
-									WHO_DATA.map((d, index) => (
-										<Box key={index}>
-											<Text>{`${ConstructLabel(d)[0]} - ${
-												ConstructLabel(d)[ConstructLabel(d).length - 1]
-											}`}</Text>
-											<Pressable
-												onPress={() => {
-													let currentPoints = [...tooltipPosition];
-													currentPoints[index] = {
-														x: 0,
-														y: 0,
-														visible: false,
-														value: 0,
-													};
-													setTooltipPosition(currentPoints);
-												}}
-											>
-												<LineChart
-													data={{
-														labels: ConstructLabel(d),
-														datasets: [
-															{
-																data: ConstructDataSet(d),
-															},
-														],
-													}}
-													width={DEVICE_WIDTH * 0.9}
-													height={200}
-													chartConfig={{
-														backgroundColor: "#e26a00",
-														backgroundGradientFrom: "#fb8c00",
-														backgroundGradientTo: "#ffa726",
-														decimalPlaces: 0,
-														color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-														labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-														style: {
-															//borderRadius: 16,
-														},
-														propsForDots: {
-															r: "6",
-															strokeWidth: "2",
-															stroke: "#ffa726",
-														},
-													}}
-													bezier
-													style={{
-														marginVertical: 8,
-														borderRadius: 16,
-													}}
-													onDataPointClick={data => {
-														let isSamePoint =
-															tooltipPosition[index].x === data.x &&
-															tooltipPosition[index].y === data.y;
+					)}
 
-														if (isSamePoint) {
-															let currentPoints = [...tooltipPosition];
-															currentPoints[index] = {
-																...currentPoints[index],
-																value: data.value,
-																visible: currentPoints[index].visible,
-															};
-															setTooltipPosition(currentPoints);
-														} else {
-															let currentPoints = [...tooltipPosition];
-															currentPoints[index] = {
-																x: data.x,
-																value: data.value,
-																y: data.y,
-																visible: true,
-															};
-															setTooltipPosition(currentPoints);
-														}
-													}}
-													decorator={() => {
-														return tooltipPosition[index].visible ? (
-															<View>
-																<Svg>
-																	{/* <Rect
-																	x={tooltipPosition[index].x - 15}
-																	y={tooltipPosition[index].y + 10}
-																	width={30}
-																	height={20}
-																	fill="black"
-																/> */}
-																	<TextSvG
-																		x={tooltipPosition[index].x + 5}
-																		y={tooltipPosition[index].y + 20}
-																		fill="black"
-																		fontSize={10}
-																		fontWeight="bold"
-																		textAnchor="middle"
-																	>
-																		{tooltipPosition[index].value}
-																	</TextSvG>
-																</Svg>
-															</View>
-														) : null;
-													}}
-												/>
-											</Pressable>
-										</Box>
-									))}
-							</VStack>
-						</ScrollView>
-					</Box>
-				</Box>
+					<ScrollView
+						nestedScrollEnabled={true}
+						contentContainerStyle={{ paddingBottom: 100 }}
+						width="100%"
+					>
+						{dataModel === Data_Mode.Graph && (
+							<GraphView
+								WHO_DATA={WHO_DATA}
+								tooltipPosition={tooltipPosition}
+								setTooltipPosition={setTooltipPosition}
+							/>
+						)}
+						{dataModel === Data_Mode.Table && (
+							<>
+								<TableView Table_Data={Table_Data} Analytics_Data={Analytics_Data} />
+								<AnalyticsView Analytics_Data={Analytics_Data} />
+							</>
+						)}
+						{selectcountry && Table_Data.length > 0 && (
+							<Link
+								alignSelf="center"
+								my={2}
+								_text={{
+									fontSize: "md",
+									fontWeight: "500",
+									color: "indigo.500",
+								}}
+								onPress={() => GenerateExcel()}
+							>
+								Download Data
+							</Link>
+						)}
+					</ScrollView>
+				</>
 			)}
 		</Center>
 	);

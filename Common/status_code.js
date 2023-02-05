@@ -20,7 +20,6 @@ export const WHO_Indicator_code = {
 	MALARIA_EST_CASES: "Estimated number of malaria cases",
 	MALARIA_EST_INCIDENCE: "Estimated malaria incidence (per 1000 population at risk)",
 	MALARIA_MICR_TEST: "Number of malaria suspects examined by microscopy",
-	MALARIA_EST_CASES: "Estimated number of malaria cases",
 	MALARIA_SUSPECTS: "Number of suspected malaria cases",
 	MALARIA_INDIG_STATUS: "Status of indigenous malaria cases",
 	MALARIA_PV_INDIG: "Number of indigenous P. vivax malaria cases",
@@ -35,7 +34,7 @@ export const WHO_Indicator_code = {
 		"Number of malaria cases treated with any first  line tx courses (including artemisinin-based combination therapies (ACTs)",
 	MALARIA_EST_MORTALITY: "Estimated malaria mortality rate (per 100 000 population)",
 	MALARIA_IPTP3_COVERAGE:
-		"Pregnant women attending antenatal care at least once and receiving at least 3 doses of Intermittent Preventive Treatment of Malaria for Pregnant Women (IPTp3) (%)",
+		"Pregnant women attending antenatal care at least once and receiving at least 3 doses of Intermittent Preventive Treatment of Malaria for Pregnant Women (IPTp3) (%)",
 	MALARIA_PRES_CASES: "Number of presumed malaria cases",
 	MALARIA_IRS_COVERAGE: "Number of people protected from malaria by indoor residual spraying (IRS)",
 	MALARIA_TOTAL_CASES: "Total number of  malaria cases (presumed + confirmed cases)",
@@ -60,5 +59,11 @@ export const Message_status = {
 
 export const User_Status = {
 	newUser: "NewUser",
-	reset: "reset"
-}
+	reset: "reset",
+};
+
+export const Data_Mode = {
+	Graph: "Graph",
+	Table: "Table",
+	Compare: "Compare",
+};
