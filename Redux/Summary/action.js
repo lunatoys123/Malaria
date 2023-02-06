@@ -7,6 +7,10 @@ export const Initialize = createAsyncThunk("summary/Initialize", async () => {
 	return {
 		countries: [],
 		WHO_Data: [],
+		Analytics: {},
+		Table_data: [],
+		target_Data: [],
+		current_Data: [],
 	};
 });
 
@@ -51,3 +55,26 @@ export const GetCountries = createAsyncThunk("summary/countries", async () => {
 	});
 	return response.data;
 });
+
+export const CompareView = createAsyncThunk(
+	"summary/CompareView",
+	async ({ option, targetCountry, currentCountry }, { rejectWithValue }) => {
+		const jwt = await AsyncStorage.getItem("jwt");
+		try {
+			const response = await axios.get(`${URL}/Malaria/WHO/CompareData`, {
+				params: {
+					option,
+					targetCountry,
+					currentCountry,
+				},
+				headers: {
+					Authorization: `Bearer ${jwt}`,
+				},
+			});
+
+			return response.data;
+		} catch (e) {
+			return rejectWithValue(e.response.data);
+		}
+	}
+);

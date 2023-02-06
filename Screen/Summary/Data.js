@@ -27,6 +27,7 @@ import * as Sharing from "expo-sharing";
 import GraphView from "./Views/GraphView";
 import TableView from "./Views/TableView";
 import AnalyticsView from "./Views/AnalyticsView";
+import CompareView from "./Views/CompareView";
 
 const Data = props => {
 	const toast = useToast();
@@ -38,11 +39,15 @@ const Data = props => {
 	const [loading, setLoading] = useState(false);
 	const [WHO_DATA, setWHO_DATA] = useState([]);
 	const [Table_Data, setTable_Data] = useState([]);
+	const [Target_Data, setTarget_Data] = useState([]);
+	const [Current_Data, setCurrent_Data] = useState([]);
 	const [Analytics_Data, setAnalytics_Data] = useState({});
 	const [tooltipPosition, setTooltipPosition] = useState([]);
+	const [ComparetooltipPosition, setComparetoolPosition] = useState([]);
 	const [dataModel, setDataModel] = useState(Data_Mode.Graph);
 	const [currentCountry, setCurrentCountry] = useState(null);
 	const [targetCountry, setTargetCountry] = useState(null);
+	const [compareStarted, setCompareStarted] = useState(false);
 
 	useEffect(() => {
 		// dispatch(SummaryAction.WHO_Data({ option: option }));
@@ -61,13 +66,16 @@ const Data = props => {
 	}, []);
 
 	useEffect(() => {
-		const { countries, loading, WHO_Data, Table_data, Analytics } = SummaryState;
+		const { countries, loading, WHO_Data, Table_data, Analytics, target_Data, current_Data } =
+			SummaryState;
 		if (loading === LOADING_STATUS.FULFILLED) {
 			setCountries(countries);
 			setLoading(false);
 			setWHO_DATA(WHO_Data);
 			setTable_Data(Table_data);
 			setAnalytics_Data(Analytics);
+			setTarget_Data(target_Data);
+			setCurrent_Data(current_Data);
 
 			const tooltipPos = [];
 			for (let i = 0; i < WHO_Data.length; i++) {
@@ -79,6 +87,18 @@ const Data = props => {
 				});
 			}
 			setTooltipPosition(tooltipPos);
+
+			const ComparetooltipPos = [];
+			for (let i = 0; i < target_Data.length; i++) {
+				ComparetooltipPos.push({
+					x: 0,
+					y: 0,
+					visible: false,
+					value: 0,
+				});
+			}
+
+			setComparetoolPosition(ComparetooltipPos);
 		}
 	}, [SummaryState]);
 
@@ -106,19 +126,29 @@ const Data = props => {
 			});
 		} else {
 			setLoading(true);
+			//setCurrentCountry(selectcountry);
 			dispatch(SummaryAction.WHO_Data({ option, selectcountry }));
 		}
 	};
 
 	const CompareData = () => {
 		if (targetCountry == null || currentCountry == null) {
-			console.log("error on compare");
 			toast.show({
 				title: "Error",
-				description: "Please select a country",
+				description: "Please select two countries for comparison",
 				placement: "top",
 				duration: 500,
 			});
+		} else if (targetCountry == currentCountry) {
+			toast.show({
+				title: "Error",
+				description: "Two Country should not be the same",
+				placement: "top",
+				duration: 500,
+			});
+		} else {
+			setCompareStarted(true);
+			dispatch(SummaryAction.CompareView({ option, targetCountry, currentCountry }));
 		}
 	};
 
@@ -274,7 +304,7 @@ const Data = props => {
 
 					<ScrollView
 						nestedScrollEnabled={true}
-						contentContainerStyle={{ paddingBottom: 100 }}
+						contentContainerStyle={{ paddingBottom: 150 }}
 						width="100%"
 					>
 						{dataModel === Data_Mode.Graph && (
@@ -282,13 +312,29 @@ const Data = props => {
 								WHO_DATA={WHO_DATA}
 								tooltipPosition={tooltipPosition}
 								setTooltipPosition={setTooltipPosition}
+								selectcountry={selectcountry}
 							/>
 						)}
 						{dataModel === Data_Mode.Table && (
 							<>
-								<TableView Table_Data={Table_Data} Analytics_Data={Analytics_Data} />
+								<TableView
+									Table_Data={Table_Data}
+									Analytics_Data={Analytics_Data}
+									selectcountry={selectcountry}
+								/>
 								<AnalyticsView Analytics_Data={Analytics_Data} />
 							</>
+						)}
+						{dataModel === Data_Mode.Compare && (
+							<CompareView
+								Target_Data={Target_Data}
+								Current_Data={Current_Data}
+								tooltipPosition={ComparetooltipPosition}
+								setTooltipPosition={setComparetoolPosition}
+								currentCountry={currentCountry}
+								targetCountry={targetCountry}
+								compareStarted={compareStarted}
+							/>
 						)}
 						{selectcountry && Table_Data.length > 0 && (
 							<Link
