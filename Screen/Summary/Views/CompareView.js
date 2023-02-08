@@ -1,9 +1,8 @@
 import React, { useCallback, useState } from "react";
-import { Box, Button, Pressable, Text, View, VStack } from "native-base";
+import { Box, Button, Pressable, Text, View, VStack, Link } from "native-base";
 import { LineChart } from "react-native-chart-kit";
 import { Rect, Text as TextSvG, Svg } from "react-native-svg";
 import { Dimensions } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
 
 const CompareView = Props => {
 	var {
@@ -13,12 +12,11 @@ const CompareView = Props => {
 		setTooltipPosition,
 		currentCountry,
 		targetCountry,
-        compareStarted
+		GenerateCompareVersionExcel,
 	} = Props;
 	const DEVICE_WIDTH = Dimensions.get("window").width;
 
 	const CreateCompareDataSet = () => {
-        console.log(compareStarted)
 		let DataSet = [];
 		const length = Target_Data.length;
 
@@ -26,24 +24,24 @@ const CompareView = Props => {
 			for (let i = 0; i < length; i++) {
 				const Year = Target_Data[i].map(d => d.Year);
 				const TargetValue = Target_Data[i].map(d => d.value);
-				const CompareValue = Current_Data[i].map(d => d.value);
+				const CurrentValue = Current_Data[i].map(d => d.value);
 				DataSet.push({
 					labels: Year,
 					datasets: [
 						{
-							data: TargetValue,
+							data: CurrentValue,
 							color: (opacity = 1) => `rgba(226, 106, 0, 89)`,
 						},
 						{
-							data: CompareValue,
+							data: TargetValue,
 							color: (opacity = 1) => `rgba(2, 198, 240, 94)`,
 						},
 					],
-					legend: [targetCountry, currentCountry],
+					legend: ["Country 1", "Country 2"],
 				});
 			}
 		}
-		// console.log(DataSet);
+		//console.log(DataSet);
 		return DataSet;
 	};
 	const DataSet = CreateCompareDataSet();
@@ -54,7 +52,7 @@ const CompareView = Props => {
 				{DataSet &&
 					DataSet.map((d, index) => (
 						<Box key={index}>
-							<Text>{`${d.labels[0]} - ${d.labels[d.labels.length - 1]}`}</Text>
+							<Text>{`Year: ${d.labels[0]} - ${d.labels[d.labels.length - 1]}`}</Text>
 							<Pressable
 								onPress={() => {
 									let currentPoints = [...tooltipPosition];
@@ -145,6 +143,17 @@ const CompareView = Props => {
 						</Box>
 					))}
 			</Box>
+			<Link
+				alignSelf="center"
+				_text={{
+					font: "md",
+					fontWeight: "500",
+					color: "indigo.500",
+				}}
+				onPress={() => GenerateCompareVersionExcel()}
+			>
+				Download Data
+			</Link>
 		</VStack>
 	);
 };

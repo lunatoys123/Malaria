@@ -1,10 +1,10 @@
 import React from "react";
-import { VStack, Box, Pressable, Text, View } from "native-base";
+import { VStack, Box, Pressable, Text, View, Link } from "native-base";
 import { LineChart } from "react-native-chart-kit";
 import { Rect, Text as TextSvG, Svg } from "react-native-svg";
 import { Dimensions } from "react-native";
 const GraphView = props => {
-	var { WHO_DATA, tooltipPosition, setTooltipPosition, selectcountry } = props;
+	var { WHO_DATA, tooltipPosition, setTooltipPosition, selectcountry, GenerateExcel } = props;
 	const DEVICE_WIDTH = Dimensions.get("window").width;
 
 	const ConstructLabel = d => {
@@ -133,6 +133,19 @@ const GraphView = props => {
 						</Pressable>
 					</Box>
 				))}
+			{selectcountry && WHO_DATA.length > 0 && (
+				<Link
+					alignSelf="center"
+					_text={{
+						font: "md", 
+						fontWeight: "500",
+						color: "indigo.500",
+					}}
+					onPress={() => GenerateExcel()}
+				>
+					Download Data
+				</Link>
+			)}
 		</VStack>
 	);
 };

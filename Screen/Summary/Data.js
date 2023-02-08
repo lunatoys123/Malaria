@@ -12,7 +12,6 @@ import {
 	VStack,
 	Icon,
 	IconButton,
-	Link,
 	Text,
 } from "native-base";
 import { useSelector, useDispatch } from "react-redux";
@@ -47,8 +46,6 @@ const Data = props => {
 	const [dataModel, setDataModel] = useState(Data_Mode.Graph);
 	const [currentCountry, setCurrentCountry] = useState(null);
 	const [targetCountry, setTargetCountry] = useState(null);
-	const [compareStarted, setCompareStarted] = useState(false);
-
 	useEffect(() => {
 		// dispatch(SummaryAction.WHO_Data({ option: option }));
 		setLoading(true);
@@ -147,7 +144,7 @@ const Data = props => {
 				duration: 500,
 			});
 		} else {
-			setCompareStarted(true);
+			setLoading(true);
 			dispatch(SummaryAction.CompareView({ option, targetCountry, currentCountry }));
 		}
 	};
@@ -185,8 +182,53 @@ const Data = props => {
 
 		XLSX.utils.book_append_sheet(data_wb, Analytics_ws, "Analytics", true);
 		const base64 = XLSX.write(data_wb, { type: "base64" });
-		const filename = FileSystem.documentDirectory + selectcountry;
+		const filename = FileSystem.documentDirectory + selectcountry + ".csv";
 
+		FileSystem.writeAsStringAsync(filename, base64, {
+			encoding: FileSystem.EncodingType.Base64,
+		}).then(() => {
+			Sharing.shareAsync(filename);
+		});
+	};
+
+	const GenerateCompareVersionExcel = () => {
+		console.log(currentCountry);
+		console.log(targetCountry);
+		console.log(Current_Data);
+		console.log(Target_Data);
+
+		let Flattern_Current_Data = [];
+		for (let i = 0; i < Current_Data.length; i++) {
+			Flattern_Current_Data = Flattern_Current_Data.concat(Current_Data[i]);
+		}
+
+		let Flattern_Target_Data = [];
+		for (let i = 0; i < Target_Data.length; i++) {
+			Flattern_Target_Data = Flattern_Target_Data.concat(Target_Data[i]);
+		}
+
+		let data_array = [];
+		data_array.push([option]);
+		data_array.push(["Year", currentCountry, targetCountry]);
+
+		const length = Flattern_Target_Data.length;
+
+		for (let i = 0; i < length; i++) {
+			data_array.push([
+				Flattern_Target_Data[i].Year,
+				Flattern_Current_Data[i].value,
+				Flattern_Target_Data[i].value,
+			]);
+		}
+
+		console.log(data_array);
+		let data_wb = XLSX.utils.book_new();
+		let data_ws = XLSX.utils.aoa_to_sheet(data_array);
+
+		XLSX.utils.book_append_sheet(data_wb, data_ws, "Country Data", true);
+
+		const base64 = XLSX.write(data_wb, { type: "base64" });
+		const filename = FileSystem.documentDirectory + "CompareView.csv";
 		FileSystem.writeAsStringAsync(filename, base64, {
 			encoding: FileSystem.EncodingType.Base64,
 		}).then(() => {
@@ -313,6 +355,7 @@ const Data = props => {
 								tooltipPosition={tooltipPosition}
 								setTooltipPosition={setTooltipPosition}
 								selectcountry={selectcountry}
+								GenerateExcel={GenerateExcel}
 							/>
 						)}
 						{dataModel === Data_Mode.Table && (
@@ -322,7 +365,12 @@ const Data = props => {
 									Analytics_Data={Analytics_Data}
 									selectcountry={selectcountry}
 								/>
-								<AnalyticsView Analytics_Data={Analytics_Data} />
+								<AnalyticsView
+									Table_Data={Table_Data}
+									Analytics_Data={Analytics_Data}
+									selectcountry={selectcountry}
+									GenerateExcel={GenerateExcel}
+								/>
 							</>
 						)}
 						{dataModel === Data_Mode.Compare && (
@@ -333,22 +381,8 @@ const Data = props => {
 								setTooltipPosition={setComparetoolPosition}
 								currentCountry={currentCountry}
 								targetCountry={targetCountry}
-								compareStarted={compareStarted}
+								GenerateCompareVersionExcel={GenerateCompareVersionExcel}
 							/>
-						)}
-						{selectcountry && Table_Data.length > 0 && (
-							<Link
-								alignSelf="center"
-								my={2}
-								_text={{
-									fontSize: "md",
-									fontWeight: "500",
-									color: "indigo.500",
-								}}
-								onPress={() => GenerateExcel()}
-							>
-								Download Data
-							</Link>
 						)}
 					</ScrollView>
 				</>
