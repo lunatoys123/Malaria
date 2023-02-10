@@ -81,3 +81,24 @@ export const GetUnreadCount = createAsyncThunk(
 		}
 	}
 );
+
+export const SearchMessage = createAsyncThunk(
+	"Message/SearchMessage",
+	async ({ Doctor_Id, query }, thnukAPI) => {
+		const jwt = await AsyncStorage.getItem("jwt");
+		console.log(Doctor_Id);
+		console.log(query);
+		try {
+			const response = await axios.get(`${URL}/Malaria/Message/SearchMessage`, {
+				params: { Doctor_Id, query },
+				headers: {
+					Authorization: `Bearer ${jwt}`,
+				},
+			});
+			return response.data;
+		} catch (err) {
+			return thnukAPI.rejectWithValue(err.response.data);
+		}
+	}
+);
+

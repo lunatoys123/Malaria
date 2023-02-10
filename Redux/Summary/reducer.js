@@ -11,6 +11,7 @@ const initialState = {
 	Analytics: {},
 	target_Data: [],
 	current_Data: [],
+	Compare_Analytics: {},
 };
 
 const PendingReducer = (state, action) => {
@@ -62,6 +63,7 @@ const CompareDataFullfillReducer = (state, action) => {
 		loading: LOADING_STATUS.FULFILLED,
 		target_Data: action.payload.target_Data,
 		current_Data: action.payload.current_Data,
+		Compare_Analytics: action.payload.Compare_Analytics,
 	};
 };
 

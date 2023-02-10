@@ -143,17 +143,19 @@ const CompareView = Props => {
 						</Box>
 					))}
 			</Box>
-			<Link
-				alignSelf="center"
-				_text={{
-					font: "md",
-					fontWeight: "500",
-					color: "indigo.500",
-				}}
-				onPress={() => GenerateCompareVersionExcel()}
-			>
-				Download Data
-			</Link>
+			{currentCountry != null && targetCountry != null && (
+				<Link
+					alignSelf="center"
+					_text={{
+						font: "md",
+						fontWeight: "500",
+						color: "indigo.500",
+					}}
+					onPress={() => GenerateCompareVersionExcel()}
+				>
+					Download Data
+				</Link>
+			)}
 		</VStack>
 	);
 };

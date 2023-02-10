@@ -19,3 +19,10 @@ export const getCaseByDoctorId = createAsyncThunk("Case/getCasebyDoctorId", asyn
     ;
 });
 
+export const searchCaseWithQuery = createAsyncThunk(
+	"report/searchCaseWithQuery",
+	async query => {
+		
+	}
+);
+

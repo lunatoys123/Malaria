@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getCaseByDoctorId } from "./action";
+import { getCaseByDoctorId, searchCaseWithQuery } from "./action";
 import { LOADING_STATUS } from "../../Common/status_code";
 
 const initialState = {
@@ -42,6 +42,7 @@ const CaseSlice = createSlice({
 export const caseReducer = CaseSlice.reducer;
 export const caseAction = {
     getCaseByDoctorId,
+    searchCaseWithQuery,
     ...CaseSlice.actions
 }
 

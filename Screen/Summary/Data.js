@@ -46,6 +46,7 @@ const Data = props => {
 	const [dataModel, setDataModel] = useState(Data_Mode.Graph);
 	const [currentCountry, setCurrentCountry] = useState(null);
 	const [targetCountry, setTargetCountry] = useState(null);
+	const [Compare_Analytics_Data, setCompare_Analytics_Data] = useState({});
 	useEffect(() => {
 		// dispatch(SummaryAction.WHO_Data({ option: option }));
 		setLoading(true);
@@ -63,8 +64,16 @@ const Data = props => {
 	}, []);
 
 	useEffect(() => {
-		const { countries, loading, WHO_Data, Table_data, Analytics, target_Data, current_Data } =
-			SummaryState;
+		const {
+			countries,
+			loading,
+			WHO_Data,
+			Table_data,
+			Analytics,
+			target_Data,
+			current_Data,
+			Compare_Analytics,
+		} = SummaryState;
 		if (loading === LOADING_STATUS.FULFILLED) {
 			setCountries(countries);
 			setLoading(false);
@@ -73,6 +82,7 @@ const Data = props => {
 			setAnalytics_Data(Analytics);
 			setTarget_Data(target_Data);
 			setCurrent_Data(current_Data);
+			setCompare_Analytics_Data(Compare_Analytics);
 
 			const tooltipPos = [];
 			for (let i = 0; i < WHO_Data.length; i++) {
@@ -192,11 +202,6 @@ const Data = props => {
 	};
 
 	const GenerateCompareVersionExcel = () => {
-		console.log(currentCountry);
-		console.log(targetCountry);
-		console.log(Current_Data);
-		console.log(Target_Data);
-
 		let Flattern_Current_Data = [];
 		for (let i = 0; i < Current_Data.length; i++) {
 			Flattern_Current_Data = Flattern_Current_Data.concat(Current_Data[i]);
@@ -221,11 +226,39 @@ const Data = props => {
 			]);
 		}
 
-		console.log(data_array);
+		// console.log(data_array);
+		// console.log(Compare_Analytics_Data);
 		let data_wb = XLSX.utils.book_new();
 		let data_ws = XLSX.utils.aoa_to_sheet(data_array);
 
 		XLSX.utils.book_append_sheet(data_wb, data_ws, "Country Data", true);
+		const countries = Compare_Analytics_Data.map(d => d.country_code);
+		const Analytics_Data = Compare_Analytics_Data.map(d => d.Analytics);
+
+		let Analytics_array = [];
+		Analytics_array.push([option]);
+		Analytics_array.push(["", ...countries]);
+		//console.log(Analytics_array);
+
+		const Analytics_map = new Map();
+		for (let i = 0; i < Analytics_Data.length; i++) {
+			const a_Data = Analytics_Data[i];
+			const keys = Object.keys(a_Data);
+			for (let j = 0; j < keys.length; j++) {
+				if (!Analytics_map.has(keys[j])) {
+					Analytics_map.set(keys[j], ["", a_Data[keys[j]]]);
+				} else {
+					var copy_data = Analytics_map.get(keys[j]);
+					copy_data.push(a_Data[keys[j]]);
+				}
+			}
+		}
+		//console.log(Analytics_map);
+		for (const [key, value] of Analytics_map) {
+			Analytics_array.push(value);
+		}
+		let Analytics_ws = XLSX.utils.aoa_to_sheet(Analytics_array);
+		XLSX.utils.book_append_sheet(data_wb, Analytics_ws,"Analytics", true);
 
 		const base64 = XLSX.write(data_wb, { type: "base64" });
 		const filename = FileSystem.documentDirectory + "CompareView.csv";

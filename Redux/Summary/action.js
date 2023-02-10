@@ -11,6 +11,7 @@ export const Initialize = createAsyncThunk("summary/Initialize", async () => {
 		Table_data: [],
 		target_Data: [],
 		current_Data: [],
+		Compare_Analytics: {},
 	};
 });
 

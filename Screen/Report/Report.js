@@ -15,6 +15,8 @@ import {
 	IconButton,
 	Pressable,
 	HamburgerIcon,
+	Select,
+	Icon,
 } from "native-base";
 import { useSelector, useDispatch } from "react-redux";
 import { Case } from "../../Redux/Case/selector";
@@ -28,9 +30,12 @@ import {
 	getLaboratoryByCaseId,
 	generatePDF,
 } from "../../Common/User_Functions";
+import { Patient_Status, report_status } from "../../Common/Options";
 import LoadingSpinner from "../../sharedComponent/Loading";
 import { MaterialIcons } from "@expo/vector-icons";
+import FontIcon from "react-native-vector-icons/FontAwesome";
 import Border from "../../sharedComponent/Common/Border";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 const Report = props => {
 	const dispatch = useDispatch();
@@ -39,6 +44,14 @@ const Report = props => {
 	const [Data, setData] = useState([]);
 	const [ShowSearchModal, setShowSearchModal] = useState(false);
 	const [Loading, setLoading] = useState(false);
+
+	const [searchStatus, setSearchStatus] = useState("");
+	const [ReportStatus, setReportStatus] = useState("");
+	const [PatientName, setPatientName] = useState("");
+	const [showSearchStartDate, setShowSearchStartDate] = useState(false);
+	const [showSearchEndDate, setShowSearchEndDate] = useState(false);
+	const [searchStartDate, setSearchStartDate] = useState(null);
+	const [searchEndDate, setSearchEndDate] = useState(null);
 
 	useFocusEffect(
 		useCallback(() => {
@@ -105,6 +118,43 @@ const Report = props => {
 			mode: Operation_Mode.edit,
 			initialState: initialState,
 		});
+	};
+
+	const onChangeSearchStartDate = (event, selectedDate) => {
+		if (event.type == "set") {
+			const currentDate = selectedDate;
+			//console.log(currentDate);
+			setSearchStartDate(currentDate);
+			setShowSearchStartDate(false);
+		}
+	};
+
+	const onChangeSearchEndDate = (event, selectedDate) => {
+		if (event.type == "set") {
+			const currentDate = selectedDate;
+			//console.log(currentDate);
+			setSearchEndDate(currentDate);
+			setShowSearchEndDate(false);
+		}
+	};
+
+	const ResetSearch = () => {
+		setSearchStatus("");
+		setReportStatus("");
+		setPatientName("");
+		setSearchStartDate(null);
+		setSearchEndDate(null);
+	};
+
+	const saveSearchQuery = () => {
+		console.log(PatientName);
+		console.log(searchStatus);
+		console.log(ReportStatus);
+		console.log(searchStartDate);
+		console.log(searchEndDate);
+
+
+		setShowSearchModal(false);
 	};
 
 	return (
@@ -227,14 +277,106 @@ const Report = props => {
 								<Modal.Header>Search</Modal.Header>
 								<Modal.Body>
 									<FormControl>
-										<FormControl.Label>Search</FormControl.Label>
-										<Input placeholder="Enter your search" />
+										<FormControl.Label>Patient Name</FormControl.Label>
+										<Input
+											placeholder="Enter Patient Name"
+											value={PatientName}
+											onChangeText={text => setPatientName(text)}
+										/>
+									</FormControl>
+									<FormControl>
+										<FormControl.Label>Patient status</FormControl.Label>
+										<Select
+											selectedValue={searchStatus}
+											minW="200"
+											placeholder="Select Patient Status"
+											onValueChange={itemValue => setSearchStatus(itemValue)}
+										>
+											{Patient_Status.map(d => (
+												<Select.Item label={d.Label} value={d.Value} key={d.Label} />
+											))}
+										</Select>
+									</FormControl>
+									<FormControl>
+										<FormControl.Label>Report Status</FormControl.Label>
+										<Select
+											selectedValue={ReportStatus}
+											minW="200"
+											placeholder="Select Report Status"
+											onValueChange={itemValue => setReportStatus(itemValue)}
+										>
+											{report_status.map(d => (
+												<Select.Item label={d.Label} value={d.Value} key={d.Label} />
+											))}
+										</Select>
+									</FormControl>
+									<FormControl>
+										<HStack space={2} alignSelf="center">
+											<Box width="2/5">
+												<FormControl.Label>Start Date</FormControl.Label>
+												<Input
+													placeholder="Select Start Date"
+													isDisabled={true}
+													rightElement={
+														<Pressable onPress={() => setShowSearchStartDate(true)}>
+															<Icon as={<FontIcon name="calendar" />} size={5} mr={2} />
+														</Pressable>
+													}
+													value={searchStartDate ? searchStartDate.toISOString().split("T")[0] : ""}
+												/>
+												{showSearchStartDate && (
+													<DateTimePicker
+														testID="dateTimePicker"
+														value={searchStartDate ? searchStartDate : new Date()}
+														mode={"date"}
+														is24Hour={true}
+														onChange={(event, selectedDate) =>
+															onChangeSearchStartDate(event, selectedDate)
+														}
+													/>
+												)}
+											</Box>
+											<Box width="2/5">
+												<FormControl.Label>End Date</FormControl.Label>
+												<Input
+													placeholder="Select End Date"
+													isDisabled={true}
+													rightElement={
+														<Pressable onPress={() => setShowSearchEndDate(true)}>
+															<Icon as={<FontIcon name="calendar" />} size={5} mr={2} />
+														</Pressable>
+													}
+													value={searchEndDate ? searchEndDate.toISOString().split("T")[0] : ""}
+												/>
+												{showSearchEndDate && (
+													<DateTimePicker
+														testID="dateTimePicker"
+														value={searchEndDate ? searchEndDate : new Date()}
+														mode={"date"}
+														is24Hour={true}
+														onChange={(event, selectedDate) =>
+															onChangeSearchEndDate(event, selectedDate)
+														}
+													/>
+												)}
+											</Box>
+										</HStack>
 									</FormControl>
 								</Modal.Body>
 								<Modal.Footer>
-									<Button.Group>
-										<Button onPress={() => setShowSearchModal(false)}>Save</Button>
-									</Button.Group>
+									<HStack space={2} width="100%" justifyContent="center">
+										<Button onPress={() => saveSearchQuery()} size="sm" width="2/5">
+											Save
+										</Button>
+										<Button
+											size="sm"
+											width="2/5"
+											colorScheme="danger"
+											onPress={() => ResetSearch(false)}
+										>
+											Reset
+										</Button>
+									</HStack>
 								</Modal.Footer>
 							</Modal.Content>
 						</Modal>

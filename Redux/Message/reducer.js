@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { GetAllUserInHospital, SendMessageToUsers, GetMessageForUser, GetUnreadCount } from "./action";
+import {
+	GetAllUserInHospital,
+	SendMessageToUsers,
+	GetMessageForUser,
+	GetUnreadCount,
+	SearchMessage,
+} from "./action";
 import { LOADING_STATUS } from "../../Common/status_code";
 
 const initialState = {
@@ -57,10 +63,9 @@ const GetUnreadCountFulfillReducer = (state, action) => {
 	return {
 		...state,
 		Loading: LOADING_STATUS.FULFILLED,
-		unreadCount: action.payload.unreadCount
-
-	}
-}
+		unreadCount: action.payload.unreadCount,
+	};
+};
 
 const MessageSlice = createSlice({
 	name: "Message",
@@ -77,7 +82,10 @@ const MessageSlice = createSlice({
 		[GetMessageForUser.fulfilled]: GetMessageFulfillReducer,
 		[GetUnreadCount.pending]: pendingReducer,
 		[GetUnreadCount.rejected]: rejectedReducer,
-		[GetUnreadCount.fulfilled]: GetUnreadCountFulfillReducer
+		[GetUnreadCount.fulfilled]: GetUnreadCountFulfillReducer,
+		[SearchMessage.pending]: pendingReducer,
+		[SearchMessage.rejected]: rejectedReducer,
+		[SearchMessage.fulfilled]: GetMessageFulfillReducer,
 	},
 });
 
@@ -87,5 +95,6 @@ export const MessageAction = {
 	SendMessageToUsers,
 	GetMessageForUser,
 	GetUnreadCount,
+	SearchMessage,
 	...MessageSlice.actions,
 };

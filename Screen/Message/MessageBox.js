@@ -26,6 +26,7 @@ const MessageBox = props => {
 	const dispatch = useDispatch();
 	const MessageState = useSelector(Message());
 	const [MessageStack, setMessageStack] = useState([]);
+	const [searchQuery, setSearchQuery] = useState("");
 
 	useFocusEffect(
 		useCallback(() => {
@@ -49,6 +50,15 @@ const MessageBox = props => {
 		}
 		props.navigation.navigate("SendMessage", { mode: "view", Message: Message });
 	};
+
+	const SearchMessage = async () => {
+		dispatch(
+			MessageAction.SearchMessage({
+				Doctor_Id: context.user.userInfo.Doctor_id,
+				query: searchQuery,
+			})
+		);
+	};
 	return (
 		<VStack divider={<Divider />} space={2}>
 			<Box safeArea mt="4">
@@ -71,8 +81,15 @@ const MessageBox = props => {
 					backgroundColor="white"
 					borderRadius="4"
 					fontSize="14"
+					value={searchQuery}
+					onChangeText={text => setSearchQuery(text)}
 				/>
-				<Button leftIcon={<Ionicons name="search" size={20} color="white" />}>Search</Button>
+				<Button
+					leftIcon={<Ionicons name="search" size={20} color="white" />}
+					onPress={() => SearchMessage()}
+				>
+					Search
+				</Button>
 			</VStack>
 			<ScrollView
 				nestedScrollEnabled={true}
