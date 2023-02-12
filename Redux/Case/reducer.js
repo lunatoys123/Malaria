@@ -36,6 +36,9 @@ const CaseSlice = createSlice({
         [getCaseByDoctorId.pending]: PendingReducer,
         [getCaseByDoctorId.rejected]: RejectedReducer,
         [getCaseByDoctorId.fulfilled]: GetCaseByDoctorId,
+        [searchCaseWithQuery.pending]: PendingReducer,
+        [searchCaseWithQuery.rejected]: RejectedReducer,
+        [searchCaseWithQuery.fulfilled]: GetCaseByDoctorId,
     }
 })
 

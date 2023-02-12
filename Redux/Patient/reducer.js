@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { LOADING_STATUS } from "../../Common/status_code";
-import { getPatientList, editPersonalInformation } from "./action";
+import { getPatientList, editPersonalInformation, searchPatientWithQuery } from "./action";
 
 const initialState = {
 	loading: LOADING_STATUS.IDLE,
@@ -51,6 +51,9 @@ const PatientSlice = createSlice({
 		[editPersonalInformation.pending]: PendingReducer,
 		[editPersonalInformation.rejected]: RejectReducer,
 		[editPersonalInformation.fulfilled]: UpdateFulfillReducer,
+		[searchPatientWithQuery.pending]: PendingReducer,
+		[searchPatientWithQuery.rejected]: RejectReducer,
+		[searchPatientWithQuery.fulfilled]: LoadDataFulfillReducer,
 	},
 });
 
@@ -58,5 +61,6 @@ export const PatientReducer = PatientSlice.reducer;
 export const PatientActions = {
 	getPatientList,
 	editPersonalInformation,
+	searchPatientWithQuery,
 	...PatientSlice.actions,
 };

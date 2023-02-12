@@ -1,28 +1,51 @@
-import {createAsyncThunk} from '@reduxjs/toolkit'
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const getCaseByDoctorId = createAsyncThunk("Case/getCasebyDoctorId", async (values)=>{
-    const jwt = await AsyncStorage.getItem("jwt");
-    const Doctor_id = values.Doctor_id
+export const getCaseByDoctorId = createAsyncThunk("Case/getCasebyDoctorId", async values => {
+	const jwt = await AsyncStorage.getItem("jwt");
+	const Doctor_id = values.Doctor_id;
 
+	const response = await axios.get(`${URL}/Malaria/Case/getCaseById`, {
+		params: { Doctor_id },
+		headers: {
+			Authorization: `Bearer ${jwt}`,
+		},
+	});
 
-    const response = await axios.get(`${URL}/Malaria/Case/getCaseById`,{
-        params:{Doctor_id},
-        headers:{
-            Authorization: `Bearer ${jwt}`
-        }
-    });
-
-    return response.data
-    ;
+	return response.data;
 });
 
 export const searchCaseWithQuery = createAsyncThunk(
 	"report/searchCaseWithQuery",
-	async query => {
-		
+	async (query, thunkAPI) => {
+		const jwt = await AsyncStorage.getItem("jwt");
+		const Doctor_id = query.Doctor_id;
+		const PatientName = query.PatientName;
+		const ReportStatus = query.ReportStatus;
+		const searchStartDate = query.searchStartDate;
+		const searchEndDate = query.searchEndDate;
+		const searchStatus = query.searchStatus;
+
+		try {
+			const response = await axios.get(`${URL}/Malaria/Case/SearchCasewithQuery`, {
+				params: {
+					Doctor_id: Doctor_id,
+					PatientName: PatientName,
+					ReportStatus: ReportStatus,
+					searchStartDate: searchStartDate,
+					searchEndDate: searchEndDate,
+					searchStatus: searchStatus,
+				},
+				headers: {
+					Authorization: `Bearer ${jwt}`,
+				},
+			});
+			//console.log(response.data);
+			return response.data;
+		} catch (err) {
+			return thunkAPI.rejectWithValue(err.response.data);
+		}
 	}
 );
-

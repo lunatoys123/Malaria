@@ -50,6 +50,7 @@ export const Account_status = {
 	Active: "active",
 	Pending: "Pending",
 	Blocked: "Blocked",
+	Deleted: "Deleted"
 };
 
 export const Message_status = {

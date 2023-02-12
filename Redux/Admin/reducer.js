@@ -6,6 +6,8 @@ import {
 	Initialilze,
 	ResetPasswordForUser,
 	GetAuditFromDoctorId,
+	deleteUser,
+	recoverUser
 } from "./action";
 
 const initialState = {
@@ -37,7 +39,9 @@ const AccountManagementFulfillReducer = (state, action) => {
 	return {
 		...state,
 		loading: LOADING_STATUS.FULFILLED,
+		status: action.payload.status,
 		AccountManagement: action.payload.AccountManagement,
+		Message: action.payload.Message,
 	};
 };
 
@@ -92,6 +96,12 @@ const AdminSlice = createSlice({
 		[GetAuditFromDoctorId.pending]: pendingReducer,
 		[GetAuditFromDoctorId.rejected]: rejectReducer,
 		[GetAuditFromDoctorId.fulfilled]: AuditFulfillReducer,
+		[deleteUser.pending]: pendingReducer,
+		[deleteUser.rejected]: rejectReducer,
+		[deleteUser.fulfilled]: AccountManagementFulfillReducer,
+		[recoverUser.pending]: pendingReducer,
+		[recoverUser.rejected]: rejectReducer,
+		[recoverUser.fulfilled]: AccountManagementFulfillReducer,
 	},
 });
 
@@ -100,7 +110,9 @@ export const AdminAction = {
 	GetNormalUsersFromHospital,
 	AddUserToOrganization,
 	Initialilze,
-	ResetPasswordForUser  ,
+	ResetPasswordForUser,
 	GetAuditFromDoctorId,
+	deleteUser,
+	recoverUser,
 	...AdminSlice.actions,
 };

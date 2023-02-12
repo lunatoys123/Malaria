@@ -9,6 +9,7 @@ import {
 	HStack,
 	Button,
 	ScrollView,
+	Input,
 } from "native-base";
 import { useSelector, useDispatch } from "react-redux";
 import { Patient } from "../../Redux/Patient/Selector";
@@ -18,6 +19,7 @@ import { LOADING_STATUS, Operation_Mode } from "../../Common/status_code";
 import { useFocusEffect } from "@react-navigation/native";
 import { getPersonalInformationById } from "../../Common/User_Functions";
 import LoadingSpinner from "../../sharedComponent/Loading";
+import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 
 const PatientView = props => {
 	const dispatch = useDispatch();
@@ -25,6 +27,7 @@ const PatientView = props => {
 	const context = useContext(Auth_Global);
 	const [Data, setData] = useState();
 	const [Loading, setLoading] = useState(false);
+	const [searchQuery, setSearchQuery] = useState("");
 
 	useFocusEffect(
 		useCallback(() => {
@@ -59,85 +62,118 @@ const PatientView = props => {
 		});
 	};
 
+	const searchPatientWithQuery = async () => {
+		// console.log(searchQuery);
+		setLoading(true);
+		dispatch(
+			PatientActions.searchPatientWithQuery({
+				Doctor_id: context.user.userInfo.Doctor_id,
+				searchQuery: searchQuery,
+			})
+		);
+	};
+
 	return (
 		<>
 			{Loading ? (
 				<LoadingSpinner />
 			) : (
-				<ScrollView
-					nestedScrollEnabled={true}
-					contentContainerStyle={{
-						paddingBottom: 60,
-					}}
-					width="100%"
-				>
-					<Center>
-						{Data &&
-							Data.map((d, index) => (
-								<Box
-									border="1"
-									borderRadius="md"
-									bg="white"
-									mt="3"
-									w="90%"
-									p="3"
-									shadow="3"
-									key={index}
-								>
-									<VStack space="4" divider={<Divider />}>
-										<Box px="4" pt="4">
-											<Heading>{d.Name}</Heading>
-										</Box>
-										<Box px="4">
-											<VStack>
-												<HStack>
-													<Box borderWidth="1" borderColor="muted.200" w="30%">
-														<Text bold alignSelf="center">
-															Age
-														</Text>
-													</Box>
-													<Box borderWidth="1" borderColor="muted.200" w="70%">
-														<Text alignSelf="center">{d.Age}</Text>
-													</Box>
-												</HStack>
-												<HStack>
-													<Box borderWidth="1" borderColor="muted.200" w="30%">
-														<Text bold alignSelf="center">
-															Email
-														</Text>
-													</Box>
-													<Box borderWidth="1" borderColor="muted.200" w="70%">
-														<Text alignSelf="center">{d.Email}</Text>
-													</Box>
-												</HStack>
-												<HStack>
-													<Box borderWidth="1" borderColor="muted.200" w="30%">
-														<Text bold alignSelf="center">
-															Phone
-														</Text>
-													</Box>
-													<Box borderWidth="1" borderColor="muted.200" w="70%">
-														<Text alignSelf="center">{d.Phone}</Text>
-													</Box>
-												</HStack>
-											</VStack>
-										</Box>
-										<HStack px="4" space={2}>
-											<Button size="sm" onPress={() => editPersonalInformation(d.Patient_id)}>
-												Update
-											</Button>
-											<Button
-												size="sm"
-												onPress={() => AddReportwithPersonalInformation(d.Patient_id)}
-											>
-												Add Report
-											</Button>
-										</HStack>
-									</VStack>
-								</Box>
-							))}
-					</Center>
-				</ScrollView>
+				<VStack mt={3}>
+					<VStack width="90%" alignSelf="center" space={2}>
+						<Input
+							placeholder="Enter Your Search"
+							bg="white"
+							value={searchQuery}
+							onChangeText={text => setSearchQuery(text)}
+						/>
+						<Button
+							size="sm"
+							leftIcon={<AntDesign name="search1" size={16} color="white" />}
+							onPress={() => searchPatientWithQuery()}
+						>
+							Search
+						</Button>
+					</VStack>
+					<ScrollView
+						nestedScrollEnabled={true}
+						contentContainerStyle={{
+							paddingBottom: 100,
+						}}
+						width="100%"
+					>
+						<Center>
+							{Data &&
+								Data.map((d, index) => (
+									<Box
+										border="1"
+										borderRadius="md"
+										bg="white"
+										mt="3"
+										w="90%"
+										p="3"
+										shadow="3"
+										key={index}
+									>
+										<VStack space="4" divider={<Divider />}>
+											<Box px="4" pt="4">
+												<Heading>{d.Name}</Heading>
+											</Box>
+											<Box px="4">
+												<VStack>
+													<HStack>
+														<Box borderWidth="1" borderColor="muted.200" w="30%">
+															<Text bold alignSelf="center">
+																Age
+															</Text>
+														</Box>
+														<Box borderWidth="1" borderColor="muted.200" w="70%">
+															<Text alignSelf="center">{d.Age}</Text>
+														</Box>
+													</HStack>
+													<HStack>
+														<Box borderWidth="1" borderColor="muted.200" w="30%">
+															<Text bold alignSelf="center">
+																Email
+															</Text>
+														</Box>
+														<Box borderWidth="1" borderColor="muted.200" w="70%">
+															<Text alignSelf="center">{d.Email}</Text>
+														</Box>
+													</HStack>
+													<HStack>
+														<Box borderWidth="1" borderColor="muted.200" w="30%">
+															<Text bold alignSelf="center">
+																Phone
+															</Text>
+														</Box>
+														<Box borderWidth="1" borderColor="muted.200" w="70%">
+															<Text alignSelf="center">{d.Phone}</Text>
+														</Box>
+													</HStack>
+												</VStack>
+											</Box>
+											<HStack px="4" space={2}>
+												<Button
+													size="sm"
+													onPress={() => editPersonalInformation(d.Patient_id)}
+													leftIcon={<MaterialIcons name="update" size={16} color="white" />}
+												>
+													Update
+												</Button>
+												<Button
+													size="sm"
+													onPress={() => AddReportwithPersonalInformation(d.Patient_id)}
+													leftIcon={<AntDesign name="addfile" size={16} color="white" />}
+												>
+													Add Report
+												</Button>
+											</HStack>
+										</VStack>
+									</Box>
+								))}
+						</Center>
+					</ScrollView>
+				</VStack>
 			)}
 		</>
 	);

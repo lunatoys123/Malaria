@@ -17,6 +17,7 @@ import {
 	HamburgerIcon,
 	Select,
 	Icon,
+	useToast,
 } from "native-base";
 import { useSelector, useDispatch } from "react-redux";
 import { Case } from "../../Redux/Case/selector";
@@ -32,7 +33,7 @@ import {
 } from "../../Common/User_Functions";
 import { Patient_Status, report_status } from "../../Common/Options";
 import LoadingSpinner from "../../sharedComponent/Loading";
-import { MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import FontIcon from "react-native-vector-icons/FontAwesome";
 import Border from "../../sharedComponent/Common/Border";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -41,6 +42,7 @@ const Report = props => {
 	const dispatch = useDispatch();
 	const CaseState = useSelector(Case());
 	const context = useContext(Auth_Global);
+	const toast = useToast();
 	const [Data, setData] = useState([]);
 	const [ShowSearchModal, setShowSearchModal] = useState(false);
 	const [Loading, setLoading] = useState(false);
@@ -147,13 +149,40 @@ const Report = props => {
 	};
 
 	const saveSearchQuery = () => {
-		console.log(PatientName);
-		console.log(searchStatus);
-		console.log(ReportStatus);
-		console.log(searchStartDate);
-		console.log(searchEndDate);
+		if (searchStartDate != null && searchEndDate != null) {
+			if (searchStartDate > searchEndDate) {
+				toast.show({
+					title: "Error",
+					description: "Start Date cannot be greater than End Date",
+					placement: "top",
+					duration: 100,
+				});
+				return;
+			}
+		}
+		setLoading(true);
+		let startDate = searchStartDate;
+		if (startDate != null) {
+			startDate = new Date(startDate);
+			startDate.setHours(0, 0, 0);
+		}
 
+		let endDate = searchEndDate;
+		if (endDate != null) {
+			endDate = new Date(endDate);
+			endDate.setHours(23, 59, 59);
+		}
 
+		dispatch(
+			caseAction.searchCaseWithQuery({
+				Doctor_id: context.user.userInfo.Doctor_id,
+				PatientName: PatientName,
+				searchStatus: searchStatus,
+				searchStartDate: startDate,
+				searchEndDate: endDate,
+				ReportStatus: ReportStatus,
+			})
+		);
 		setShowSearchModal(false);
 	};
 
@@ -171,10 +200,19 @@ const Report = props => {
 								</Heading>
 								<Box w="50%">
 									<HStack alignSelf="flex-end" space={2} px="2">
-										<Button colorScheme="success" onPress={() => setShowSearchModal(true)}>
+										<Button
+											colorScheme="success"
+											onPress={() => setShowSearchModal(true)}
+											leftIcon={<AntDesign name="search1" size={16} color="white" />}
+										>
 											Search
 										</Button>
-										<Button onPress={() => createReport()}>Create</Button>
+										<Button
+											onPress={() => createReport()}
+											leftIcon={<Ionicons name="create-outline" size={16} color="white" />}
+										>
+											Create
+										</Button>
 									</HStack>
 								</Box>
 							</HStack>

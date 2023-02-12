@@ -77,7 +77,7 @@ const MessageBox = props => {
 			</Box>
 			<VStack space={2} w="90%" alignSelf="center">
 				<Input
-					placeholder="Search For User"
+					placeholder="Search For Message"
 					backgroundColor="white"
 					borderRadius="4"
 					fontSize="14"
