@@ -97,7 +97,7 @@ const ClinicalInformation = props => {
 					//Previously_Diagnosis:{}
 				},
 				Previous_Diagnosis_Malaria: Previous_Diagnosis_Malaria,
-				Patient_Status: initialState.Patient_Status,
+				Patient_Status: { id: initialState.Patient_Status, item: initialState.Patient_Status },
 				Status_date: new Date(initialState.Status_date),
 				Report_Status: initialState.Report_Status,
 			};
@@ -131,7 +131,7 @@ const ClinicalInformation = props => {
 				}),
 				Previous_illness_date: Yup.date(),
 			}),
-			Patient_Status: Yup.string().required("Patient status is required"),
+			Patient_Status: Yup.object().required("Patient status is required"),
 			Status_date: Yup.date(),
 			Report_Status: Yup.string().required("Report status is required"),
 		}),
@@ -319,13 +319,22 @@ const ClinicalInformation = props => {
 				</Card_Component>
 				<Card_Component heading={"Report status"}>
 					<VStack space={3}>
-						<FormRadioGroup Label="Patient_Status" formik={formik} id="Patient_Status">
+						{/* <FormRadioGroup Label="Patient_Status" formik={formik} id="Patient_Status">
 							{Patient_Status.map(d => (
 								<Radio value={d.Value} size="sm" key={d.Value}>
 									{d.Label}
 								</Radio>
 							))}
-						</FormRadioGroup>
+						</FormRadioGroup> */}
+						<FormSigleSelect
+							formik={formik}
+							Label="Patient Status"
+							options={Patient_Status}
+							placeholder="Patient Status"
+							id="Patient_Status"
+							onChange={onChange}
+							hideInputFilter={true}
+						/>
 						<FormDateComponent
 							Label="Status Date"
 							rightElement={

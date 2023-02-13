@@ -1,20 +1,6 @@
 import { Admin_Role, Normal_User_Role } from "./role";
 import { GetAllHospital } from "./Admin_Function";
 // Radio Group Option
-export const Patient_Status = [
-	{
-		Label: "survived",
-		Value: "survived",
-	},
-	{
-		Label: "Died",
-		Value: "Died",
-	},
-	{
-		Label: "Unknown",
-		Value: "Unknown",
-	},
-];
 
 export const report_status = [
 	{
@@ -322,3 +308,25 @@ export const Role_Options = [
 	},
 ];
 
+export const Patient_Status = [
+	{
+		id: "survived",
+		item: "survived",
+	},
+	{
+		id: "Stable Condition",
+		item: "Stable Condition",
+	},
+	{
+		id: "Emergency",
+		item: "Emergency",
+	},
+	{
+		id: "Died",
+		item: "Died",
+	},
+	{
+		id: "Unknown",
+		item: "Unknown",
+	},
+];
