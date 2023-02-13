@@ -109,21 +109,41 @@ export const deleteUser = createAsyncThunk("Admin/DeleteUser", async ({ Doctor_i
 	}
 });
 
-export const recoverUser = createAsyncThunk("Admin/recoverUser",async ({ Doctor_id }, thunkAPI) => {
-	const jwt = await AsyncStorage.getItem("jwt");
-	try{
-		const response = await axios.post(
-			`${URL}/Malaria/User/recoverUser`,
-			{
-				Doctor_id,
-			},
-			{
-				headers: { Authorization: `Bearer ${jwt}` },
-			}
-		);
-		return response.data;
-		
-	}catch (err) {
-		return thunkAPI.rejectWithValue(err.response.data);
+export const recoverUser = createAsyncThunk(
+	"Admin/recoverUser",
+	async ({ Doctor_id }, thunkAPI) => {
+		const jwt = await AsyncStorage.getItem("jwt");
+		try {
+			const response = await axios.post(
+				`${URL}/Malaria/User/recoverUser`,
+				{
+					Doctor_id,
+				},
+				{
+					headers: { Authorization: `Bearer ${jwt}` },
+				}
+			);
+			return response.data;
+		} catch (err) {
+			return thunkAPI.rejectWithValue(err.response.data);
+		}
 	}
-})
+);
+
+export const SearchQueryForUser = createAsyncThunk(
+	"Admin/SearchQueryForUser",
+	async ({ Doctor_id, searchQuery }) => {
+		const jwt = await AsyncStorage.getItem("jwt");
+
+		try {
+			const response = await axios.get(`${URL}/Malaria/User/SearchQueryForUser`, {
+				params: { Doctor_id, searchQuery },
+				headers: { Authorization: `Bearer ${jwt}` },
+			});
+
+			return response.data;
+		} catch (err) {
+			console.log(err);
+		}
+	}
+);

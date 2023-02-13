@@ -34,6 +34,7 @@ const AccountManagement = props => {
 	const [deleted, setDeleted] = useState(false);
 	const [recovered, setRecovered] = useState(false);
 	const [message, setMessage] = useState("");
+	const [searchQuery, setSearchQuery] = useState("");
 
 	useFocusEffect(
 		useCallback(() => {
@@ -72,6 +73,15 @@ const AccountManagement = props => {
 		dispatch(AdminAction.recoverUser({ Doctor_id }));
 		setRecovered(true);
 	};
+
+	const searchUser = () => {
+		dispatch(
+			AdminAction.SearchQueryForUser({
+				Doctor_id: context.user.userInfo.Doctor_id,
+				searchQuery: searchQuery,
+			})
+		);
+	};
 	return (
 		<>
 			{loading ? (
@@ -99,8 +109,13 @@ const AccountManagement = props => {
 									backgroundColor="white"
 									borderRadius="4"
 									fontSize="14"
+									value={searchQuery}
+									onChangeText={text => setSearchQuery(text)}
 								/>
-								<Button leftIcon={<Ionicons name="search" size={20} color="white" />}>
+								<Button
+									leftIcon={<Ionicons name="search" size={20} color="white" />}
+									onPress={() => searchUser()}
+								>
 									Search
 								</Button>
 							</VStack>

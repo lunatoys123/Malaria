@@ -7,7 +7,8 @@ import {
 	ResetPasswordForUser,
 	GetAuditFromDoctorId,
 	deleteUser,
-	recoverUser
+	recoverUser,
+	SearchQueryForUser
 } from "./action";
 
 const initialState = {
@@ -102,6 +103,9 @@ const AdminSlice = createSlice({
 		[recoverUser.pending]: pendingReducer,
 		[recoverUser.rejected]: rejectReducer,
 		[recoverUser.fulfilled]: AccountManagementFulfillReducer,
+		[SearchQueryForUser.pending]: pendingReducer,
+		[SearchQueryForUser.rejected]: rejectReducer,
+		[SearchQueryForUser.fulfilled]: AccountManagementFulfillReducer,
 	},
 });
 
@@ -114,5 +118,6 @@ export const AdminAction = {
 	GetAuditFromDoctorId,
 	deleteUser,
 	recoverUser,
+	SearchQueryForUser,
 	...AdminSlice.actions,
 };
