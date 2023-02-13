@@ -75,6 +75,7 @@ const AccountManagement = props => {
 	};
 
 	const searchUser = () => {
+		setLoading(true);
 		dispatch(
 			AdminAction.SearchQueryForUser({
 				Doctor_id: context.user.userInfo.Doctor_id,
