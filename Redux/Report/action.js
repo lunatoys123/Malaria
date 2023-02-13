@@ -18,23 +18,27 @@ export const AddReport = createAsyncThunk("report/createReport", async values =>
 	const user = values.user;
 	const mode = values.mode;
 
-	const response = await axios.post(
-		`${URL}/Malaria/Case/AddCase`,
-		{
-			Patient_data: Patient_data,
-			case: Case,
-			user: user,
-			mode: mode,
-		},
-		{
-			headers: {
-				Authorization: `Bearer ${jwt}`,
+	try {
+		const response = await axios.post(
+			`${URL}/Malaria/Case/AddCase`,
+			{
+				Patient_data: Patient_data,
+				case: Case,
+				user: user,
+				mode: mode,
 			},
-		}
-	);
-	//console.log(response.data);
+			{
+				headers: {
+					Authorization: `Bearer ${jwt}`,
+				},
+			}
+		);
+		//console.log(response.data);
 
-	return response.data;
+		return response.data;
+	} catch (err) {
+		console.log(err);
+	}
 });
 
 export const AddTreatment = createAsyncThunk("report/createTreatment", async Treatment => {

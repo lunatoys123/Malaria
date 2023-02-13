@@ -157,6 +157,7 @@ const ClinicalInformation = props => {
 			Clinical_data.Clinical_Complications.Complications =
 				Clinical_data.Clinical_Complications.Complications.map(d => d.item);
 			Clinical_data.Symptoms.Sign = Clinical_data.Symptoms.Sign.map(d => d.item);
+			Clinical_data.Patient_Status = Clinical_data.Patient_Status.item
 
 			if (mode === Operation_Mode.createWithPatientId) {
 				report_data = { ...report_data, case: { ...Clinical_data, Patient_id: Patient_id } };
