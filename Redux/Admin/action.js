@@ -75,16 +75,17 @@ export const ResetPasswordForUser = createAsyncThunk(
 
 export const GetAuditFromDoctorId = createAsyncThunk(
 	"Admin/GetAuditFromDoctorId",
-	async ({ Doctor_id }, { rejectWithValue }) => {
+	async ({ Doctor_id, target_Doctor_id }, { rejectWithValue }) => {
 		const jwt = await AsyncStorage.getItem("jwt");
 		try {
 			const response = await axios.get(`${URL}/Malaria/User/GetAuditFromDoctorId`, {
-				params: { Doctor_id },
+				params: { Doctor_id, target_Doctor_id },
 				headers: { Authorization: `Bearer ${jwt}` },
 			});
 			//console.log(response.data);
 			return response.data;
 		} catch (err) {
+			console.log(err);
 			return rejectWithValue(err.response.data);
 		}
 	}

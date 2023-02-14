@@ -1,17 +1,19 @@
 import { useFocusEffect } from "@react-navigation/native";
 import { View, Text, Heading, Center, VStack, Divider, Box, ScrollView } from "native-base";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LOADING_STATUS } from "../../Common/status_code";
 import { AdminAction } from "../../Redux/Admin/reducer";
 import { Admin } from "../../Redux/Admin/selector";
 import Border from "../../sharedComponent/Common/Border";
+import Auth_Global from "../../Context/store/Auth_Global";
 
 const Audit_report = props => {
 	const dispatch = useDispatch();
 	const AdminState = useSelector(Admin());
+	const context = useContext(Auth_Global);
 	const Doctor_name = props.route.params.Doctor_name;
-	const Doctor_id = props.route.params.Doctor_id;
+	const target_Doctor_id = props.route.params.Doctor_id;
 	const [AuditLog, setAuditLog] = useState([]);
 
 	useFocusEffect(
@@ -25,7 +27,7 @@ const Audit_report = props => {
 
 	useFocusEffect(
 		useCallback(() => {
-			dispatch(AdminAction.GetAuditFromDoctorId({ Doctor_id }));
+			dispatch(AdminAction.GetAuditFromDoctorId({ Doctor_id: context.user.userInfo.Doctor_id, target_Doctor_id: target_Doctor_id }));
 		}, [dispatch])
 	);
 	return (
