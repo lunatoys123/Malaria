@@ -68,7 +68,7 @@ const ClinicalInformation = props => {
 				Diagnosed_Malaria_previous: Initial_Previous_Malaria.Diagnosed_Malaria_previous,
 			};
 
-			if (Initial_Previous_Malaria.Diagnosed_Malaria_previous === "yes") {
+			if (Initial_Previous_Malaria.Diagnosed_Malaria_previous === "Yes") {
 				Previous_Diagnosis_Malaria = {
 					...Previous_Diagnosis_Malaria,
 					Previously_Diagnosis: {

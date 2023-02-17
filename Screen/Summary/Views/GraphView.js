@@ -76,6 +76,7 @@ const GraphView = props => {
 										stroke: "#ffa726",
 									},
 								}}
+								fromZero={true}
 								bezier
 								style={{
 									marginVertical: 8,
@@ -137,7 +138,7 @@ const GraphView = props => {
 				<Link
 					alignSelf="center"
 					_text={{
-						font: "md", 
+						font: "md",
 						fontWeight: "500",
 						color: "indigo.500",
 					}}

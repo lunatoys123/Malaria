@@ -8,7 +8,8 @@ import {
 	GetAuditFromDoctorId,
 	deleteUser,
 	recoverUser,
-	SearchQueryForUser
+	SearchQueryForUser,
+	HospitalSummaryData,
 } from "./action";
 
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
 	status: "",
 	Message: "",
 	Error: "",
+	Patient_Summary: [],
 };
 
 const pendingReducer = (state, action) => {
@@ -80,6 +82,15 @@ const AuditFulfillReducer = (state, action) => {
 		Audit_Log: action.payload,
 	};
 };
+
+const HospitalDataReducer = (state, action) => {
+	return {
+		...state,
+		loading: LOADING_STATUS.FULFILLED,
+		Patient_Summary: action.payload.Patient_Summary,
+	};
+};
+
 const AdminSlice = createSlice({
 	name: "Admin",
 	initialState,
@@ -106,6 +117,9 @@ const AdminSlice = createSlice({
 		[SearchQueryForUser.pending]: pendingReducer,
 		[SearchQueryForUser.rejected]: rejectReducer,
 		[SearchQueryForUser.fulfilled]: AccountManagementFulfillReducer,
+		[HospitalSummaryData.pending]: pendingReducer,
+		[HospitalSummaryData.rejected]: rejectReducer,
+		[HospitalSummaryData.fulfilled]: HospitalDataReducer,
 	},
 });
 
@@ -119,5 +133,6 @@ export const AdminAction = {
 	deleteUser,
 	recoverUser,
 	SearchQueryForUser,
+	HospitalSummaryData,
 	...AdminSlice.actions,
 };

@@ -331,7 +331,7 @@ const Report = props => {
 											onValueChange={itemValue => setSearchStatus(itemValue)}
 										>
 											{Patient_Status.map(d => (
-												<Select.Item label={d.Label} value={d.Value} key={d.Label} />
+												<Select.Item label={d.item} value={d.item} key={d.id} />
 											))}
 										</Select>
 									</FormControl>
