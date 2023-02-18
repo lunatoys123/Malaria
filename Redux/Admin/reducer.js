@@ -10,6 +10,7 @@ import {
 	recoverUser,
 	SearchQueryForUser,
 	HospitalSummaryData,
+	TreatmentSummaryData,
 } from "./action";
 
 const initialState = {
@@ -20,6 +21,8 @@ const initialState = {
 	Message: "",
 	Error: "",
 	Patient_Summary: [],
+	Treatment_status: [],
+	Treatment_Summary: [],
 };
 
 const pendingReducer = (state, action) => {
@@ -91,6 +94,15 @@ const HospitalDataReducer = (state, action) => {
 	};
 };
 
+const TreatmentSummaryFulfillReducer = (state, action) => {
+	return {
+		...state,
+		loading: LOADING_STATUS.FULFILLED,
+		Treatment_status: action.payload.Treatment_status,
+		Treatment_Summary: action.payload.Treatment_Summary
+	}
+}
+
 const AdminSlice = createSlice({
 	name: "Admin",
 	initialState,
@@ -120,6 +132,9 @@ const AdminSlice = createSlice({
 		[HospitalSummaryData.pending]: pendingReducer,
 		[HospitalSummaryData.rejected]: rejectReducer,
 		[HospitalSummaryData.fulfilled]: HospitalDataReducer,
+		[TreatmentSummaryData.pending]: pendingReducer,
+		[TreatmentSummaryData.rejected]: rejectReducer,
+		[TreatmentSummaryData.fulfilled]: TreatmentSummaryFulfillReducer
 	},
 });
 
@@ -134,5 +149,6 @@ export const AdminAction = {
 	recoverUser,
 	SearchQueryForUser,
 	HospitalSummaryData,
+	TreatmentSummaryData,
 	...AdminSlice.actions,
 };

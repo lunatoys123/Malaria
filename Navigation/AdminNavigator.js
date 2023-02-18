@@ -2,9 +2,9 @@ import React from "react";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import AccountManagementNavigator from "./AccountManagementNavigator";
 import MessageNavigator from "./MessageNavigator";
-import DataView from "../Screen/Admin/DataView";
 import { AntDesign } from "@expo/vector-icons";
 import FontIcon from "react-native-vector-icons/FontAwesome5";
+import AdminDataViewNavigator from "./AdminDataViewNavigator";
 
 const Tab = createMaterialBottomTabNavigator();
 const AdminNavigator = () => {
@@ -35,7 +35,7 @@ const AdminNavigator = () => {
 			/>
 			<Tab.Screen
 				name="dataView"
-				component={DataView}
+				component={AdminDataViewNavigator}
 				options={{
 					tabBarIcon: ({ focused, size, color }) => (
 						<AntDesign name="database" size={focused ? 28 : 25} color={color} />

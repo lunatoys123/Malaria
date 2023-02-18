@@ -150,7 +150,7 @@ export const SearchQueryForUser = createAsyncThunk(
 
 export const HospitalSummaryData = createAsyncThunk(
 	"Admin/HospitalSummaryData",
-	async ({ Doctor_id }) => {
+	async ({ Doctor_id }, thunkAPI) => {
 		const jwt = await AsyncStorage.getItem("jwt");
 
 		try {
@@ -160,7 +160,25 @@ export const HospitalSummaryData = createAsyncThunk(
 			});
 			return response.data;
 		} catch (err) {
-			console.log(err);
+			return thunkAPI.rejectWithValue(err.response.data);
+		}
+	}
+);
+
+export const TreatmentSummaryData = createAsyncThunk(
+	"Admin/TreatmentSummaryData",
+	async ({ Doctor_id }, thunkAPI) => {
+		const jwt = await AsyncStorage.getItem("jwt");
+
+		try {
+			const response = await axios.get(`${URL}/Malaria/User/TreatmentSummaryData`, {
+				params: { Doctor_id },
+				headers: { Authorization: `Bearer ${jwt}` },
+			});
+			console.log(response.data);
+			return response.data;
+		} catch (err) {
+			return thunkAPI.rejectWithValue(err.response.data);
 		}
 	}
 );
