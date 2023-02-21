@@ -9,59 +9,54 @@ import { LOADING_STATUS } from "../../../Common/status_code";
 import { PieChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
 import Border from "../../../sharedComponent/Common/Border";
+import AdminPieChart from "./Chart/PieChart";
+import LoadingSpinner from "../../../sharedComponent/Loading";
 
 const Overview = props => {
 	const dispatch = useDispatch();
 	const context = useContext(Auth_Global);
 	const adminState = useSelector(Admin());
 	const [patientSummary, setPatientSummary] = useState([]);
+	const [loading, setLoading] = useState(false);
 
 	useFocusEffect(
 		useCallback(() => {
 			const { loading, Patient_Summary } = adminState;
 			if (LOADING_STATUS.FULFILLED === loading) {
 				setPatientSummary(Patient_Summary);
+				setLoading(false);
 			}
 		}, [adminState])
 	);
 
 	useFocusEffect(
 		useCallback(() => {
+			setLoading(true);
 			dispatch(AdminAction.HospitalSummaryData({ Doctor_id: context.user.userInfo.Doctor_id }));
 		}, [dispatch])
 	);
 
 	return (
-		<Box safeArea>
-			<ScrollView
-				nestedScrollEnabled={true}
-				contentContainerStyle={{
-					paddingBottom: 60,
-				}}
-				width="100%"
-			>
-				{patientSummary.length > 0 &&
-					patientSummary.map((d, index) => (
-						<Border key={index}>
-							<Heading size="sm" alignSelf="center">{`Report Status: ${d.label}`}</Heading>
-							<PieChart
-								width={Dimensions.get("window").width}
-								height={300}
-								data={d.data}
-								chartConfig={{
-									backgroundColor: "#e26a00",
-									backgroundGradientFrom: "#fb8c00",
-									backgroundGradientTo: "#ffa726",
-									color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-									labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-								}}
-								accessor={"data"}
-								paddingLeft="30"
-							/>
+		<>
+			{loading ? (
+				<LoadingSpinner />
+			) : (
+				<Box safeArea>
+					<ScrollView
+						nestedScrollEnabled={true}
+						contentContainerStyle={{
+							paddingBottom: 60,
+						}}
+						width="100%"
+					>
+						<Heading size="md" alignSelf="center">Overview</Heading>
+						<Border>
+							<AdminPieChart data={patientSummary} height={200}/>
 						</Border>
-					))}
-			</ScrollView>
-		</Box>
+					</ScrollView>
+				</Box>
+			)}
+		</>
 	);
 };
 

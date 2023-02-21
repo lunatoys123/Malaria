@@ -314,8 +314,8 @@ export const Patient_Status = [
 		item: "survived",
 	},
 	{
-		id: "Stable Condition",
-		item: "Stable Condition",
+		id: "Stable",
+		item: "Stable",
 	},
 	{
 		id: "Emergency",

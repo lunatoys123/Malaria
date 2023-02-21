@@ -11,6 +11,7 @@ import {
 	SearchQueryForUser,
 	HospitalSummaryData,
 	TreatmentSummaryData,
+	AdminAnalytics,
 } from "./action";
 
 const initialState = {
@@ -23,6 +24,9 @@ const initialState = {
 	Patient_Summary: [],
 	Treatment_status: [],
 	Treatment_Summary: [],
+	Treatment_count_data: [],
+	Drug_data: [],
+	Analytics: [],
 };
 
 const pendingReducer = (state, action) => {
@@ -99,9 +103,19 @@ const TreatmentSummaryFulfillReducer = (state, action) => {
 		...state,
 		loading: LOADING_STATUS.FULFILLED,
 		Treatment_status: action.payload.Treatment_status,
-		Treatment_Summary: action.payload.Treatment_Summary
-	}
-}
+		Treatment_Summary: action.payload.Treatment_Summary,
+		Treatment_count_data: action.payload.Treatment_count_data,
+		Drug_data: action.payload.Drug_data,
+	};
+};
+
+const AdminAnalyticsFulfilReducer = (state, action) => {
+	return {
+		...state,
+		loading: LOADING_STATUS.FULFILLED,
+		Analytics: action.payload.Analytics,
+	};
+};
 
 const AdminSlice = createSlice({
 	name: "Admin",
@@ -134,7 +148,10 @@ const AdminSlice = createSlice({
 		[HospitalSummaryData.fulfilled]: HospitalDataReducer,
 		[TreatmentSummaryData.pending]: pendingReducer,
 		[TreatmentSummaryData.rejected]: rejectReducer,
-		[TreatmentSummaryData.fulfilled]: TreatmentSummaryFulfillReducer
+		[TreatmentSummaryData.fulfilled]: TreatmentSummaryFulfillReducer,
+		[AdminAnalytics.pending]: pendingReducer,
+		[AdminAnalytics.rejected]: rejectReducer,
+		[AdminAnalytics.fulfilled]: AdminAnalyticsFulfilReducer,
 	},
 });
 
@@ -150,5 +167,6 @@ export const AdminAction = {
 	SearchQueryForUser,
 	HospitalSummaryData,
 	TreatmentSummaryData,
+	AdminAnalytics,
 	...AdminSlice.actions,
 };

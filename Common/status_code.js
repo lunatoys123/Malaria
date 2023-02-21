@@ -50,7 +50,7 @@ export const Account_status = {
 	Active: "active",
 	Pending: "Pending",
 	Blocked: "Blocked",
-	Deleted: "Deleted"
+	Deleted: "Deleted",
 };
 
 export const Message_status = {
@@ -67,4 +67,10 @@ export const Data_Mode = {
 	Graph: "Graph",
 	Table: "Table",
 	Compare: "Compare",
+};
+
+export const Treatment_Mode = {
+	Treatment_Data: "Treatment_Data",
+	Threapy_Summary: "Threapy_Summary",
+	Drug_Summary: "Drug_Summary",
 };

@@ -14,15 +14,19 @@ export const Initialilze = createAsyncThunk("Admin/Initialilze", () => {
 
 export const GetNormalUsersFromHospital = createAsyncThunk(
 	"Admin/AccountManagement",
-	async ({ Doctor_id }) => {
+	async ({ Doctor_id }, thunkAPI) => {
 		const jwt = await AsyncStorage.getItem("jwt");
-		const response = await axios.get(`${URL}/Malaria/User/GetNormalUsersFromHospital`, {
-			params: { Doctor_id },
-			headers: {
-				Authorization: `Bearer ${jwt}`,
-			},
-		});
-		return response.data;
+		try {
+			const response = await axios.get(`${URL}/Malaria/User/GetNormalUsersFromHospital`, {
+				params: { Doctor_id },
+				headers: {
+					Authorization: `Bearer ${jwt}`,
+				},
+			});
+			return response.data;
+		} catch (err) {
+			return thunkAPI.rejectWithValue(err.response.data);
+		}
 	}
 );
 
@@ -30,7 +34,7 @@ export const AddUserToOrganization = createAsyncThunk(
 	"Admin/AddUser",
 	async ({ user, Doctor_id }, { rejectWithValue }) => {
 		const jwt = await AsyncStorage.getItem("jwt");
-		console.log(Doctor_id);
+		//console.log(Doctor_id);
 		try {
 			const response = await axios.post(
 				`${URL}/Malaria/User/register`,
@@ -175,7 +179,26 @@ export const TreatmentSummaryData = createAsyncThunk(
 				params: { Doctor_id },
 				headers: { Authorization: `Bearer ${jwt}` },
 			});
-			console.log(response.data);
+			//console.log(response.data);
+			return response.data;
+		} catch (err) {
+			return thunkAPI.rejectWithValue(err.response.data);
+		}
+	}
+);
+
+export const AdminAnalytics = createAsyncThunk(
+	"Admin/Analytics",
+	async ({ Doctor_id }, thunkAPI) => {
+		const jwt = await AsyncStorage.getItem("jwt");
+
+		try {
+			const response = await axios.get(`${URL}/Malaria/User/AdminAnalytics`, {
+				params: { Doctor_id },
+				headers: { Authorization: `Bearer ${jwt}` },
+			});
+
+			//console.log(response.data);
 			return response.data;
 		} catch (err) {
 			return thunkAPI.rejectWithValue(err.response.data);
