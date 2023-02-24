@@ -74,3 +74,8 @@ export const Treatment_Mode = {
 	Threapy_Summary: "Threapy_Summary",
 	Drug_Summary: "Drug_Summary",
 };
+
+export const Y_Axis_Mode = {
+	searchWithSign: "searchWithSign",
+	searchWithComplications: "searchWithComplications",
+};

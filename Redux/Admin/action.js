@@ -189,12 +189,11 @@ export const TreatmentSummaryData = createAsyncThunk(
 
 export const AdminAnalytics = createAsyncThunk(
 	"Admin/Analytics",
-	async ({ Doctor_id }, thunkAPI) => {
+	async ({ Doctor_id, xAxis, yAxis, mode }, thunkAPI) => {
 		const jwt = await AsyncStorage.getItem("jwt");
-
 		try {
 			const response = await axios.get(`${URL}/Malaria/User/AdminAnalytics`, {
-				params: { Doctor_id },
+				params: { Doctor_id, xAxis, yAxis, mode },
 				headers: { Authorization: `Bearer ${jwt}` },
 			});
 

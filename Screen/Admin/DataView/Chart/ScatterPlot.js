@@ -4,8 +4,8 @@ import { Text } from "native-base";
 import * as d3 from "d3";
 
 const AdminScatterPlot = props => {
-	var { AnalyticsData = {}, w = 400, h = 300 } = props;
-
+	var { AnalyticsData = {}, w = 400, h = 300, xAxis = "" } = props;
+	console.log(xAxis);
 	const margin = {
 		top: 40,
 		bottom: 40,
@@ -19,7 +19,7 @@ const AdminScatterPlot = props => {
 	const xScale = AnalyticsData.data
 		? d3
 				.scaleLinear()
-				.domain(d3.extent(AnalyticsData.data, d => d["Age"]))
+				.domain(d3.extent(AnalyticsData.data, d => d[xAxis]))
 				.range([0, width])
 		: null;
 	const yScale = AnalyticsData.data
