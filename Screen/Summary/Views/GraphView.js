@@ -34,7 +34,7 @@ const GraphView = props => {
 			{WHO_DATA &&
 				WHO_DATA.map((d, index) => (
 					<Box key={index}>
-						<Text>{`${ConstructLabel(d)[0]} - ${
+						<Text>{`Year: ${ConstructLabel(d)[0]} - ${
 							ConstructLabel(d)[ConstructLabel(d).length - 1]
 						}`}</Text>
 						<Pressable

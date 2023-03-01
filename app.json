@@ -12,7 +12,8 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/d7991e3c-f778-4f87-8270-4adccb30208e"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -36,6 +37,9 @@
         "projectId": "d7991e3c-f778-4f87-8270-4adccb30208e"
       }
     },
-    "owner": "lunatoys"
+    "owner": "lunatoys",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    }
   }
 }

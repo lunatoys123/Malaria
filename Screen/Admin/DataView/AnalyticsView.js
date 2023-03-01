@@ -18,6 +18,8 @@ const AnalyticsView = () => {
 	const [AnalyticsData, setAnalyticsData] = useState([]);
 	const [xAxis, setXAxis] = useState("");
 	const [yAxis, setYAxis] = useState("");
+	const [displayXAxis, setdisplayXAxis] = useState("");
+	const [displayYAxis, setdisplayYAxis] = useState("");
 	const [YAxisOptions, setYAxisOptions] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const toast = useToast();
@@ -72,6 +74,8 @@ const AnalyticsView = () => {
 			const searchWithSign = signItem.includes(yAxis);
 			const searchWithComplications = ClinicalComplicationsItem.includes(yAxis);
 
+			setdisplayXAxis(xAxis);
+			setdisplayYAxis(yAxis);
 			const mode = getYAxisMode(searchWithSign, searchWithComplications);
 			dispatch(
 				AdminAction.AdminAnalytics({
@@ -130,7 +134,7 @@ const AnalyticsView = () => {
 								AnalyticsData.map((d, i) => (
 									<Border>
 										<Text>{d.Sign}</Text>
-										<AdminScatterPlot AnalyticsData={d} xAxis={xAxis} />
+										<AdminScatterPlot AnalyticsData={d} xAxis={displayXAxis} />
 									</Border>
 								))}
 						</>
