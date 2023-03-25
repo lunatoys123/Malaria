@@ -58,6 +58,7 @@ const AccountManagementNavigator = () => {
 				name="ViewDoctorReport"
 				component={ViewReport}
 				options={({ navigation, route }) => ({
+					headerTitle:"Doctor Report",
 					headerLeft: () => (
 						<IconButton
 							icon={

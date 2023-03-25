@@ -18,6 +18,7 @@ import {
 	Select,
 	Icon,
 	useToast,
+	Center,
 } from "native-base";
 import { useSelector, useDispatch } from "react-redux";
 import { Case } from "../../Redux/Case/selector";
@@ -33,7 +34,7 @@ import {
 } from "../../Common/User_Functions";
 import { Patient_Status, report_status } from "../../Common/Options";
 import LoadingSpinner from "../../sharedComponent/Loading";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons, Entypo } from "@expo/vector-icons";
 import FontIcon from "react-native-vector-icons/FontAwesome";
 import Border from "../../sharedComponent/Common/Border";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -46,6 +47,8 @@ const Report = props => {
 	const [Data, setData] = useState([]);
 	const [ShowSearchModal, setShowSearchModal] = useState(false);
 	const [Loading, setLoading] = useState(false);
+	const [page, setpage] = useState(0);
+	const [max_page, setMax_Page] = useState(0);
 
 	const [searchStatus, setSearchStatus] = useState("");
 	const [ReportStatus, setReportStatus] = useState("");
@@ -57,10 +60,12 @@ const Report = props => {
 
 	useFocusEffect(
 		useCallback(() => {
-			const { loading, data } = CaseState;
+			const { loading, data, Page, Max_Page } = CaseState;
 			if (loading === LOADING_STATUS.FULFILLED) {
 				setData(data);
 				setLoading(false);
+				setpage(Page);
+				setMax_Page(Max_Page);
 			}
 		}, [CaseState])
 	);
@@ -68,13 +73,27 @@ const Report = props => {
 	useFocusEffect(
 		useCallback(() => {
 			setLoading(true);
+			// dispatch(
+			// 	caseAction.getCaseByDoctorId({
+			// 		Doctor_id: context.user.userInfo.Doctor_id,
+			// 		Page: 1,
+			// 		limit: 10,
+			// 	})
+			// );
 			dispatch(
-				caseAction.getCaseByDoctorId({
+				caseAction.searchCaseWithQuery({
 					Doctor_id: context.user.userInfo.Doctor_id,
+					PatientName: PatientName,
+					searchStatus: searchStatus,
+					searchStartDate: searchStartDate,
+					searchEndDate: searchEndDate,
+					ReportStatus: ReportStatus,
+					Page: 1,
+					limit: 10,
 				})
 			);
 			//setLoading(false);
-		}, [])
+		}, [dispatch])
 	);
 
 	const createReport = () => {
@@ -181,9 +200,71 @@ const Report = props => {
 				searchStartDate: startDate,
 				searchEndDate: endDate,
 				ReportStatus: ReportStatus,
+				Page: 1,
+				limit: 10,
 			})
 		);
 		setShowSearchModal(false);
+	};
+
+	const nextPage = () => {
+		setLoading(true);
+		setpage(page + 1);
+
+		let startDate = searchStartDate;
+		if (startDate != null) {
+			startDate = new Date(startDate);
+			startDate.setHours(0, 0, 0);
+		}
+
+		let endDate = searchEndDate;
+		if (endDate != null) {
+			endDate = new Date(endDate);
+			endDate.setHours(23, 59, 59);
+		}
+
+		dispatch(
+			caseAction.searchCaseWithQuery({
+				Doctor_id: context.user.userInfo.Doctor_id,
+				PatientName: PatientName,
+				searchStatus: searchStatus,
+				searchStartDate: searchStartDate,
+				searchEndDate: searchEndDate,
+				ReportStatus: ReportStatus,
+				Page: page + 1,
+				limit: 10,
+			})
+		);
+	};
+
+	const previousPage = () => {
+		setLoading(true);
+		setpage(page - 1);
+
+		let startDate = searchStartDate;
+		if (startDate != null) {
+			startDate = new Date(startDate);
+			startDate.setHours(0, 0, 0);
+		}
+
+		let endDate = searchEndDate;
+		if (endDate != null) {
+			endDate = new Date(endDate);
+			endDate.setHours(23, 59, 59);
+		}
+
+		dispatch(
+			caseAction.searchCaseWithQuery({
+				Doctor_id: context.user.userInfo.Doctor_id,
+				PatientName: PatientName,
+				searchStatus: searchStatus,
+				searchStartDate: searchStartDate,
+				searchEndDate: searchEndDate,
+				ReportStatus: ReportStatus,
+				Page: page - 1,
+				limit: 10,
+			})
+		);
 	};
 
 	return (
@@ -308,6 +389,43 @@ const Report = props => {
 										</Border>
 									))}
 							</ScrollView>
+							<Border>
+								<HStack alignSelf="center" my={3}>
+									<IconButton
+										icon={<Entypo name="arrow-with-circle-left" size={24} color="blue" />}
+										isDisabled={page == 1}
+										onPress={previousPage}
+									/>
+									<Input
+										value={page.toString()}
+										w="20%"
+										size="sm"
+										_pressed={{ borderColor: "red.500" }}
+									/>
+									{/* <Input
+										defaultValue={"/" + max_page.toString()}
+										w="20%"
+										isDisabled={true}
+										size="sm"
+										_disabled={{ borderColor: "red.500", textDecorationColor:"black" }}
+									/> */}
+									<Center
+										borderWidth="1"
+										borderColor="coolGray.400"
+										alignContent="center"
+										bg="coolGray.200"
+										width="20%"
+										borderRadius="md"
+									>
+										<Center>{"/" + max_page}</Center>
+									</Center>
+									<IconButton
+										icon={<Entypo name="arrow-with-circle-right" size={24} color="blue" />}
+										isDisabled={page == max_page}
+										onPress={nextPage}
+									/>
+								</HStack>
+							</Border>
 						</VStack>
 						<Modal isOpen={ShowSearchModal} onClose={() => setShowSearchModal(false)} size="full">
 							<Modal.Content>

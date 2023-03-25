@@ -134,7 +134,11 @@ const AnalyticsView = () => {
 								AnalyticsData.map((d, i) => (
 									<Border>
 										<Text>{d.Sign}</Text>
-										<AdminScatterPlot AnalyticsData={d} xAxis={displayXAxis} />
+										<AdminScatterPlot
+											AnalyticsData={d}
+											xAxis={displayXAxis}
+											xticks={displayXAxis == "Age" ? 10 : 4}
+										/>
 									</Border>
 								))}
 						</>

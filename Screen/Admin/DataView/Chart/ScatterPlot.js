@@ -4,7 +4,7 @@ import { Text } from "native-base";
 import * as d3 from "d3";
 
 const AdminScatterPlot = props => {
-	var { AnalyticsData = {}, w = 400, h = 300, xAxis = "" } = props;
+	var { AnalyticsData = {}, w = 400, h = 300, xAxis = "", xticks = 10 } = props;
 	console.log(xAxis);
 	const margin = {
 		top: 40,
@@ -41,7 +41,7 @@ const AdminScatterPlot = props => {
 						</G>
 					))}
 				{xScale &&
-					xScale.ticks(10).map((d, i) => (
+					xScale.ticks(xticks).map((d, i) => (
 						<>
 							<Line
 								style={{ stroke: "#e4e5eb" }}
@@ -64,7 +64,7 @@ const AdminScatterPlot = props => {
 							<Circle
 								key={i}
 								r={5}
-								x={xScale(data.Age)}
+								x={xScale(data[xAxis])}
 								y={yScale(data.count)}
 								style={{ fill: "lightblue" }}
 							/>

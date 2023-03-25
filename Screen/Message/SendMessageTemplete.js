@@ -143,7 +143,7 @@ const SendMessageTemplete = props => {
 					<AlertDialog isOpen={sendMessage} onClose={() => setSendMessage(false)} size="xl">
 						<AlertDialog.Content>
 							<AlertDialog.Header>Send Message Status</AlertDialog.Header>
-							<AlertDialog.Body>{message}</AlertDialog.Body>
+							<AlertDialog.Body>Send Message Successful</AlertDialog.Body>
 							<AlertDialog.Footer>
 								<Button w="100%" onPress={() => ReturnToPage()}>
 									Confirm
