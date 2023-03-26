@@ -209,7 +209,6 @@ const Report = props => {
 
 	const nextPage = () => {
 		setLoading(true);
-		setpage(page + 1);
 
 		let startDate = searchStartDate;
 		if (startDate != null) {
@@ -235,11 +234,12 @@ const Report = props => {
 				limit: 10,
 			})
 		);
+		setpage(page + 1);
 	};
 
 	const previousPage = () => {
 		setLoading(true);
-		setpage(page - 1);
+		
 
 		let startDate = searchStartDate;
 		if (startDate != null) {
@@ -265,6 +265,8 @@ const Report = props => {
 				limit: 10,
 			})
 		);
+
+		setpage(page - 1);
 	};
 
 	return (

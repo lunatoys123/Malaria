@@ -52,12 +52,12 @@ export const editPersonalInformation = createAsyncThunk(
 
 export const searchPatientWithQuery = createAsyncThunk(
 	"Patient/searchPatientWithQuery",
-	async ({ Doctor_id, searchQuery }, thunkAPI) => {
+	async ({ Doctor_id, searchQuery, Page, limit }, thunkAPI) => {
 		try {
 			const jwt = await AsyncStorage.getItem("jwt");
 
 			const response = await axios.get(`${URL}/Malaria/Patient/searchPatientWithQuery`, {
-				params: { Doctor_id, searchQuery },
+				params: { Doctor_id, searchQuery, Page, limit },
 				headers: { Authorization: `Bearer ${jwt}` },
 			});
 

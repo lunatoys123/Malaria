@@ -8,6 +8,9 @@ const initialState = {
 	Message: "",
 	status: "",
 	Error: "",
+	Page: 1,
+	limit: 10,
+	Max_Page: 0,
 };
 
 const PendingReducer = (state, action) => {
@@ -29,6 +32,9 @@ const LoadDataFulfillReducer = (state, action) => {
 		...state,
 		loading: LOADING_STATUS.FULFILLED,
 		data: action.payload.data,
+		Page: action.payload.Page,
+		limit: action.payload.limit,
+		Max_Page: action.payload.Max_Page
 	};
 };
 
