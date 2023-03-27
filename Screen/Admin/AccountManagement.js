@@ -121,7 +121,7 @@ const AccountManagement = props => {
 				<LoadingSpinner />
 			) : (
 				<VStack>
-					<Box border="1" borderRadius="md" mt="3" alignSelf="center" height="85%">
+					<Box border="1" borderRadius="md" mt="3" alignSelf="center" safeArea height="85%">
 						<VStack space={3}>
 							<HStack alignItems="center">
 								<Heading ml="4" w="65%">
