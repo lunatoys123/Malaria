@@ -27,6 +27,9 @@ const initialState = {
 	Treatment_count_data: [],
 	Drug_data: [],
 	Analytics: [],
+	Page: 1,
+	limit: 10,
+	Max_Page: 0,
 };
 
 const pendingReducer = (state, action) => {
@@ -52,6 +55,9 @@ const AccountManagementFulfillReducer = (state, action) => {
 		status: action.payload.status,
 		AccountManagement: action.payload.AccountManagement,
 		Message: action.payload.Message,
+		Page: action.payload.Page,
+		limit: action.payload.limit,
+		Max_Page: action.payload.Max_Page,
 	};
 };
 

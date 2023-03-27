@@ -48,6 +48,8 @@ const PatientView = props => {
 	useFocusEffect(
 		useCallback(() => {
 			setLoading(true);
+			setSearchQuery("");
+			//console.log(searchQuery);
 			dispatch(
 				PatientActions.searchPatientWithQuery({
 					Doctor_id: context.user.userInfo.Doctor_id,

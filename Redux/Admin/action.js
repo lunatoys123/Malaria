@@ -136,12 +136,12 @@ export const recoverUser = createAsyncThunk(
 
 export const SearchQueryForUser = createAsyncThunk(
 	"Admin/SearchQueryForUser",
-	async ({ Doctor_id, searchQuery }, thunkAPI) => {
+	async ({ Doctor_id, searchQuery, Page, limit }, thunkAPI) => {
 		const jwt = await AsyncStorage.getItem("jwt");
 
 		try {
 			const response = await axios.get(`${URL}/Malaria/User/SearchQueryForUser`, {
-				params: { Doctor_id, searchQuery },
+				params: { Doctor_id, searchQuery, Page, limit },
 				headers: { Authorization: `Bearer ${jwt}` },
 			});
 

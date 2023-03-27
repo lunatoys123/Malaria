@@ -14,6 +14,7 @@ import {
 	Pressable,
 	HamburgerIcon,
 	AlertDialog,
+	Center,
 } from "native-base";
 import Auth_Global from "../../Context/store/Auth_Global";
 import { useFocusEffect } from "@react-navigation/native";
@@ -21,7 +22,7 @@ import { AdminAction } from "../../Redux/Admin/reducer";
 import { Admin } from "../../Redux/Admin/selector";
 import { useSelector, useDispatch } from "react-redux";
 import { LOADING_STATUS, Account_status } from "../../Common/status_code";
-import { MaterialIcons, AntDesign, Ionicons } from "@expo/vector-icons";
+import { MaterialIcons, AntDesign, Ionicons, Entypo } from "@expo/vector-icons";
 import Border from "../../sharedComponent/Common/Border";
 import LoadingSpinner from "../../sharedComponent/Loading";
 
@@ -35,15 +36,18 @@ const AccountManagement = props => {
 	const [recovered, setRecovered] = useState(false);
 	const [message, setMessage] = useState("");
 	const [searchQuery, setSearchQuery] = useState("");
+	const [page, setpage] = useState(0);
+	const [max_page, setMax_Page] = useState(0);
 
 	useFocusEffect(
 		useCallback(() => {
-			const { loading, AccountManagement, Message } = AdminState;
+			const { loading, AccountManagement, Message, Page, Max_Page } = AdminState;
 			if (loading === LOADING_STATUS.FULFILLED) {
 				setMessage(Message);
 				setAccount(AccountManagement);
 				setLoading(false);
-
+				setpage(Page);
+				setMax_Page(Max_Page);
 				//dispatch(AdminAction.Initialilze());
 			}
 		}, [AdminState])
@@ -53,7 +57,12 @@ const AccountManagement = props => {
 		useCallback(() => {
 			setLoading(true);
 			dispatch(
-				AdminAction.GetNormalUsersFromHospital({ Doctor_id: context.user.userInfo.Doctor_id })
+				AdminAction.SearchQueryForUser({
+					Doctor_id: context.user.userInfo.Doctor_id,
+					searchQuery: searchQuery,
+					Page: 1,
+					limit: 10,
+				})
 			);
 		}, [dispatch])
 	);
@@ -84,13 +93,35 @@ const AccountManagement = props => {
 			})
 		);
 	};
+
+	const previousPage = () => {
+		setLoading(true);
+		AdminAction.SearchQueryForUser({
+			Doctor_id: context.user.userInfo.Doctor_id,
+			searchQuery: searchQuery,
+			Page: page + 1,
+			limit: 10,
+		});
+		setpage(page + 1);
+	};
+
+	const nextPage = () => {
+		setLoading(true);
+		AdminAction.SearchQueryForUser({
+			Doctor_id: context.user.userInfo.Doctor_id,
+			searchQuery: searchQuery,
+			Page: page - 1,
+			limit: 10,
+		});
+		setpage(page - 1);
+	};
 	return (
 		<>
 			{loading ? (
 				<LoadingSpinner />
 			) : (
-				<VStack divider={<Divider />}>
-					<Box border="1" borderRadius="md" mt="3" alignSelf="center" safeArea>
+				<VStack>
+					<Box border="1" borderRadius="md" mt="3" alignSelf="center" height="85%">
 						<VStack space={3}>
 							<HStack alignItems="center">
 								<Heading ml="4" w="65%">
@@ -247,6 +278,43 @@ const AccountManagement = props => {
 							</ScrollView>
 						</VStack>
 					</Box>
+					<Border>
+						<HStack alignSelf="center" my={3}>
+							<IconButton
+								icon={<Entypo name="arrow-with-circle-left" size={24} color="blue" />}
+								isDisabled={page == 1}
+								onPress={previousPage}
+							/>
+							<Input
+								value={page.toString()}
+								w="20%"
+								size="sm"
+								_pressed={{ borderColor: "red.500" }}
+							/>
+							{/* <Input
+										defaultValue={"/" + max_page.toString()}
+										w="20%"
+										isDisabled={true}
+										size="sm"
+										_disabled={{ borderColor: "red.500", textDecorationColor:"black" }}
+									/> */}
+							<Center
+								borderWidth="1"
+								borderColor="coolGray.400"
+								alignContent="center"
+								bg="coolGray.200"
+								width="20%"
+								borderRadius="md"
+							>
+								<Center>{"/" + max_page}</Center>
+							</Center>
+							<IconButton
+								icon={<Entypo name="arrow-with-circle-right" size={24} color="blue" />}
+								isDisabled={page == max_page}
+								onPress={nextPage}
+							/>
+						</HStack>
+					</Border>
 				</VStack>
 			)}
 			<AlertDialog isOpen={deleted} onClose={() => setDeleted(false)}>
