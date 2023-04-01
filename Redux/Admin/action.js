@@ -48,6 +48,7 @@ export const AddUserToOrganization = createAsyncThunk(
 					},
 				}
 			);
+			//console.log(response.data);
 			return response.data;
 		} catch (e) {
 			return rejectWithValue(e.response.data);

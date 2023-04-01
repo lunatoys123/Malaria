@@ -123,7 +123,7 @@ const SendMessageTemplete = props => {
 						<FormMultiSelect
 							formik={formik}
 							options={Receipents}
-							Label="Send To"
+							Label="Receipents"
 							placeholder="Send To"
 							id="Receipents"
 							MultiChange={onMultiChange}

@@ -45,13 +45,16 @@ const ViewReport = props => {
 
 	useFocusEffect(
 		useCallback(() => {
+			setLoading(true);
 			dispatch(caseAction.getCaseByDoctorId({ Doctor_id: Doctor_id, Page: 1, limit: 10 }));
 		}, [dispatch])
 	);
 
 	const nextPage = () => {
+		if (Number(page) == Number(max_page)) {
+			return;
+		}
 		setLoading(true);
-		setpage(page + 1);
 
 		dispatch(
 			caseAction.getCaseByDoctorId({
@@ -60,11 +63,15 @@ const ViewReport = props => {
 				limit: 10,
 			})
 		);
+
+		setpage(page + 1);
 	};
 
 	const previousPage = () => {
+		if (Number(page) == 1) {
+			return;
+		}
 		setLoading(true);
-		setpage(page - 1);
 
 		dispatch(
 			caseAction.getCaseByDoctorId({
@@ -73,6 +80,8 @@ const ViewReport = props => {
 				limit: 10,
 			})
 		);
+
+		setpage(page - 1);
 	};
 	return (
 		<>
@@ -87,8 +96,8 @@ const ViewReport = props => {
 						<HStack alignSelf="center" my={3}>
 							<IconButton
 								icon={<Entypo name="arrow-with-circle-left" size={24} color="blue" />}
-								isDisabled={page == 1}
-								onPress={previousPage}
+								isDisabled={Number(page) == 1}
+								onPress={() => previousPage()}
 							/>
 							<Input
 								value={page.toString()}
@@ -115,8 +124,8 @@ const ViewReport = props => {
 							</Center>
 							<IconButton
 								icon={<Entypo name="arrow-with-circle-right" size={24} color="blue" />}
-								isDisabled={page == max_page}
-								onPress={nextPage}
+								isDisabled={Number(page) == Number(max_page)}
+								onPress={() => nextPage()}
 							/>
 						</HStack>
 					</Border>

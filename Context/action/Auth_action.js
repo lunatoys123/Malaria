@@ -39,7 +39,7 @@ export const loginUser = async (user, dispatch) => {
 		.catch(err => {
 			//console.log("Error....... ", err);
 			token_response.status = err.response.data.status;
-			token_response.Message = err.response.data.Message;
+			token_response.Message = err.response.data.Error;
 		});
 	return token_response;
 };

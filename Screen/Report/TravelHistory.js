@@ -104,6 +104,19 @@ const TravelHistory = props => {
 		}
 	};
 
+	const SubmitWithAlert = async values => {
+		//console.log(values);
+		const validation = await formik.validateForm(values);
+		//console.log(validation);
+
+		if (!_.isEmpty(validation)) {
+			//console.log(validation);
+			setError("Every Travel History should contains location, Travel start and end date");
+			setVisible(true);
+		} else {
+			formik.handleSubmit();
+		}
+	};
 	const RemoveTravelHistory = index => {
 		var Travel_History = _.get(formik.values, "Travel_History");
 		Travel_History.splice(index, 1);
@@ -222,7 +235,7 @@ const TravelHistory = props => {
 					</Center>
 				</FormControl>
 				<Button
-					onPress={formik.handleSubmit}
+					onPress={() => SubmitWithAlert(formik.values)}
 					alignSelf="flex-end"
 					mr={5}
 					mt={5}

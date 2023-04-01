@@ -3,7 +3,6 @@
     "name": "Malaria",
     "slug": "malaria",
     "version": "1.0.0",
-    "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -20,7 +19,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.lunatoys.malaria"
+      "bundleIdentifier": "com.lunatoys.malaria",
+      "requireFullScreen": true
     },
     "android": {
       "adaptiveIcon": {

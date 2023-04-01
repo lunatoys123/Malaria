@@ -138,7 +138,7 @@ export const generatePDF = async id => {
 						<div style="${columnHeader}">Location</div>
 						<div style="${columndata}">${Patient.Home.Location}</div>
 						<div style="${columnHeader}">Home Telephone</div>
-						<div style="${columndata}">${Patient.Home.Telphone}</div>
+						<div style="${columndata}">${Patient.Home.Telephone}</div>
 					</div>
 				</div>
 				<div style="width: 90%; justify-content: center; align-items: center; margin: auto;">
@@ -155,7 +155,7 @@ export const generatePDF = async id => {
 						<div style="${columnHeader}">Location</div>
 						<div style="${columndata}">${Patient.Work.Location}</div>
 						<div style="${columnHeader}">Work Telephone</div>
-						<div style="${columndata}">${Patient.Work.Telphone}</div>
+						<div style="${columndata}">${Patient.Work.Telephone}</div>
 					</div>
 				</div>
 				<div style="width: 90%; justify-content: center; align-items: center; margin: auto;" class="breakavoid">
@@ -206,7 +206,7 @@ export const generatePDF = async id => {
 									<div style="${container}" class="breakavoid">
 										<div style="${columnHeader}">Admit Date</div>
 										<div style="${columndata}">${d.Admit_Date.substring(0, 10)}</div>
-										<div style="${columnHeader}">Work Telephone</div>
+										<div style="${columnHeader}">Discharge Date</div>
 										<div style="${columndata}">${d.DisCharge_Date.substring(0, 10)}</div>
 									</div>
 									<div style="${container}" class="breakavoid">

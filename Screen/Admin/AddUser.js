@@ -1,5 +1,5 @@
 import React, { useState, useContext, useCallback } from "react";
-import { Center, Button, VStack, ScrollView, Pressable, Icon, AlertDialog } from "native-base";
+import { Center, Button, VStack, ScrollView, AlertDialog, Text, HStack } from "native-base";
 import Card_Component from "../../sharedComponent/Card_Component";
 import { useFormik } from "formik";
 import FormInputField from "../../sharedComponent/Form/FormInputField";
@@ -8,20 +8,19 @@ import { Role_Options } from "../../Common/Options";
 import _ from "lodash";
 import * as Yup from "yup";
 import "yup-phone-lite";
-import { MaterialIcons } from "@expo/vector-icons";
 import Auth_Global from "../../Context/store/Auth_Global";
 import { useDispatch, useSelector } from "react-redux";
 import { Admin } from "../../Redux/Admin/selector";
 import { AdminAction } from "../../Redux/Admin/reducer";
 import { useFocusEffect } from "@react-navigation/native";
 import { LOADING_STATUS, status_code } from "../../Common/status_code";
+import { MaterialIcons } from '@expo/vector-icons';
+import AntIcon from "react-native-vector-icons/AntDesign";
 
 const AddUser = props => {
 	const dispatch = useDispatch();
 	const AdminState = useSelector(Admin());
 	const context = useContext(Auth_Global);
-
-	const [ShowPassword, setShowPassword] = useState(false);
 	const [UserCreated, setUserCreated] = useState(false);
 	const [message, setMessage] = useState("");
 	const [submit, setSubmit] = useState(false);
@@ -30,20 +29,27 @@ const AddUser = props => {
 	useFocusEffect(
 		useCallback(() => {
 			const { loading, Message, Error, status } = AdminState;
-			if (loading === LOADING_STATUS.FULFILLED && submit) {
-				setStatus(status);
-				setMessage(Message);
-				setUserCreated(true);
-				setSubmit(false);
-				dispatch(AdminAction.Initialilze());
+
+			if (loading === LOADING_STATUS.FULFILLED) {
+				if (submit && Message != "") {
+					setStatus(status);
+					setMessage(Message);
+					setUserCreated(true);
+					setSubmit(false);
+				}
+
+				//dispatch(AdminAction.Initialilze());
 			} else if (loading === LOADING_STATUS.REJECTED && submit) {
-				setStatus(status);
-				setMessage(Error);
-				setUserCreated(true);
-				setSubmit(false);
-				dispatch(AdminAction.Initialilze());
+				if (submit && Error != null) {
+					setStatus(status);
+					setMessage(Error);
+					setUserCreated(true);
+					setSubmit(false);
+				}
+
+				//dispatch(AdminAction.Initialilze());
 			}
-		}, [AdminState, submit])
+		}, [AdminState])
 	);
 
 	const formik = useFormik({
@@ -104,6 +110,7 @@ const AddUser = props => {
 	const CheckConfirm = () => {
 		setUserCreated(false);
 		if (status === status_code.Success) {
+			dispatch(AdminAction.Initialilze());
 			props.navigation.navigate("AccountManagement");
 		}
 	};
@@ -161,7 +168,16 @@ const AddUser = props => {
 			</VStack>
 			<AlertDialog isOpen={UserCreated} onClose={() => setUserCreated(false)} size="xl">
 				<AlertDialog.Content>
-					<AlertDialog.Header>User creation Status</AlertDialog.Header>
+					<AlertDialog.Header>
+						<HStack space={2} alignItems="center">
+							{status === status_code.Success ? (
+								<AntIcon name="checkcircle" size={30} color="black" />
+							) : (
+								<MaterialIcons name="error" size={24} color="red" />
+							)}
+							<Text>User creation Status</Text>
+						</HStack>
+					</AlertDialog.Header>
 					<AlertDialog.Body>{message}</AlertDialog.Body>
 					<AlertDialog.Footer>
 						<Button w="100%" onPress={() => CheckConfirm()}>

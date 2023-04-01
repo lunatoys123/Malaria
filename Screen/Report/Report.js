@@ -38,6 +38,7 @@ import { AntDesign, Ionicons, Entypo } from "@expo/vector-icons";
 import FontIcon from "react-native-vector-icons/FontAwesome";
 import Border from "../../sharedComponent/Common/Border";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { Dimensions } from "react-native";
 
 const Report = props => {
 	const dispatch = useDispatch();
@@ -57,6 +58,7 @@ const Report = props => {
 	const [showSearchEndDate, setShowSearchEndDate] = useState(false);
 	const [searchStartDate, setSearchStartDate] = useState(null);
 	const [searchEndDate, setSearchEndDate] = useState(null);
+	const fullWidth = Dimensions.get("window").width;
 
 	useFocusEffect(
 		useCallback(() => {
@@ -239,7 +241,6 @@ const Report = props => {
 
 	const previousPage = () => {
 		setLoading(true);
-		
 
 		let startDate = searchStartDate;
 		if (startDate != null) {
@@ -268,6 +269,36 @@ const Report = props => {
 
 		setpage(page - 1);
 	};
+
+	const targetpage = (page) => {
+		setLoading(true)
+
+		let startDate = searchStartDate;
+		if (startDate != null) {
+			startDate = new Date(startDate);
+			startDate.setHours(0, 0, 0);
+		}
+
+		let endDate = searchEndDate;
+		if (endDate != null) {
+			endDate = new Date(endDate);
+			endDate.setHours(23, 59, 59);
+		}
+
+		dispatch(
+			caseAction.searchCaseWithQuery({
+				Doctor_id: context.user.userInfo.Doctor_id,
+				PatientName: PatientName,
+				searchStatus: searchStatus,
+				searchStartDate: searchStartDate,
+				searchEndDate: searchEndDate,
+				ReportStatus: ReportStatus,
+				Page: page,
+				limit: 10,
+			})
+		);
+		setpage(page);
+	} 
 
 	return (
 		<>
@@ -391,7 +422,7 @@ const Report = props => {
 										</Border>
 									))}
 							</ScrollView>
-							<Border>
+							<Border width={fullWidth}>
 								<HStack alignSelf="center" my={3}>
 									<IconButton
 										icon={<Entypo name="arrow-with-circle-left" size={24} color="blue" />}
@@ -403,6 +434,7 @@ const Report = props => {
 										w="20%"
 										size="sm"
 										_pressed={{ borderColor: "red.500" }}
+										//onChangeText={text => setpage(text)}
 									/>
 									{/* <Input
 										defaultValue={"/" + max_page.toString()}

@@ -10,6 +10,7 @@ import {
 	Radio,
 	Button,
 	Text,
+	AlertDialog,
 } from "native-base";
 import Card_Component from "../../sharedComponent/Card_Component";
 import FormInputField from "../../sharedComponent/Form/FormInputField";
@@ -30,6 +31,7 @@ import {
 import _, { xorBy } from "lodash";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 
 const ClinicalInformation = props => {
 	var report_data = props.route.params.report_data;
@@ -39,6 +41,8 @@ const ClinicalInformation = props => {
 	const [show, setShow] = useState(false);
 	const [onSetDateShow, setonSetDateShow] = useState(false);
 	const [previousIllnewssDate, setpreviousIllnewssDate] = useState(false);
+	const [showError, setShowError] = useState(false);
+	const [errorField, setErrorField] = useState([]);
 
 	const initialValues = () => {
 		if (mode === Operation_Mode.create || mode === Operation_Mode.createWithPatientId) {
@@ -157,7 +161,7 @@ const ClinicalInformation = props => {
 			Clinical_data.Clinical_Complications.Complications =
 				Clinical_data.Clinical_Complications.Complications.map(d => d.item);
 			Clinical_data.Symptoms.Sign = Clinical_data.Symptoms.Sign.map(d => d.item);
-			Clinical_data.Patient_Status = Clinical_data.Patient_Status.item
+			Clinical_data.Patient_Status = Clinical_data.Patient_Status.item;
 
 			if (mode === Operation_Mode.createWithPatientId) {
 				report_data = { ...report_data, case: { ...Clinical_data, Patient_id: Patient_id } };
@@ -208,7 +212,9 @@ const ClinicalInformation = props => {
 		//console.log(validation);
 
 		if (!_.isEmpty(validation)) {
-			console.log(validation);
+			//console.log(validation);
+			setErrorField(Object.keys(validation));
+			setShowError(true);
 		} else {
 			formik.handleSubmit();
 		}
@@ -360,19 +366,51 @@ const ClinicalInformation = props => {
 				</Card_Component>
 				<Button
 					my={3}
-					mr={5}
 					onPress={() => SubmitWithAlert(formik.values)}
 					alignSelf="center"
 					colorScheme="success"
 					w="90%"
-					size="md"
-					rightIcon={<Icon as={<FontIcon name="chevron-right" />} size={5} ml={2} />}
+					rightIcon={
+						mode === Operation_Mode.create ? (
+							<Icon as={<FontIcon name="chevron-right" />} size={5} ml={2} />
+						) : null
+					}
 				>
 					<Text ml={2} color="white">
-						Travel History
+						{mode === Operation_Mode.create
+							? "Travel History"
+							: mode === Operation_Mode.edit
+							? "Update Travel History"
+							: null}
 					</Text>
 				</Button>
 			</Center>
+			<AlertDialog isOpen={showError} onClose={() => setShowError(false)} size="full">
+				<AlertDialog.Content>
+					<AlertDialog.Header>
+						<HStack space={2} alignItems="center">
+							<MaterialIcon name="error" size={30} color="red" />
+							<Text color="red.400" bold>
+								Error Status
+							</Text>
+						</HStack>
+					</AlertDialog.Header>
+					<AlertDialog.Body>
+						<VStack space={3}>
+							<Text fontWeight="bold" color="red.500">
+								Validation Error
+							</Text>
+							<Text>validation error from the following field:</Text>
+							<Text>{errorField.join(" , ")}</Text>
+						</VStack>
+					</AlertDialog.Body>
+					<AlertDialog.Footer>
+						<Button w="100%" onPress={() => setShowError(false)}>
+							Confirm
+						</Button>
+					</AlertDialog.Footer>
+				</AlertDialog.Content>
+			</AlertDialog>
 		</ScrollView>
 	);
 };

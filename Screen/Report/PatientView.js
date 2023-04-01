@@ -91,6 +91,9 @@ const PatientView = props => {
 	};
 
 	const previousPage = () => {
+		if (Number(page) == 1) {
+			return;
+		}
 		setLoading(true);
 
 		dispatch(
@@ -106,6 +109,9 @@ const PatientView = props => {
 	};
 
 	const nextPage = () => {
+		if (Number(page) == Number(max_page)) {
+			return;
+		}
 		setLoading(true);
 
 		dispatch(
@@ -153,7 +159,11 @@ const PatientView = props => {
 								height="70%"
 							>
 								<Center>
-									{(Data == null || Data.length ==0) && <Text color="red.400" bold mt="3">No data</Text>}
+									{(Data == null || Data.length == 0) && (
+										<Text color="red.400" bold mt="3">
+											No data
+										</Text>
+									)}
 									{Data &&
 										Data.map((d, index) => (
 											<Box
@@ -231,8 +241,8 @@ const PatientView = props => {
 							<HStack alignSelf="center" my={3}>
 								<IconButton
 									icon={<Entypo name="arrow-with-circle-left" size={24} color="blue" />}
-									isDisabled={page == 1}
-									onPress={previousPage}
+									isDisabled={Number(page) == 1}
+									onPress={() => previousPage()}
 								/>
 								<Input
 									value={page.toString()}
@@ -259,8 +269,8 @@ const PatientView = props => {
 								</Center>
 								<IconButton
 									icon={<Entypo name="arrow-with-circle-right" size={24} color="blue" />}
-									isDisabled={page == max_page}
-									onPress={nextPage}
+									isDisabled={Number(page) == Number(max_page)}
+									onPress={() => nextPage()}
 								/>
 							</HStack>
 						</Border>

@@ -10,6 +10,7 @@ import {
 	Text,
 	View,
 	AlertDialog,
+	HStack,
 } from "native-base";
 import { useFormik } from "formik";
 import { Gender_option } from "../../Common/Options";
@@ -338,36 +339,30 @@ const PersonalInformation = props => {
 						</AlertDialog.Footer>
 					</AlertDialog.Content>
 				</AlertDialog>
-				<FancyAlert
-					visible={visible}
-					icon={
-						<View
-							style={{
-								flex: 1,
-								display: "flex",
-								justifyContent: "center",
-								alignItems: "center",
-								backgroundColor: "red",
-								borderRadius: 50,
-								width: "100%",
-							}}
-						>
-							<MaterialIcon name="error" size={30} color="white" />
-						</View>
-					}
-					style={{ backgroundColor: "white" }}
-				>
-					<VStack space={3}>
-						<Text fontWeight="bold" color="red.500">
-							Validation Error
-						</Text>
-						<Text>validation error from the following field:</Text>
-						<Text>{errorField.join(" , ")}</Text>
-						<Button onPress={() => setVisible(false)} my={3}>
-							OK
-						</Button>
-					</VStack>
-				</FancyAlert>
+				<AlertDialog isOpen={visible} onClose={() => setVisible(false)} size="full">
+					<AlertDialog.Content>
+						<AlertDialog.Header>
+							<HStack space={2} alignItems="center">
+								<MaterialIcon name="error" size={30} color="red" />
+								<Text color="red.400" bold>Error Status</Text>
+							</HStack>
+						</AlertDialog.Header>
+						<AlertDialog.Body>
+							<VStack space={3}>
+								<Text fontWeight="bold" color="red.500">
+									Validation Error
+								</Text>
+								<Text>validation error from the following field:</Text>
+								<Text>{errorField.join(" , ")}</Text>
+							</VStack>
+						</AlertDialog.Body>
+						<AlertDialog.Footer>
+							<Button w="100%" onPress={() => setVisible(false)}>
+								Confirm
+							</Button>
+						</AlertDialog.Footer>
+					</AlertDialog.Content>
+				</AlertDialog>
 			</Center>
 		</ScrollView>
 	);

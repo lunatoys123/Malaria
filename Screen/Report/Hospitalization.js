@@ -1,5 +1,16 @@
 import React, { useState, useContext, useCallback } from "react";
-import { VStack, Text, ScrollView, Center, Button, Box, HStack, Icon, View } from "native-base";
+import {
+	VStack,
+	Text,
+	ScrollView,
+	Center,
+	Button,
+	Box,
+	HStack,
+	Icon,
+	View,
+	AlertDialog,
+} from "native-base";
 import Card_Component from "../../sharedComponent/Card_Component";
 import { useFormik } from "formik";
 import _ from "lodash";
@@ -17,6 +28,7 @@ import AntIcon from "react-native-vector-icons/AntDesign";
 import { FancyAlert } from "react-native-expo-fancy-alerts";
 import { useFocusEffect } from "@react-navigation/native";
 import { Operation_Mode } from "../../Common/status_code";
+import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 
 const Hospitalization = props => {
 	var report_data = props.route.params.report_data;
@@ -31,6 +43,8 @@ const Hospitalization = props => {
 	const [message, setMessage] = useState("");
 	const [submit, setSubmit] = useState(false);
 	const createMode = mode === Operation_Mode.create || mode === Operation_Mode.createWithPatientId;
+	const [showError, setShowError] = useState(false);
+	const [Error, setError] = useState("");
 
 	useFocusEffect(
 		useCallback(() => {
@@ -165,7 +179,11 @@ const Hospitalization = props => {
 		const validation = await formik.validateForm(values);
 
 		if (!_.isEmpty(validation)) {
-			console.log(validation);
+			//console.log(validation);
+			setShowError(true);
+			setError(
+				"Please check the hospital name, street address, city is not empty, and admit date is before the discharge date for every hospitalization record"
+			);
 		} else {
 			formik.handleSubmit();
 		}
@@ -280,7 +298,46 @@ const Hospitalization = props => {
 						{createMode ? "Add Report" : mode === Operation_Mode.edit ? "Updated Report" : null}
 					</Button>
 
-					<FancyAlert
+					<AlertDialog isOpen={showError} onClose={() => setShowError(false)} size="full">
+						<AlertDialog.Content>
+							<AlertDialog.Header>
+								<HStack space={2} alignItems="center">
+									<MaterialIcon name="error" size={30} color="red" />
+									<Text color="red.400" bold>
+										Error Status
+									</Text>
+								</HStack>
+							</AlertDialog.Header>
+							<AlertDialog.Body>
+								<Text>{Error}</Text>
+							</AlertDialog.Body>
+							<AlertDialog.Footer>
+								<Button w="100%" onPress={() => setShowError(false)}>
+									Confirm
+								</Button>
+							</AlertDialog.Footer>
+						</AlertDialog.Content>
+					</AlertDialog>
+					<AlertDialog isOpen={visible} onClose={() => setVisible(false)} size="full">
+						<AlertDialog.Content>
+							<AlertDialog.Header>
+								<HStack space={2} alignItems="center">
+									<AntIcon name="checkcircle" size={30} color="black" />
+									<Text bold>Report status</Text>
+								</HStack>
+							</AlertDialog.Header>
+							<AlertDialog.Body>
+								<Text>{message}</Text>
+							</AlertDialog.Body>
+							<AlertDialog.Footer>
+								<Button onPress={() => ReturnToReportPage(false)} my={3}>
+									OK
+								</Button>
+							</AlertDialog.Footer>
+						</AlertDialog.Content>
+					</AlertDialog>
+
+					{/* <FancyAlert
 						visible={visible}
 						icon={
 							<View
@@ -305,7 +362,7 @@ const Hospitalization = props => {
 								OK
 							</Button>
 						</VStack>
-					</FancyAlert>
+					</FancyAlert> */}
 				</Center>
 			</ScrollView>
 		</>

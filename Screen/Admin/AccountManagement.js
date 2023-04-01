@@ -25,6 +25,7 @@ import { LOADING_STATUS, Account_status } from "../../Common/status_code";
 import { MaterialIcons, AntDesign, Ionicons, Entypo } from "@expo/vector-icons";
 import Border from "../../sharedComponent/Common/Border";
 import LoadingSpinner from "../../sharedComponent/Loading";
+import { Dimensions } from "react-native";
 
 const AccountManagement = props => {
 	const dispatch = useDispatch(props);
@@ -38,6 +39,7 @@ const AccountManagement = props => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [page, setpage] = useState(0);
 	const [max_page, setMax_Page] = useState(0);
+	const fullWidth = Dimensions.get("window").width;
 
 	useFocusEffect(
 		useCallback(() => {
@@ -95,17 +97,9 @@ const AccountManagement = props => {
 	};
 
 	const previousPage = () => {
-		setLoading(true);
-		AdminAction.SearchQueryForUser({
-			Doctor_id: context.user.userInfo.Doctor_id,
-			searchQuery: searchQuery,
-			Page: page + 1,
-			limit: 10,
-		});
-		setpage(page + 1);
-	};
-
-	const nextPage = () => {
+		if (Number(page) == 1) {
+			return;
+		}
 		setLoading(true);
 		AdminAction.SearchQueryForUser({
 			Doctor_id: context.user.userInfo.Doctor_id,
@@ -115,13 +109,27 @@ const AccountManagement = props => {
 		});
 		setpage(page - 1);
 	};
+
+	const nextPage = () => {
+		if (Number(page) == Number(max_page)) {
+			return;
+		}
+		setLoading(true);
+		AdminAction.SearchQueryForUser({
+			Doctor_id: context.user.userInfo.Doctor_id,
+			searchQuery: searchQuery,
+			Page: page + 1,
+			limit: 10,
+		});
+		setpage(page + 1);
+	};
 	return (
 		<>
 			{loading ? (
 				<LoadingSpinner />
 			) : (
 				<VStack>
-					<Box border="1" borderRadius="md" mt="3" alignSelf="center" safeArea height="85%">
+					<Box border="1" borderRadius="md" mt="3" alignSelf="center" safeArea height="93%">
 						<VStack space={3}>
 							<HStack alignItems="center">
 								<Heading ml="4" w="65%">
@@ -155,9 +163,9 @@ const AccountManagement = props => {
 
 							<ScrollView
 								nestedScrollEnabled={true}
-								contentContainerStyle={{
-									paddingBottom: 60,
-								}}
+								// contentContainerStyle={{
+								// 	paddingBottom: 60,
+								// }}
 								width="100%"
 							>
 								{Account.length > 0 &&
@@ -277,44 +285,44 @@ const AccountManagement = props => {
 									))}
 							</ScrollView>
 						</VStack>
-					</Box>
-					<Border>
-						<HStack alignSelf="center" my={3}>
-							<IconButton
-								icon={<Entypo name="arrow-with-circle-left" size={24} color="blue" />}
-								isDisabled={page == 1}
-								onPress={previousPage}
-							/>
-							<Input
-								value={page.toString()}
-								w="20%"
-								size="sm"
-								_pressed={{ borderColor: "red.500" }}
-							/>
-							{/* <Input
+						<Border width={fullWidth}>
+							<HStack alignSelf="center" my={3}>
+								<IconButton
+									icon={<Entypo name="arrow-with-circle-left" size={24} color="blue" />}
+									isDisabled={Number(page) == 1}
+									onPress={() => previousPage()}
+								/>
+								<Input
+									value={page.toString()}
+									w="20%"
+									size="sm"
+									_pressed={{ borderColor: "red.500" }}
+								/>
+								{/* <Input
 										defaultValue={"/" + max_page.toString()}
 										w="20%"
 										isDisabled={true}
 										size="sm"
 										_disabled={{ borderColor: "red.500", textDecorationColor:"black" }}
 									/> */}
-							<Center
-								borderWidth="1"
-								borderColor="coolGray.400"
-								alignContent="center"
-								bg="coolGray.200"
-								width="20%"
-								borderRadius="md"
-							>
-								<Center>{"/" + max_page}</Center>
-							</Center>
-							<IconButton
-								icon={<Entypo name="arrow-with-circle-right" size={24} color="blue" />}
-								isDisabled={page == max_page}
-								onPress={nextPage}
-							/>
-						</HStack>
-					</Border>
+								<Center
+									borderWidth="1"
+									borderColor="coolGray.400"
+									alignContent="center"
+									bg="coolGray.200"
+									width="20%"
+									borderRadius="md"
+								>
+									<Center>{"/" + max_page}</Center>
+								</Center>
+								<IconButton
+									icon={<Entypo name="arrow-with-circle-right" size={24} color="blue" />}
+									isDisabled={Number(page) == Number(max_page)}
+									onPress={() => nextPage}
+								/>
+							</HStack>
+						</Border>
+					</Box>
 				</VStack>
 			)}
 			<AlertDialog isOpen={deleted} onClose={() => setDeleted(false)}>
