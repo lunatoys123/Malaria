@@ -1,5 +1,4 @@
 import { Admin_Role, Normal_User_Role } from "./role";
-import { GetAllHospital } from "./Admin_Function";
 // Radio Group Option
 
 export const report_status = [
@@ -68,6 +67,38 @@ export const RDT_Type_Option = [
 		value: "Other",
 	},
 ];
+
+export const Audit_Code_Status = [
+	{
+		Label: "Malaria_Case_Update",
+		value: "Malaria_Case_Update",
+	},
+	{
+		Label: "Malaria_Laboratory_Created",
+		value: "Malaria_Laboratory_Created",
+	},
+	{
+		Label: "Malaria_Laboratory_Update",
+		value: "Malaria_Laboratory_Update",
+	},
+	{
+		Label: "Malaria_Report_Add",
+		value: "Malaria_Report_Add",
+	},
+	{
+		Label: "Malaria_Treatment_Created",
+		value: "Malaria_Treatment_Created",
+	},
+	{
+		Label: "Malaria_Treatment_Update",
+		value: "Malaria_Treatment_Update",
+	},
+	{
+		Label: "Malaria_User_Login",
+		value: "Malaria_User_Login",
+	},
+];
+
 
 //Single and multiple select options
 export const Signs = [

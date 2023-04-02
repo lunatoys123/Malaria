@@ -58,7 +58,10 @@ const Login = props => {
 				}
 			} else if (token_response.Account_status === Account_status.Pending) {
 				props.navigation.navigate("ResetPassword", { mode: User_Status.newUser });
-			} else if (token_response.Account_status == Account_status.Blocked) {
+			} else if (
+				token_response.Account_status == Account_status.Blocked ||
+				token_response.Account_status == Account_status.Deleted
+			) {
 				props.navigation.navigate("Error");
 			}
 		} else {

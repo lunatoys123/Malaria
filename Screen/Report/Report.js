@@ -210,6 +210,9 @@ const Report = props => {
 	};
 
 	const nextPage = () => {
+		if(Number(page) == Number(max_page)){
+			return;
+		}
 		setLoading(true);
 
 		let startDate = searchStartDate;
@@ -240,6 +243,9 @@ const Report = props => {
 	};
 
 	const previousPage = () => {
+		if(Number(page) == 1){
+			return;
+		}
 		setLoading(true);
 
 		let startDate = searchStartDate;
@@ -270,35 +276,35 @@ const Report = props => {
 		setpage(page - 1);
 	};
 
-	const targetpage = (page) => {
-		setLoading(true)
+	// const targetpage = page => {
+	// 	setLoading(true);
 
-		let startDate = searchStartDate;
-		if (startDate != null) {
-			startDate = new Date(startDate);
-			startDate.setHours(0, 0, 0);
-		}
+	// 	let startDate = searchStartDate;
+	// 	if (startDate != null) {
+	// 		startDate = new Date(startDate);
+	// 		startDate.setHours(0, 0, 0);
+	// 	}
 
-		let endDate = searchEndDate;
-		if (endDate != null) {
-			endDate = new Date(endDate);
-			endDate.setHours(23, 59, 59);
-		}
+	// 	let endDate = searchEndDate;
+	// 	if (endDate != null) {
+	// 		endDate = new Date(endDate);
+	// 		endDate.setHours(23, 59, 59);
+	// 	}
 
-		dispatch(
-			caseAction.searchCaseWithQuery({
-				Doctor_id: context.user.userInfo.Doctor_id,
-				PatientName: PatientName,
-				searchStatus: searchStatus,
-				searchStartDate: searchStartDate,
-				searchEndDate: searchEndDate,
-				ReportStatus: ReportStatus,
-				Page: page,
-				limit: 10,
-			})
-		);
-		setpage(page);
-	} 
+	// 	dispatch(
+	// 		caseAction.searchCaseWithQuery({
+	// 			Doctor_id: context.user.userInfo.Doctor_id,
+	// 			PatientName: PatientName,
+	// 			searchStatus: searchStatus,
+	// 			searchStartDate: searchStartDate,
+	// 			searchEndDate: searchEndDate,
+	// 			ReportStatus: ReportStatus,
+	// 			Page: page,
+	// 			limit: 10,
+	// 		})
+	// 	);
+	// 	setpage(page);
+	// };
 
 	return (
 		<>
@@ -426,7 +432,7 @@ const Report = props => {
 								<HStack alignSelf="center" my={3}>
 									<IconButton
 										icon={<Entypo name="arrow-with-circle-left" size={24} color="blue" />}
-										isDisabled={page == 1}
+										isDisabled={Number(page) == 1}
 										onPress={previousPage}
 									/>
 									<Input
@@ -455,7 +461,7 @@ const Report = props => {
 									</Center>
 									<IconButton
 										icon={<Entypo name="arrow-with-circle-right" size={24} color="blue" />}
-										isDisabled={page == max_page}
+										isDisabled={Number(page) == Number(max_page)}
 										onPress={nextPage}
 									/>
 								</HStack>

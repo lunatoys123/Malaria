@@ -12,6 +12,7 @@ import {
 	HospitalSummaryData,
 	TreatmentSummaryData,
 	AdminAnalytics,
+	searchAuditByCode,
 } from "./action";
 
 const initialState = {
@@ -30,6 +31,8 @@ const initialState = {
 	Page: 1,
 	limit: 10,
 	Max_Page: 0,
+	Audit_Page: 1,
+	Audit_MaxPage: 0,
 };
 
 const pendingReducer = (state, action) => {
@@ -92,7 +95,10 @@ const AuditFulfillReducer = (state, action) => {
 	return {
 		...state,
 		loading: LOADING_STATUS.FULFILLED,
-		Audit_Log: action.payload,
+		Audit_Log: action.payload.Audit_Log,
+		Audit_Page: action.payload.Page,
+		limit: action.payload.limit,
+		Audit_MaxPage: action.payload.Max_Page,
 	};
 };
 
@@ -140,6 +146,9 @@ const AdminSlice = createSlice({
 		[GetAuditFromDoctorId.pending]: pendingReducer,
 		[GetAuditFromDoctorId.rejected]: rejectReducer,
 		[GetAuditFromDoctorId.fulfilled]: AuditFulfillReducer,
+		[searchAuditByCode.pending]: pendingReducer,
+		[searchAuditByCode.rejected]: rejectReducer,
+		[searchAuditByCode.fulfilled]: AuditFulfillReducer,
 		[deleteUser.pending]: pendingReducer,
 		[deleteUser.rejected]: rejectReducer,
 		[deleteUser.fulfilled]: AccountManagementFulfillReducer,
@@ -174,5 +183,6 @@ export const AdminAction = {
 	HospitalSummaryData,
 	TreatmentSummaryData,
 	AdminAnalytics,
+	searchAuditByCode,
 	...AdminSlice.actions,
 };

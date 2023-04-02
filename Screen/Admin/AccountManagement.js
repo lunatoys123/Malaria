@@ -76,13 +76,13 @@ const AccountManagement = props => {
 	const deleteUser = Doctor_id => {
 		// console.log(Doctor_id);
 		setLoading(true);
-		dispatch(AdminAction.deleteUser({ Doctor_id }));
+		dispatch(AdminAction.deleteUser({ Doctor_id, page, searchQuery, limit: 10 }));
 		setDeleted(true);
 	};
 
 	const recoverUser = Doctor_id => {
 		setLoading(true);
-		dispatch(AdminAction.recoverUser({ Doctor_id }));
+		dispatch(AdminAction.recoverUser({ Doctor_id, page, searchQuery, limit: 10 }));
 		setRecovered(true);
 	};
 

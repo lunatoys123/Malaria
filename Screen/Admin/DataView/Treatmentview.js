@@ -70,7 +70,7 @@ const Treatmentview = () => {
 								onPress={() => setTreatmentMode(Treatment_Mode.Threapy_Summary)}
 								variant={TreatmentMode == Treatment_Mode.Threapy_Summary ? "solid" : "outline"}
 							>
-								Threapy Summary
+								Therapy Summary
 							</Button>
 							<Button
 								size="sm"
@@ -104,7 +104,7 @@ const Treatmentview = () => {
 						{TreatmentMode === Treatment_Mode.Threapy_Summary && (
 							<Box>
 								<Heading size="md" alignSelf="center">
-									Threapy Summary
+									Therapy Summary
 								</Heading>
 								<Border>
 									<AdminBarChart data={TreatementCount} />
