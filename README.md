@@ -8,7 +8,9 @@ check out the README.md
 ## Component needed
 Android Studio is needed for running the app 
 
-Download link: 
+Download link: https://developer.android.com/studio
+
+run the emulator on the android studio: https://developer.android.com/studio/run/emulator
 
 
 ## Installation step
@@ -19,5 +21,3 @@ Download link:
 3. Add.env file inside the Repo and add this line under the .env file \
     `url={YOUR URL of Back-end}`
 4. run `npm start`
-
-
