@@ -175,7 +175,7 @@ const Laboratory = props => {
 		validateOnBlur: false,
 		onSubmit: values => {
 			setSubmit(true);
-			console.log(values);
+			//console.log(values);
 
 			const Laboratory = {};
 
@@ -219,7 +219,7 @@ const Laboratory = props => {
 
 	const SubmitWithAlert = async values => {
 		//console.log("SubmitWithAlert", values);
-		console.log(_.get(formik.values, "Blood_Smear.Description"));
+		//console.log(_.get(formik.values, "Blood_Smear.Description"));
 		const validation = await formik.validateForm(values);
 		if (!_.isEmpty(validation)) {
 			console.log(validation);
@@ -264,6 +264,7 @@ const Laboratory = props => {
 						<FormSigleSelect
 							formik={formik}
 							options={Laboratory_Positive}
+							Label="Specify (if positive)"
 							id="Blood_Smear.Description"
 							onChange={onChange}
 						/>
