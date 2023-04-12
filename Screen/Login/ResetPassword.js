@@ -63,11 +63,13 @@ const ResetPassword = props => {
 	useFocusEffect(
 		useCallback(() => {
 			const { loading, Message } = AdminState;
-			if (loading === LOADING_STATUS.FULFILLED && submit) {
-				setSubmit(false);
-				setMessage(Message);
-				setResetPassword(true);
-				dispatch(AdminAction.Initialilze());
+			if (loading === LOADING_STATUS.FULFILLED) {
+				if (submit && Message != "") {
+					setSubmit(false);
+					setMessage(Message);
+					setResetPassword(true);
+					dispatch(AdminAction.Initialilze());
+				}
 			}
 		}, [AdminState, submit])
 	);

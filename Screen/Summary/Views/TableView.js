@@ -1,11 +1,11 @@
 import React from "react";
 import { Box, Heading, Text, VStack, HStack, Center } from "native-base";
 const TableView = props => {
-	var { Table_Data, Analytics_Data, selectcountry } = props;
+	var { Table_Data, Analytics_Data, selectcountry, NoDataText, displayGraph } = props;
 	return (
 		<VStack space={2} alignSelf="center">
 			<Box mt={8}>
-				{selectcountry && Table_Data.length == 0 && <Text>No Data for this country</Text>}
+				{displayGraph && <Text>{NoDataText}</Text>}
 				{Table_Data.length > 0 && (
 					<>
 						<Heading size="sm" alignSelf="center">

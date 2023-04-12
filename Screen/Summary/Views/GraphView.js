@@ -4,7 +4,8 @@ import { LineChart } from "react-native-chart-kit";
 import { Rect, Text as TextSvG, Svg } from "react-native-svg";
 import { Dimensions } from "react-native";
 const GraphView = props => {
-	var { WHO_DATA, tooltipPosition, setTooltipPosition, selectcountry, GenerateExcel } = props;
+	var { WHO_DATA, tooltipPosition, setTooltipPosition, selectcountry, GenerateExcel, NoDataText } =
+		props;
 	const DEVICE_WIDTH = Dimensions.get("window").width;
 
 	const ConstructLabel = d => {
@@ -30,7 +31,7 @@ const GraphView = props => {
 
 	return (
 		<VStack space={2} alignSelf="center">
-			{selectcountry && WHO_DATA.length == 0 && <Text>No Data for this country</Text>}
+			{selectcountry != null && WHO_DATA.length == 0 && <Text>{NoDataText}</Text>}
 			{WHO_DATA &&
 				WHO_DATA.map((d, index) => (
 					<Box key={index}>

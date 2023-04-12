@@ -85,6 +85,7 @@ const CompareView = Props => {
 											stroke: "#ffa726",
 										},
 									}}
+									fromZero={true}
 									bezier
 									style={{
 										marginVertical: 8,

@@ -47,6 +47,8 @@ const Data = props => {
 	const [currentCountry, setCurrentCountry] = useState(null);
 	const [targetCountry, setTargetCountry] = useState(null);
 	const [Compare_Analytics_Data, setCompare_Analytics_Data] = useState({});
+	const [displayGraph, setDisplayGraph] = useState(false);
+	const [NoDataText, setNoDataText] = useState("");
 	useEffect(() => {
 		// dispatch(SummaryAction.WHO_Data({ option: option }));
 		setLoading(true);
@@ -83,6 +85,11 @@ const Data = props => {
 			setTarget_Data(target_Data);
 			setCurrent_Data(current_Data);
 			setCompare_Analytics_Data(Compare_Analytics);
+			setDisplayGraph(false);
+
+			if (selectcountry && (WHO_DATA.length == 0 || Table_Data.length == 0)) {
+				setNoDataText("No data available for this country");
+			}
 
 			const tooltipPos = [];
 			for (let i = 0; i < WHO_Data.length; i++) {
@@ -155,6 +162,7 @@ const Data = props => {
 			});
 		} else {
 			setLoading(true);
+			setDisplayGraph(true);
 			dispatch(SummaryAction.CompareView({ option, targetCountry, currentCountry }));
 		}
 	};
@@ -258,7 +266,7 @@ const Data = props => {
 			Analytics_array.push(value);
 		}
 		let Analytics_ws = XLSX.utils.aoa_to_sheet(Analytics_array);
-		XLSX.utils.book_append_sheet(data_wb, Analytics_ws,"Analytics", true);
+		XLSX.utils.book_append_sheet(data_wb, Analytics_ws, "Analytics", true);
 
 		const base64 = XLSX.write(data_wb, { type: "base64" });
 		const filename = FileSystem.documentDirectory + "CompareView.csv";
@@ -389,6 +397,8 @@ const Data = props => {
 								setTooltipPosition={setTooltipPosition}
 								selectcountry={selectcountry}
 								GenerateExcel={GenerateExcel}
+								NoDataText={NoDataText}
+								displayGraph={displayGraph}
 							/>
 						)}
 						{dataModel === Data_Mode.Table && (
@@ -397,6 +407,7 @@ const Data = props => {
 									Table_Data={Table_Data}
 									Analytics_Data={Analytics_Data}
 									selectcountry={selectcountry}
+									NoDataText={NoDataText}
 								/>
 								<AnalyticsView
 									Table_Data={Table_Data}

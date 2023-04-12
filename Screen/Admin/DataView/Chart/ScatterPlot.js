@@ -5,7 +5,7 @@ import * as d3 from "d3";
 
 const AdminScatterPlot = props => {
 	var { AnalyticsData = {}, w = 400, h = 300, xAxis = "", xticks = 10 } = props;
-	console.log(xAxis);
+	//console.log(xAxis);
 	const margin = {
 		top: 40,
 		bottom: 40,

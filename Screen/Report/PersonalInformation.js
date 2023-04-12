@@ -48,10 +48,12 @@ const PersonalInformation = props => {
 	useFocusEffect(
 		useCallback(() => {
 			const { loading, Message, status } = PatientState;
-			if (loading === LOADING_STATUS.FULFILLED && submit) {
-				setMessage(Message);
-				setSubmit(false);
-				setUpdated(true);
+			if (loading === LOADING_STATUS.FULFILLED) {
+				if (submit && Message !== "") {
+					setMessage(Message);
+					setSubmit(false);
+					setUpdated(true);
+				}
 			}
 		}, [PatientState, submit])
 	);
@@ -344,7 +346,9 @@ const PersonalInformation = props => {
 						<AlertDialog.Header>
 							<HStack space={2} alignItems="center">
 								<MaterialIcon name="error" size={30} color="red" />
-								<Text color="red.400" bold>Error Status</Text>
+								<Text color="red.400" bold>
+									Error Status
+								</Text>
 							</HStack>
 						</AlertDialog.Header>
 						<AlertDialog.Body>

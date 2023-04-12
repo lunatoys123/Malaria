@@ -371,13 +371,13 @@ const ClinicalInformation = props => {
 					colorScheme="success"
 					w="90%"
 					rightIcon={
-						mode === Operation_Mode.create ? (
+						mode === Operation_Mode.create || mode === Operation_Mode.createWithPatientId ? (
 							<Icon as={<FontIcon name="chevron-right" />} size={5} ml={2} />
 						) : null
 					}
 				>
 					<Text ml={2} color="white">
-						{mode === Operation_Mode.create
+						{mode === Operation_Mode.create || mode === Operation_Mode.createWithPatientId
 							? "Travel History"
 							: mode === Operation_Mode.edit
 							? "Update Travel History"
