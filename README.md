@@ -1,4 +1,4 @@
-# Malara App (Front-End)
+# Malaria App (Front-End)
 
 This project was bootstrapped with Expo. For more information, please refer to [Expo docs](https://docs.expo.dev/)
 
